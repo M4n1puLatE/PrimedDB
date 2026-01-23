@@ -51,12 +51,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CN/未命名.md",
+                "file": "_navbar.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "未命名"
+              "title": "_navbar"
             }
           }
         ],
@@ -225,13 +225,13 @@
   },
   "active": "2744ceadfcd24e0c",
   "lastOpenFiles": [
+    "README.md",
+    "CN/未命名.md",
     "_sidebar.md",
     "_navbar.md",
     "_coverpage.md",
     "_config.yml",
     "_404.md",
-    "README.md",
-    "CN/未命名.md",
     "index.html",
     "EN",
     "CN",
