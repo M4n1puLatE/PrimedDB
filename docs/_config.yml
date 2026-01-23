@@ -4,7 +4,6 @@
 title: Jeffrey Liao's Blog
 baseurl: "/PrimedDB"  # 如果你的项目是 username.github.io/repo-name，则填 "/repo-name"
 url: "https://m4n1pulate.github.io"  # GitHub Pages URL（不含 baseurl）
-
 # === Jekyll 设置 ===
 theme: minima  # GitHub Pages 支持的主题（见下方列表）
 plugins:
