@@ -54,7 +54,13 @@
           max-width: 300px;
       }
       .content {
-          margin-left: 100px !important;
+          position: absolute;
+          left: 200px !important; /* 与侧边栏宽度一致 */
+          right: 0; /* 填充剩余空间 */
+          width: auto !important; /* 自动宽度 */
+          max-width: none !important; /* 移除最大宽度限制 */
+          padding: 30px 45px;
+          box-sizing: border-box;
       }
   </style>
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1/themes/prism.css" />
