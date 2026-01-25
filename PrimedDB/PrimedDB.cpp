@@ -2,11 +2,12 @@
 //
 
 #include "PrimedDB.h"
+#include <Log.h>
 
 using namespace std;
-
 int main()
 {
 	cout << "Hello CMake." << endl;
 	return 0;
+
 }

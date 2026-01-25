@@ -4,3 +4,4 @@
 	* [代码规范与约定](/cn/rules.md)
 	* [理论基础](/rules/theorems.md)
 * 功能文档
+	* [Log](/cn/ClassLog.md)

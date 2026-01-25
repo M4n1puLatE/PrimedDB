@@ -1,0 +1,62 @@
+[
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\Command\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoCommand\\CMakeFiles\\Command.dir\\src\\main.cpp.obj /FdCommand\\CMakeFiles\\Command.dir\\Command.pdb /FS -c D:\\Code\\Project\\PrimedDB\\Command\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/Command/src/main.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/Command/CMakeFiles/Command.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\Compiler\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoCompiler\\CMakeFiles\\Compiler.dir\\src\\main.cpp.obj /FdCompiler\\CMakeFiles\\Compiler.dir\\Compiler.pdb /FS -c D:\\Code\\Project\\PrimedDB\\Compiler\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/Compiler/src/main.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/Compiler/CMakeFiles/Compiler.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\ErrorHandling\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoErrorHandling\\CMakeFiles\\ErrorHandling.dir\\src\\main.cpp.obj /FdErrorHandling\\CMakeFiles\\ErrorHandling.dir\\ErrorHandling.pdb /FS -c D:\\Code\\Project\\PrimedDB\\ErrorHandling\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/ErrorHandling/src/main.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/ErrorHandling/CMakeFiles/ErrorHandling.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\LogLib\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoLogLib\\CMakeFiles\\LogLib.dir\\src\\ClassInforDef.cpp.obj /FdLogLib\\CMakeFiles\\LogLib.dir\\LogLib.pdb /FS -c D:\\Code\\Project\\PrimedDB\\LogLib\\src\\ClassInforDef.cpp",
+  "file": "D:/Code/Project/PrimedDB/LogLib/src/ClassInforDef.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/LogLib/CMakeFiles/LogLib.dir/src/ClassInforDef.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\LogLib\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoLogLib\\CMakeFiles\\LogLib.dir\\src\\main.cpp.obj /FdLogLib\\CMakeFiles\\LogLib.dir\\LogLib.pdb /FS -c D:\\Code\\Project\\PrimedDB\\LogLib\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/LogLib/src/main.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/LogLib/CMakeFiles/LogLib.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\Network\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoNetwork\\CMakeFiles\\Network.dir\\src\\main.cpp.obj /FdNetwork\\CMakeFiles\\Network.dir\\Network.pdb /FS -c D:\\Code\\Project\\PrimedDB\\Network\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/Network/src/main.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/Network/CMakeFiles/Network.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoPrimedDB\\CMakeFiles\\PrimedDB.dir\\PrimedDB.cpp.obj /FdPrimedDB\\CMakeFiles\\PrimedDB.dir\\ /FS -c D:\\Code\\Project\\PrimedDB\\PrimedDB\\PrimedDB.cpp",
+  "file": "D:/Code/Project/PrimedDB/PrimedDB/PrimedDB.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/PrimedDB/CMakeFiles/PrimedDB.dir/PrimedDB.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\StorageUnit\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoStorageUnit\\CMakeFiles\\StorageUnit.dir\\src\\main.cpp.obj /FdStorageUnit\\CMakeFiles\\StorageUnit.dir\\StorageUnit.pdb /FS -c D:\\Code\\Project\\PrimedDB\\StorageUnit\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/StorageUnit/src/main.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/StorageUnit/CMakeFiles/StorageUnit.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\Transaction\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoTransaction\\CMakeFiles\\Transaction.dir\\src\\main.cpp.obj /FdTransaction\\CMakeFiles\\Transaction.dir\\Transaction.pdb /FS -c D:\\Code\\Project\\PrimedDB\\Transaction\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/Transaction/src/main.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/Transaction/CMakeFiles/Transaction.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/out/build/x64-debug",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -ID:\\Code\\Project\\PrimedDB\\Test\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20 /FoTest\\CMakeFiles\\Test.dir\\src\\main.cpp.obj /FdTest\\CMakeFiles\\Test.dir\\Test.pdb /FS -c D:\\Code\\Project\\PrimedDB\\Test\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/Test/src/main.cpp",
+  "output": "D:/Code/Project/PrimedDB/out/build/x64-debug/Test/CMakeFiles/Test.dir/src/main.cpp.obj"
+}
+]
