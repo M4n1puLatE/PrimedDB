@@ -28,16 +28,20 @@ namespace Tester
 	void Tester::run()
 	{
 		bool pass = false;
+		size_t testNumber = 0;
 		for (int n = 0;n<m_tests.size();++n)
 		{
 			auto& test = m_tests.front();
 			m_tests.pop();
 			if (test.second)
 			{
-				cout << format("Running {} is {}\n", test.first, pass = test.second() ? "passed" : "failed");
-				m_passed.push_back(pass);
+				cout << format("Running {} is {}\n",
+					test.first,
+					(test.second()? "passed" : "failed"));
+				testNumber++;
 			}
 		}
+		cout<< format("{} tests passed out of {}", testNumber, m_tests.size()) << endl;
 	}
 }
 

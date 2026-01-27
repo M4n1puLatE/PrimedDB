@@ -14,7 +14,6 @@ namespace Tester
 		using test_pair = std::pair<string, test_function>;
 		const string& m_name;
 		std::queue <test_pair> m_tests;
-		std::vector<bool> m_passed;
 		Util::Timer<Util::milliseconds> m_timer;
 		bool m_useTimer;
 	public:
