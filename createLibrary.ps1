@@ -10,9 +10,14 @@ New-Item -ItemType Directory -Path "$ModuleName/include"
 
 # 生成库文件的 CMakeLists.txt
 $cmakeContent = @"
+project($ModuleName)
 file(GLOB_RECURSE srcs CONFIGURE_DEPENDS src/*.cpp include/*.h)
-add_library($ModuleName STATIC `${srcs})
-target_include_directories($ModuleName PUBLIC include)
+add_library(`${PROJECT_NAME} STATIC `${srcs})
+
+target_include_directories(`${PROJECT_NAME}
+    PUBLIC_HEADER
+        `${PROJECT_SOURCE_DIR}/include
+)
 "@
 
 Set-Content -Path "$ModuleName/CMakeLists.txt" -Value $cmakeContent

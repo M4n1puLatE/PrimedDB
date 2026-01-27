@@ -18,9 +18,7 @@ target_compile_features(PrimedDB PRIVATE cxx_std_20)
 # 链接所有子库
 target_link_libraries(PrimedDB
     PRIVATE
-        ErrorHandling
         LogLib
-        Network
-        StorageUnit
-        Transaction
+        Util
+        Tester
 )
