@@ -1,12 +1,24 @@
-﻿# CMakeList.txt: PrimedDB 的 CMake 项目，在此处包括源代码并定义
-# 项目特定的逻辑。
-#
+﻿# 复制运行时依赖（Windows DLL等）
+# PrimedDB 主程序
+file(GLOB MAIN_SOURCES "*.cpp")
+file(GLOB MAIN_HEADERS "*.h")
 
-# 将源代码添加到此项目的可执行文件。
-add_executable (PrimedDB "PrimedDB.cpp" "PrimedDB.h")
+# 创建可执行文件
+add_executable(PrimedDB ${MAIN_SOURCES} ${MAIN_HEADERS})
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET PrimedDB PROPERTY CXX_STANDARD 20)
-endif()
+# 设置目标属性
+target_include_directories(PrimedDB
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/include
+)
 
-# TODO: 如有需要，请添加测试并安装目标。
+target_compile_features(PrimedDB PRIVATE cxx_std_20)
+
+# 链接所有子库
+target_link_libraries(PrimedDB
+    PRIVATE
+        LogLib
+        Util
+        Tester
+)

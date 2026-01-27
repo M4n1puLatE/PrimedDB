@@ -1,4 +1,4 @@
-project(LogLib)
+project(Util)
 file(GLOB_RECURSE srcs CONFIGURE_DEPENDS src/*.cpp include/*.h)
 add_library(${PROJECT_NAME} STATIC ${srcs})
 
