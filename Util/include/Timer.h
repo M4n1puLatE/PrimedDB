@@ -35,7 +35,6 @@ namespace Util {
 		}
 		TimeType end()
 		{
-			m_started = false;
 			auto interval = now() - m_begin;
 			reset();
 			return interval;

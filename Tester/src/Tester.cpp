@@ -8,14 +8,10 @@ namespace Tester
 	using namespace std;
 	Tester::Tester(const string& name)
 		:m_name(name),m_useTimer(false)
-	{
-		
-	}
+	{}
 	Tester::Tester(const string& name, bool useTimer)
 		:m_name(name),m_useTimer(useTimer)
-	{
-		
-	}
+	{}
 	void Tester::add(const string& name, test_function test)
 	{
 		auto pair = make_pair(name, test);
@@ -35,9 +31,17 @@ namespace Tester
 			m_tests.pop();
 			if (test.second)
 			{
+				if (m_useTimer)
+				{
+					m_timer.start();
+				}
 				cout << format("Running {} is {}\n",
 					test.first,
 					(test.second()? "passed" : "failed"));
+				if (m_timer.isStarted())
+				{
+					cout << format("Time cost: {}",m_timer.end());
+				}
 				testNumber++;
 			}
 		}
