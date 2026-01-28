@@ -1,9 +1,18 @@
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <format>
+#include <future>
+#include <queue>
+#include <shared_mutex>
+
 class Log
 {
-public:
+	std::stringstream m_messageStream;
 
-	void print();
+public:
+	void add(const std::string& text);
+	void end();
+	static size_t size();
+	static void join();
 };
