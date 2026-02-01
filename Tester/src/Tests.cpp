@@ -1,7 +1,5 @@
-#include <UtilTester.h>
+#include <Tests.h>
 
-#include "ClassInfoTester.h"
-using namespace Tester;
 int main()
 {
 	UtilTester utilTest;
