@@ -28,3 +28,4 @@
 
 ### 功能文档
 - [单元测试类-Tester](cn/Tester.md)
+- [信息打印类-Log](/cn/ClassLog.md)

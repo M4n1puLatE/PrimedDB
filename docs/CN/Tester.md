@@ -1,4 +1,4 @@
-# Tester
+# Tester/class Tester
 >Tester 是PrimedDB中用于**执行单元测试的基类**。
 
 - Tester被配置在另外的`Tester`项目中，由`Tester.exe`运行。所以与其他类没有耦合关系，也不影响PrimedDB本身的任何功能(由`PrimedDB.exe`运行)。
@@ -13,6 +13,8 @@
 - 此外，init中还可以**自定义选择是否使用计时器**来计量测试操作的性能。有两种计时器可以选择
 	- timer：**普通计时器**，按照毫秒输出执行时间，使用`enableTimer()`启用，默认关闭
 	- precise：**高精度计时器**，按照纳秒输出执行时间，使用`enablePrecise()`启用，默认关闭
+
+
 ## 使用样例
 ```cpp
 void UtilTester::init()
@@ -26,7 +28,7 @@ void UtilTester::init()
 ```
 
 ---
-# [类声明与接口](../../Tester/include/Tester.h)
+# 类声明与接口
 ```cpp
 namespace Tester
 {
