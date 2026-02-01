@@ -29,17 +29,19 @@ void shortFunc();
 >- 如果是相关的静态函数，都将会被写在以`Functions`结尾的`static`类中作为`public`方法
 
 ## 特殊修饰符
-`const`修饰的变量会被写为全大写，在单词分词时使用下划线
+`const`修饰的**变量**会被写为全大写，在单词分词时使用下划线
 ```cpp
 const int CONST_INT;
 ```
 
-`static`修饰的变量/函数会变成与类命名方式相似的命名
+`static`修饰的**变量/公用函数**会变成与类命名方式相似的命名
 ```cpp
 static int IntVariable;
 
 static void StaticFunction();
 ```
+
+`static`修饰的**私用函数**仍然保持驼峰命名法。
 
 `unsigned`修饰的变量会在变量前增加`u`
 ```cpp

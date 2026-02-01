@@ -16,15 +16,20 @@ namespace Tester
 	using std::endl;
 	//用于进行单元测试
 	//非线程安全类
-	template <class DerivedTest>
+	template<typename T>
+	concept Printable = requires(std::ostream & os, T && t)
+	{
+		os << std::forward<T>(t);
+	};
 
+	template <class DerivedTest>
 	class Tester
 	{
 	protected:
 		using string = std::string;
 		using test_function = std::function<bool()>;
 		using test_pair = std::pair<string, test_function>;
-		template<class T>
+		template<Printable T>
 		static void printVector(const std::vector<T>& vec)
 		{
 			std::cout << "[";
@@ -54,19 +59,23 @@ namespace Tester
 		{
 			m_useTimer = true;
 			m_usePrecise = false;
+			m_preciseTimer.reset();
 		}
 		void enablePrecise()
 		{
 			m_useTimer = false;
 			m_usePrecise = true;
+			m_timer.reset();
 		}
 		void disableTimer()
 		{
 			m_useTimer = false;
+			m_timer.reset();
 		}
 		void disablePrecise()
 		{
 			m_usePrecise = false;
+			m_preciseTimer.reset();
 		}
 		void add(const string& name, test_function test)
 		{
@@ -185,6 +194,10 @@ namespace Tester
 		{
 			return m_useTimer;
 		}
+		bool isPreciseEnable() const
+		{
+			return m_usePrecise;
+		}
 		void run()
 		{
 			size_t success = 0, total = m_tests.size();
@@ -192,6 +205,5 @@ namespace Tester
 			testLoop(success, total);
 			printTestResult(success,total);
 		}
-		virtual ~Tester() = default;
 	};
 }

@@ -7,5 +7,8 @@ namespace Tester
 		THIS_IS_A_TEST(TimeStampTester);
 
 		void init();
+
+	public:
+		TimeStampTester();
 	};
 }

@@ -33,7 +33,7 @@ namespace Tester
 		auto result2 = Util::Util::SplitString(test2, 'b');
 		auto result3 = Util::Util::SplitString(test3, '.');
 		auto result4 = Util::Util::SplitString(test4, '.');
-		/*printVector(result1);*/
+		printVector(result1);
 		if (!collectionEqual(token,result1))
 			return false;
 		/*printVector(result2);*/
