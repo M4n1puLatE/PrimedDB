@@ -69,8 +69,5 @@ namespace Tester
 		return true;
 	}
 	UtilTester::UtilTester()
-		: Tester()
-	{
-		init();
-	}
+	{}
 }
