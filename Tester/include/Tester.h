@@ -40,16 +40,27 @@ namespace Tester
 				return false;
 			return std::equal(c1.begin(), c1.end(), c2.begin());;
 		}
+		template <std::derived_from<Tester> T>
+		static const char* className(T* instance)
+		{
+			return typeid(*instance).name();
+		}
 		void enableTimer();
 		void disableTimer();
 		void add(const string& name, test_function test);
 		virtual void init() = 0;
-		Tester(const char*,Tester* actualTester);
+		Tester();
 	private:
-		const string& m_name;
 		std::queue <test_pair> m_tests;
 		Util::Timer<Util::milliseconds> m_timer;
 		bool m_useTimer;
+
+		void testLoop(size_t& testNumber,size_t& total);
+		void printTimeCost();
+		void testBegin(const string&)const;
+		void testEnd();
+		void activeTimer();
+		void testResult(test_pair& test);
 	public:
 		size_t size()const;
 		bool isTimerEnable() const;

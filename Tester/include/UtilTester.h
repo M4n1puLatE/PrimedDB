@@ -11,11 +11,11 @@ namespace Tester
 		string test4 = "hello.a.1.2.3";
 		std::vector<string> token = {"hello","a","1","2","3"};
         std::vector<size_t> index = {5,7,9,11};
-		virtual void init() override;
+		void init() override;
 		bool testIndexSplitString() const;
 		bool testSplitString() const;
 		bool testInterpretString()const;
-		virtual const char* className() const override;
+
 	public:
 		UtilTester();
 	};

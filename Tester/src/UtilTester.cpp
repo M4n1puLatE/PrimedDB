@@ -15,14 +15,14 @@ namespace Tester
 		auto result2 = Util::Util::IndexSplitString(test2, 'b');
 		auto result3 = Util::Util::IndexSplitString(test3, '.');
 		auto result4 = Util::Util::IndexSplitString(test4, '.');
-		printVector(result1);
+		//printVector(result1);
 		if (!collectionEqual(result1, index))
 			return false;
-		printVector(result2);
+		//printVector(result2);
 		if (!collectionEqual(result2, index))
 			return false;
-		printVector(result3);
-		printVector(result4);
+		//printVector(result3);
+		//printVector(result4);
 		if (!collectionEqual(result4, index))
 			return false;
 		return true;
@@ -33,14 +33,14 @@ namespace Tester
 		auto result2 = Util::Util::SplitString(test2, 'b');
 		auto result3 = Util::Util::SplitString(test3, '.');
 		auto result4 = Util::Util::SplitString(test4, '.');
-		printVector(result1);
+		/*printVector(result1);*/
 		if (!collectionEqual(token,result1))
 			return false;
-		printVector(result2);
+		/*printVector(result2);*/
 		if (!collectionEqual(token, result2))
 			return false;
-		printVector(result3);
-		printVector(result4);
+		//printVector(result3);
+		//printVector(result4);
 		if (!collectionEqual(token, result4))
 			return false;
 		return true;
@@ -68,11 +68,9 @@ namespace Tester
 		recursiveInterpret(test4, result4);
 		return true;
 	}
-	const char* UtilTester::className() const
-	{
-		return typeid(this).name();
-	}
 	UtilTester::UtilTester()
-		: Tester(this)
-	{}
+		: Tester()
+	{
+		init();
+	}
 }

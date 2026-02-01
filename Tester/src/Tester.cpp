@@ -5,11 +5,9 @@
 namespace Tester
 {
 	using namespace std;
-	Tester::Tester(const char* name,Tester* actualTester)
-        :m_name(name),m_useTimer(false)
-	{
-		actualTester->init();
-	}
+	Tester::Tester()
+        :m_useTimer(false)
+	{}
 	void Tester::add(const string& name, test_function test)
 	{
 		auto pair = make_pair(name, test);
@@ -31,32 +29,57 @@ namespace Tester
 	{
 		m_useTimer = false;
 	}
-	void Tester::run()
+	void Tester::testBegin(const string& name)const
 	{
-		bool pass = false;
-		size_t testNumber = 0,total = m_tests.size();
+		cout << format("[{}]\n________________________________________________", name) << endl;
+	}
+	void Tester::testEnd()
+	{
+		cout << "________________________________________________\n\n" << endl;
+	}
+	void Tester::activeTimer()
+	{
+		if (m_useTimer)
+		{
+			m_timer.start();
+		}
+	}
+	void Tester::printTimeCost()
+	{
+		if (m_timer.isStarted())
+		{
+			cout << format("> [Time cost: {}]\n", m_timer.end());
+		}
+	}
+	void Tester::testResult(test_pair& test)
+	{
+		cout << format("> Running [{}] is {}\n",
+			test.first,
+			(test.second() ? "passed" : "failed"));
+	}
+	void Tester::testLoop(size_t& testNumber, size_t& total)
+	{
 		unsigned n = 0;
 		while (!m_tests.empty())
 		{
-			cout << format("Test {}________________________________________",n+1)<<endl;
+
 			auto test = std::move(m_tests.front());
+			testBegin(test.first);
 			m_tests.pop();
-			if (m_useTimer)
-			{
-				m_timer.start();
-			}
-			cout << format("Running {} is {}\n",
-				test.first,
-				(test.second() ? "passed" : "failed"));
-			if (m_timer.isStarted())
-			{
-				cout << format("Time cost: {}", m_timer.end());
-			}
+			activeTimer();
+			testResult(test);
+			printTimeCost();
 			++testNumber;
 			++n;
-			cout << "______________________________________________\n" << endl;
+			testEnd();
 		}
-		cout<< format("{} tests passed out of {}", testNumber, total) << endl;
+	}
+	void Tester::run()
+	{
+		size_t success = 0, total = m_tests.size();
+		cout << format("> {}\n", className(this)) << endl;
+		testLoop(success, total);
+		cout<< format("{} tests passed out of {}\n", success, total) << endl;
 	}
 }
 
