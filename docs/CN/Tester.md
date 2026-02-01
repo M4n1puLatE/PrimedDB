@@ -1,5 +1,6 @@
-# Tester(非线程安全)
-Tester 是PrimedDB中用于**执行单元测试的基类**。子测试只需要继承Tester类就可以自动化执行测试。
+# Tester
+Tester 是PrimedDB中用于**执行单元测试的基类**。子测试只需要继承Tester类就可以自动化执行测试。Tester由`Tester.exe`运行，所以与其他类没有耦合关系，也不影响PrimedDB本身的任何功能(由`PrimedDB.exe`运行)。
+- **Tester 不是线程安全的！**
 
 # [类声明与接口](../../Tester/include/Tester.h)
 ```cpp
