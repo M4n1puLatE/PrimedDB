@@ -12,6 +12,8 @@ namespace Tester
 {
 #define TEST_FUNCTION(function) [this](){return function();}
 #define THIS_IS_A_TEST(Self) friend class Tester<Self>
+	using std::cout;
+	using std::endl;
 	//用于进行单元测试
 	//非线程安全类
 	template <class DerivedTest>
@@ -51,10 +53,20 @@ namespace Tester
 		void enableTimer()
 		{
 			m_useTimer = true;
+			m_usePrecise = false;
+		}
+		void enablePrecise()
+		{
+			m_useTimer = false;
+			m_usePrecise = true;
 		}
 		void disableTimer()
 		{
 			m_useTimer = false;
+		}
+		void disablePrecise()
+		{
+			m_usePrecise = false;
 		}
 		void add(const string& name, test_function test)
 		{
@@ -62,13 +74,15 @@ namespace Tester
 			m_tests.emplace(pair);
 		}
 		Tester()
+			:m_usePrecise(false), m_useTimer(false)
 		{
 			static_cast<DerivedTest*>(this)->init();
 		}
 	private:
 		std::queue <test_pair> m_tests;
 		Util::Timer<Util::milliseconds> m_timer;
-		bool m_useTimer;
+		Util::Timer<Util::nanoseconds> m_preciseTimer;
+		bool m_useTimer,m_usePrecise;
 		static void printWithGreen(const string& message)
 		{
 			std::cout << std::format("\033[32m{}\033[0m",message) << std::endl;
@@ -83,7 +97,7 @@ namespace Tester
 		}
 		static void printWithBlue(const string& message)
 		{
-			std::cout << std::format("\033[104m{}\033[0m", message) << std::endl;
+			std::cout << std::format("\033[30;104m{}\033[0m", message) << std::endl;
 		}
 		static void printWithFrontRed(const string& message)
 		{
@@ -98,9 +112,8 @@ namespace Tester
 				testBegin(n,test.first);
 				m_tests.pop();
 				activeTimer();
-				testResult(test);
+				testResult(test, testNumber);
 				printTimeCost();
-				++testNumber;
 				++n;
 				testEnd();
 			}
@@ -111,13 +124,17 @@ namespace Tester
 			{
 				printWithBlue(std::format("> [Time cost: {}]", m_timer.end()));
 			}
+			if (m_preciseTimer.isStarted())
+			{
+				printWithBlue(std::format("> [Time cost: {}]", m_preciseTimer.end()));
+			}
 		}
 		static void testBegin(unsigned series,const string& name)
 		{
 			printWithYellow(std::format("\n\n{}.[{}]", series + 1, name));
 			std::cout << "________________________________________________"<<std::endl;
 		}
-		void testEnd()
+		static void testEnd()
 		{
 			std::cout << "________________________________________________" << std::endl;
 		}
@@ -127,17 +144,37 @@ namespace Tester
 			{
 				m_timer.start();
 			}
+			if (m_usePrecise)
+                m_preciseTimer.start();
 		}
-		static void testResult(test_pair& test)
+		void activePrecise()
+		{
+			if (m_usePrecise)
+			{
+				m_preciseTimer.start();
+			}
+		}
+		static void testResult(test_pair& test,size_t& success)
 		{
 			if (test.second())
 			{
 				printWithGreen(std::format("> Running [{}] is {}", test.first, "passed"));
+				++success;
 			}
 			else
 			{
 				printWithRed(std::format("> Running [{}] is {}", test.first, "failed"));
 			}
+		}
+		void printClassName()
+		{
+			string className = Tester::className(this);
+			printWithFrontRed(std::format(">>> {} <<<", className.substr(className.find_last_of("::") + 1)));
+		}
+		static void printTestResult(size_t success, size_t total)
+		{
+			printWithYellow(std::format("{} tests passed out of {}", success, total));
+			cout<< "////////////////////////////////////////////////\n\n\n" << endl;
 		}
 	public:
 		size_t size()const
@@ -151,10 +188,9 @@ namespace Tester
 		void run()
 		{
 			size_t success = 0, total = m_tests.size();
-			string className = Tester::className(this);
-			printWithFrontRed(std::format(">>> {} <<<", className.substr(className.find_last_of("::") + 1)));
+			printClassName();
 			testLoop(success, total);
-			printWithYellow(std::format("{} tests passed out of {}\n\n\n\n", success, total));
+			printTestResult(success,total);
 		}
 		virtual ~Tester() = default;
 	};

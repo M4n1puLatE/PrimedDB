@@ -68,6 +68,4 @@ namespace Tester
 		recursiveInterpret(test4, result4);
 		return true;
 	}
-	UtilTester::UtilTester()
-	{}
 }

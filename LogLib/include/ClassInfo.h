@@ -15,7 +15,7 @@
 
 namespace Log
 {
-	class ClassInfo:std::enable_shared_from_this<ClassInfo>
+	class ClassInfo
 	{
 		using string = std::string;
 		using string_view = std::string_view;
@@ -24,16 +24,15 @@ namespace Log
         static string_view GetParameterList(string_view functionSig);
         static string_view GetReturnType(string_view functionSig);
 	public:
-		ClassInfo(string_view functionSig);
 		ClassInfo(string_view functionSig, size_t lineNumber= 0);
 		ClassInfo(string_view functionSig,string_view sourceFileDirectory, size_t lineNumber=0);
-		const string_view Raw;
-		const string_view ClassName;
-		const string_view FileDirectory;
-		const string_view FunctionName;
+		const string Raw;
+		const string ClassName;
+		const string FileDirectory;
+		const string FunctionName;
 		const size_t LineNumber;
-		const string_view ParameterList;
-		const string_view ReturnType;
+		const string ParameterList;
+		const string ReturnType;
 		//返回全部信息，包括函数返回值类型，类名称，函数名称，参数列表
 		string classInfo()const;
 		//只返回关键信息，包括函数返回值类型，函数名称
