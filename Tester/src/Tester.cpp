@@ -1,16 +1,12 @@
 #include "Tester.h"
-
 #include <format>
 #include <iostream>
-
+#include <typeinfo>
 namespace Tester
 {
 	using namespace std;
-	Tester::Tester(const string& name)
-		:m_name(name),m_useTimer(false)
-	{}
-	Tester::Tester(const string& name, bool useTimer)
-		:m_name(name),m_useTimer(useTimer)
+	Tester::Tester()
+        :m_useTimer(false)
 	{}
 	void Tester::add(const string& name, test_function test)
 	{
@@ -21,31 +17,69 @@ namespace Tester
 	{
 		return m_tests.size();
 	}
+	bool Tester::isTimerEnable() const
+	{
+		return m_useTimer;
+	}
+	void Tester::enableTimer()
+	{
+		m_useTimer = true;
+	}
+	void Tester::disableTimer()
+	{
+		m_useTimer = false;
+	}
+	void Tester::testBegin(const string& name)const
+	{
+		cout << format("[{}]\n________________________________________________", name) << endl;
+	}
+	void Tester::testEnd()
+	{
+		cout << "________________________________________________\n\n" << endl;
+	}
+	void Tester::activeTimer()
+	{
+		if (m_useTimer)
+		{
+			m_timer.start();
+		}
+	}
+	void Tester::printTimeCost()
+	{
+		if (m_timer.isStarted())
+		{
+			cout << format("> [Time cost: {}]\n", m_timer.end());
+		}
+	}
+	void Tester::testResult(test_pair& test)
+	{
+		cout << format("> Running [{}] is {}\n",
+			test.first,
+			(test.second() ? "passed" : "failed"));
+	}
+	void Tester::testLoop(size_t& testNumber, size_t& total)
+	{
+		unsigned n = 0;
+		while (!m_tests.empty())
+		{
+
+			auto test = std::move(m_tests.front());
+			testBegin(test.first);
+			m_tests.pop();
+			activeTimer();
+			testResult(test);
+			printTimeCost();
+			++testNumber;
+			++n;
+			testEnd();
+		}
+	}
 	void Tester::run()
 	{
-		bool pass = false;
-		size_t testNumber = 0;
-		for (int n = 0;n<m_tests.size();++n)
-		{
-			auto& test = m_tests.front();
-			m_tests.pop();
-			if (test.second)
-			{
-				if (m_useTimer)
-				{
-					m_timer.start();
-				}
-				cout << format("Running {} is {}\n",
-					test.first,
-					(test.second()? "passed" : "failed"));
-				if (m_timer.isStarted())
-				{
-					cout << format("Time cost: {}",m_timer.end());
-				}
-				testNumber++;
-			}
-		}
-		cout<< format("{} tests passed out of {}", testNumber, m_tests.size()) << endl;
+		size_t success = 0, total = m_tests.size();
+		cout << format("> {}\n", className(this)) << endl;
+		testLoop(success, total);
+		cout<< format("{} tests passed out of {}\n", success, total) << endl;
 	}
 }
 

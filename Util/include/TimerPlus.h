@@ -6,7 +6,7 @@ namespace Util
 	template<class TimeType>
 	class TimerPlus: Timer<TimeType>
 	{ 
-		bool m_paused;
+		bool m_paused = false;
         TimeType m_pauseBegin;
 	public:
 		void pause()

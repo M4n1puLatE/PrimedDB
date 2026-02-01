@@ -1,123 +1,90 @@
 #include <ClassInfor.h>
 #include <format>
-ACTIVE_STD;
-namespace liao::Infor
+#include <sstream>
+USE_STD;
+namespace Log
 {
-	string ClassInfor::raw2FunctionName(const string& functionSig)
-	{
-		//find the first string after '::'(restricted by class) and before '(' (parameter list)
-		auto pos4DoubleColon = functionSig.find_last_of("::"),
-			pos4Space = functionSig.find_last_of(" "),
-			pos4LBracket = functionSig.find_first_of("(");
-		//if this function is no a member of some class
-		if (SubStrNotFound(pos4DoubleColon))
-			return functionSig.substr(pos4Space + 1
-				, (pos4LBracket) - (pos4Space + 1));
-		else
-			return functionSig.substr(pos4DoubleColon + 1
-				, (pos4LBracket) - (pos4DoubleColon + 1));
-	}
-	string ClassInfor::raw2ClassName(const string& functionSig)
-	{
-		auto pos4Space = functionSig.find_last_of(" "),
-			pos4DoubleColon = functionSig.find_last_of("::");
-		//if name of class was not found.
-		if (SubStrNotFound(pos4Space)
-			|| SubStrNotFound(pos4DoubleColon))
-			return "";
-		else
-		{
-			string tempStr = functionSig.substr(pos4Space + 1,pos4DoubleColon - pos4Space - 2);
-			pos4DoubleColon = tempStr.find_last_of("::");
-			if (!SubStrNotFound(pos4DoubleColon))
-				tempStr = tempStr.substr(pos4DoubleColon+1);
-			return tempStr;
-		}
-			
-	}
-	string ClassInfor::raw2ParameterList(const string& functionSig)
-	{
-		auto pos4LBracket = functionSig.find_first_of("("),
-			pos4RBracket = functionSig.find_last_of(")");
-		//if no () pair was found, then return a empty string back to constructor
-		if (SubStrNotFound(pos4LBracket) || SubStrNotFound(pos4RBracket))
-			return "";
-		else
-			return functionSig.substr(pos4LBracket+1
-				, pos4RBracket - pos4LBracket-1);
-	}
-	string ClassInfor::raw2ReturnType(const string& functionSig) 
-	{
-		auto pos4Space = functionSig.find_first_of(" ");
-		if (SubStrNotFound(pos4Space))
-			return "";
-		else
-			return functionSig.substr(0
-				, pos4Space);
-	}
-	string ClassInfor::combineToComplete()const
-	{
-		string cache;
-		if (!ClassName.empty())
-			cache += "{" + ClassName + "} ";
-		if (!FunctionName.empty())
-			cache += "[" + FunctionName + "] ";
-		if(!ParameterList.empty())
-			cache += "(" + ParameterList + ") ";
-		if(LineNumber != -1)
-			cache +="at line " + to_string(LineNumber)+" ";
-		if(!FileDirectory.empty())
-			cache += "in " + FileDirectory+" ";
-		return cache;
-		//{className} [functionName] (parameterList) at line * in D://
-	}
-	ClassInfor::ClassInfor(const std::string& functionSig, const std::string& fileDirectory, long long lineNumber)
-		:ReturnType(raw2ReturnType(functionSig)),
-		ParameterList(raw2ParameterList(functionSig)),
-		FunctionName(raw2FunctionName(functionSig)),
-		ClassName(raw2ClassName(functionSig)),
-		LineNumber(lineNumber),
-		FileDirectory(fileDirectory)
-	{}
-	ClassInfor::ClassInfor(ClassInfor&& infor)noexcept
-        :ReturnType(std::move(infor.ReturnType)),
-		ParameterList(std::move(infor.ParameterList)),
-		FunctionName(std::move(infor.FunctionName)),
-		ClassName(std::move(infor.ClassName)),
-		LineNumber(std::move(infor.LineNumber)),
-		FileDirectory(std::move(infor.FileDirectory))
-	{}
-	ClassInfor& ClassInfor::operator=(ClassInfor& infor)
-	{
-		ReturnType = infor.ReturnType,
-			ParameterList = infor.ParameterList,
-			FunctionName = infor.FunctionName,
-			ClassName = infor.ClassName,
-			LineNumber = infor.LineNumber,
-			FileDirectory = infor.FileDirectory;
-		return *this;
-	}
-	void ClassInfor::init(const std::string& functionsig, const std::string& fileDirectory, long long lineNumber)
-	{
-		ReturnType = raw2ReturnType(functionsig),
-			ParameterList = raw2ParameterList(functionsig),
-			FunctionName = raw2FunctionName(functionsig),
-			ClassName = raw2ClassName(functionsig),
-			LineNumber = lineNumber,
-			FileDirectory = fileDirectory;
-	}
-	const string& ClassInfor::CompleteInfor()
-	{
-		if(complete.empty())
-			complete = combineToComplete();
-		return complete;
-	}
-	ClassInfor::operator string()
-	{
-		return this->CompleteInfor();
-	}
-	bool ClassInfor::SubStrNotFound(size_t pos)
-	{
-		return pos == string::npos;
-	}
+    string_view ClassInfo::GetClassName(string_view functionSig)
+    {
+        auto end = functionSig.find_last_of("::");
+        //证明当前函数是类成员函数或者在命名空间中
+        if (end != string::npos)
+        {
+            auto substr = functionSig.substr(0, end);
+            auto begin = substr.find_last_of(' ');
+            return substr.substr(begin + 1);
+        }
+        return "";
+    }
+    string_view ClassInfo::GetFunctionName(string_view functionSig)
+    {
+        auto begin = functionSig.find_last_of("::");
+        if (begin != string::npos)
+        {
+            auto substr = functionSig.substr(begin + 1);
+            auto end = substr.find_first_of('(');
+            return substr.substr(0, end);
+        }
+        return "";
+    }
+    string_view ClassInfo::GetParameterList(string_view functionSig)
+    {
+        auto begin = functionSig.find_first_of('(');
+        auto end = functionSig.find_last_of(')');
+        if (begin != string::npos && end != string::npos)
+        {
+            return functionSig.substr(begin + 1, end - begin - 1);
+        }
+        return "";
+    }
+    string_view ClassInfo::GetReturnType(string_view functionSig)
+    {
+        auto end = functionSig.find_first_of(' ');
+        return functionSig.substr(0, end);
+    }
+    ClassInfo::ClassInfo(string_view functionSig)
+        : ClassInfo(functionSig, "", 0)
+    {
+        
+    }
+    ClassInfo::ClassInfo(string_view functionSig, size_t lineNumber)
+        : ClassInfo(functionSig, "", lineNumber)
+    {
+        
+    }
+    ClassInfo::ClassInfo(string_view functionSig, string_view sourceFileDirectory, size_t lineNumber)
+        : ClassName(GetClassName(functionSig)),
+          FileDirectory(sourceFileDirectory),
+          FunctionName(GetFunctionName(functionSig)),
+          LineNumber(lineNumber),
+          ParameterList(GetParameterList(functionSig)),
+          ReturnType(GetReturnType(functionSig))
+    {
+        
+    }
+    string ClassInfo::classInfo()const
+    {
+        stringstream ss;
+        ss << ReturnType << " " << ClassName << "::" << FunctionName << "(" << ParameterList << ")";
+        return ss.str();
+    }
+    //只返回关键信息，包括函数返回值类型，函数名称
+    string ClassInfo::functionInfo()const
+    {
+        stringstream ss;
+        ss << ReturnType << " " << FunctionName << "(" << ParameterList << ")";
+        return ss.str();
+    }
+    //返回全部信息，包括函数返回值类型，类名称，函数名称，参数列表
+    string ClassInfo::complete()const
+    {
+        stringstream ss;
+        ss << ReturnType << " " 
+        << ClassName << "::" 
+        << FunctionName << "(" 
+        << ParameterList << ")"
+        << " in "<<FileDirectory
+        << " at line " << LineNumber;
+        return ss.str();
+    }
 }
