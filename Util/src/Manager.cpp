@@ -13,10 +13,10 @@ namespace Util
 			customService();
 		}
 	}
-	Manager::Manager()
+	Manager::Manager(const std::function<void()>& customService, const std::function<bool()>& condition)
 		:m_terminate(false)
 	{
-		m_service = std::thread(service);
+		m_service = std::thread(&Manager::service,this,customService,condition);
 	}
 	void Manager::notify()
 	{

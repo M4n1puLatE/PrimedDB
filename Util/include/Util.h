@@ -5,7 +5,7 @@ namespace Util
 {
 	class Util
 	{
-		using indexes = std::vector<int>;
+		using indexes = std::vector<size_t>;
 		using string = std::string;
 		using substring = std::vector<string>;
 	public:
@@ -39,4 +39,5 @@ namespace Util
 		// position:子串索引
 		static std::string InterpretString(const string& str,const indexes& , size_t);
 	};
+	static const auto FalseFunction = []() {return false; };
 }

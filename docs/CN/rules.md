@@ -34,9 +34,9 @@ void shortFunc();
 const int CONST_INT;
 ```
 
-`static`修饰的变量会在变量前增加`s`，函数会变成与类命名方式相似的命名
+`static`修饰的变量/函数会变成与类命名方式相似的命名
 ```cpp
-static int sintVariable;
+static int IntVariable;
 
 static void StaticFunction();
 ```

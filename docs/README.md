@@ -24,6 +24,7 @@
 ## 文档目录
 ### 设计文档
 - [代码规范与约定](/cn/rules.md)
-- [理论基础](/rules/theorems.md)
+- [理论基础](/cn/theorems.md)
 
 ### 功能文档
+- [单元测试类-Tester](cn/Tester.md)

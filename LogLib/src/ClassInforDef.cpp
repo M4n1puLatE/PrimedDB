@@ -1,7 +1,7 @@
 #include <ClassInfor.h>
 #include <format>
 #include <sstream>
-ACTIVE_STD;
+USE_STD;
 namespace Log
 {
     string_view ClassInfo::GetClassName(string_view functionSig)

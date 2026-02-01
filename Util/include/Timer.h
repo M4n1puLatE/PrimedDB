@@ -19,11 +19,11 @@ namespace Util {
 			:m_begin(0)
 		{}
 		Timer(TimeType begin)
-			:m_begin(begin),m_started(true)
+			:m_begin(begin)
 		{}
 		bool isStarted() const
 		{
-			return m_begin != 0;
+			return m_begin != TimeType(0);
 		}
 		void start()
 		{
@@ -31,7 +31,7 @@ namespace Util {
 		}
 		void reset()
 		{
-			m_begin = 0;
+			m_begin = TimeType(0);
 		}
 		TimeType end()
 		{

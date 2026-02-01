@@ -1,3 +1,4 @@
+#pragma once
 #include <future>
 #include <thread>
 #include <condition_variable>
@@ -23,7 +24,7 @@ namespace Util
 		void service(const std::function<void()>& customService, const std::function<bool()>& condition);
 		void notify();
 	public:
-		Manager();
+		Manager(const std::function<void()>& customService, const std::function<bool()>& condition);
 		bool isTerminate();
 		~Manager();
 	};

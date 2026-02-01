@@ -4,7 +4,7 @@
 #include<filesystem>
 #include<fstream>
 #include <memory>
-#define ACTIVE_STD using namespace std
+#define USE_STD using namespace std
 #define THIS_LINE __LINE__
 #define THIS_FILE __FILE__
 #ifdef _WIN32
