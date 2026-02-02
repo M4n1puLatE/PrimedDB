@@ -8,6 +8,19 @@ namespace Tester
 
 		void init();
 
+		bool testGetString();
+		bool testGetTimeNumber();
+		bool testReset();
+		bool testClear();
+		bool testIsEmpty();
+		bool testCompare();
+		bool testIsEarlier();
+		bool testIsLater();
+		bool testGet();
+		bool testGetDate();
+		bool testDistance();
+		bool testAddMinus();
+
 	public:
 		TimeStampTester();
 	};

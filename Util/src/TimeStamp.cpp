@@ -12,9 +12,9 @@ namespace Util
     }
     TimeStamp TimeStamp::Now()
     {
-        return TimeStamp(SystemTime());
+        return SystemTime();
     }
-    void TimeStamp::setTime(TimePoint& time)
+    void TimeStamp::setTime(const TimePoint& time)
     {
         write_lock lock(m_mutex);
         m_timestamp = time;
@@ -29,35 +29,35 @@ namespace Util
     {
         initializeString();
         write_lock lock(m_mutex);
-        m_literal = format("{:%Y-%m-%d %H:%M:%S}", time);
+        m_literal = std::format("{:%Y-%m-%d %H:%M:%S}", time);
     }
-    std::string TimeStamp::toYear(std::string& date)
+    std::string TimeStamp::toYear(const std::string& date)
     {
-        return date.substr(0, date.find("-"));
+        return date.substr(0, date.find('-'));
     }
-    std::string TimeStamp::toMonth(std::string& date)
+    std::string TimeStamp::toMonth(const std::string& date)
     {
-        return date.substr(date.find("-") + 1, date.find_last_of("-") - date.find("-") - 1);
+        return date.substr(date.find('-') + 1, date.find_last_of('-') - date.find('-') - 1);
     }
-    std::string TimeStamp::toDay(std::string& date)
+    std::string TimeStamp::toDay(const std::string& date)
     {
-        return date.substr(date.find_last_of("-") + 1);
+        return date.substr(date.find_last_of('-') + 1);
     }
-    std::string TimeStamp::toHour(std::string& time)
+    std::string TimeStamp::toHour(const std::string& time)
     {
-        return time.substr(0, time.find(":"));
+        return time.substr(0, time.find(':'));
     }
-    std::string TimeStamp::toMinute(std::string& time)
+    std::string TimeStamp::toMinute(const std::string& time)
     {
-        return time.substr(time.find(":") + 1, time.find_last_of(":") - time.find(":") - 1);
+        return time.substr(time.find(':') + 1, time.find_last_of(':') - time.find(':') - 1);
     }
-    std::string TimeStamp::toSecond(std::string& time)
+    std::string TimeStamp::toSecond(const std::string& time)
     {
-        return time.substr(time.find_last_of(":") + 1);
+        return time.substr(time.find_last_of(':') + 1);
     }
     std::string TimeStamp::getDate() const
     {
-        return m_literal.substr(0, m_literal.find(" "));
+        return m_literal.substr(0, m_literal.find(' '));
     }
     std::string TimeStamp::get(TimeType type)const
     {
@@ -65,7 +65,7 @@ namespace Util
             return m_literal;
         if (type < TimeType::Hour)
         {
-            string date = m_literal.substr(0, m_literal.find(" "));
+            string date = m_literal.substr(0, m_literal.find(' '));
             if (type == TimeType::Year)
             {
                 return toYear(date);
@@ -81,7 +81,7 @@ namespace Util
         }
         else
         {
-            string time = m_literal.substr(m_literal.find(" ") + 1, m_literal.size() - m_literal.find(" "));
+            string time = m_literal.substr(m_literal.find(' ') + 1, m_literal.size() - m_literal.find(' '));
             if (type == TimeType::Hour)
             {
                 return toHour(time);
@@ -128,11 +128,7 @@ namespace Util
         read_lock lock(m_mutex);
         return m_literal;
     }
-    std::string&& TimeStamp::moveString()
-    {
-        write_lock lock(m_mutex);
-        return std::move(m_literal);
-    }
+
     long long TimeStamp::getTimestamp() const
     {
         read_lock lock(m_mutex);
@@ -140,10 +136,15 @@ namespace Util
             m_timestamp.time_since_epoch()
         ).count();
     }
-    void TimeStamp::reset(TimePoint& now)
+    void TimeStamp::reset(const TimePoint& now)
     {
         setTime(now);
         convertToString(now);
+    }
+    void TimeStamp::reset(TimeStamp& move)
+    {
+        this->m_literal = std::move(move.m_literal);
+        this->m_timestamp = move.m_timestamp;
     }
     void TimeStamp::clear()
     {
@@ -187,5 +188,9 @@ namespace Util
         m_literal = std::move(move.m_literal);
         m_timestamp = move.m_timestamp;
         return *this;
+    }
+    const std::string& TimeStamp::format()
+    {
+        return getString();
     }
 }

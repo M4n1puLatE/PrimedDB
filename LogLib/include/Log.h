@@ -1,5 +1,5 @@
 #pragma once
-
+#include <TimeStamp.h>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -18,31 +18,42 @@ namespace Log
 	enum class LogType
 	{
 		None,
-        Error,
+		Info,
+		Debug,
         Warn,
-        Info,
-        Debug,
+		Error,
 		Fatal
 	};
+	class Log;
+	static void endl(Log& obj);
 	class Log
 	{
 		using string = std::string;
+
+
 		std::stringstream m_messageStream;
-		std::string_view m_fileName;
 		LogType m_logType = LogType::None;
-		std::atomic_bool m_terminated = false;
-		std::atomic_bool m_print = false;
-		std::string_view get();
-		void terminalBehaviour();
+		string m_fileName;
+		bool m_useTimeStamp = false;
+
+		const std::string& getFileName() const;
+		const std::string& getMessage()const;
+		std::string getLabel() const;
 	public:
 		static const char* GetLogTypeName(LogType logType);
-		bool isTerminated() const;
-		void ToFile(const string& fileName);
-		Log& useTimeStamp(bool value);
-		Log& printAnd();
-		void print();
-		void clear();
+		bool isTerminated();
+		bool isUseTimeStamp() const;
+		bool isWriteToFile() const;
+
+		Log& Log::ToFile(string& fileName);
+        Log& Log::useTimeStamp();
+		friend void endl(Log&);
 		void end();
+		void clear();
+		bool empty();
+		Log& trigger(const string& error);
+
+
 		Log& add(const std::string& text);
 		Log& addNumber(size_t number);
 		Log& addDouble(double number);
@@ -61,6 +72,8 @@ namespace Log
 			m_messageStream << instance.format();
 			return *this;
 		}
+
+		void operator<<(void (*func)(Log*));
 	};
 }
 
