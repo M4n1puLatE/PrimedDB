@@ -2,18 +2,18 @@
 #include <fstream>
 namespace Log
 {
-	const char* Log::GetLogTypeName(LogType logType)
+	std::string Log::GetLogTypeName(LogType logType)
 	{
 		if (logType == LogType::Debug)
-            return "[Debug]";
+            return " [Debug]";
         if (logType == LogType::Error)
-            return "[Error]";
+            return " [Error]";
         if (logType == LogType::Fatal)
-            return "[Fatal]";
+            return " [Fatal]";
         if (logType == LogType::Info)
-            return "[Info]";
+            return " [Info]";
         if (logType == LogType::Warn)
-            return "[Warn]";
+            return " [Warn]";
 
 
 		return "";
@@ -22,20 +22,11 @@ namespace Log
 	{
 		return m_messageStream.peek() == std::stringstream::traits_type::eof();
 	}
-	bool Log::isUseTimeStamp() const
-	{
-		return m_useTimeStamp;
-	}
 
 	Log& Log::ToFile(string& fileName)
 	{
 		m_fileName = std::move(fileName);
         return *this;
-	}
-	Log& Log::useTimeStamp()
-	{
-		m_useTimeStamp = true;
-		return *this;
 	}
 	bool Log::isWriteToFile() const
 	{
@@ -47,7 +38,6 @@ namespace Log
 		m_messageStream.clear();
 		m_fileName.clear();
         m_logType = LogType::None;
-		m_useTimeStamp = false;
 	}
 	bool Log::empty()
 	{
@@ -80,25 +70,33 @@ namespace Log
 	{
 		return addDouble(number);
 	}
-	void Log::operator<<(void(*func)(Log*))
+	std::string Log::getLabel() const
 	{
-		func(this);
+		return GetLogTypeName(m_logType);
+	}
+	//提交到LogManger统一处理打印。
+	void Log::writeTask(std::string&& message)
+	{
+		;
+	}
+	//通知LogManager打印完成，当达到一定数量时清空缓存。
+	void Log::printFinished()
+	{
+		;
 	}
 	void Log::end()
 	{
 		std::string print = m_messageStream.str();
-		print = getLabel() + print;
+		auto label = std::move(getLabel());
 		bool isError = m_logType >= LogType::Error;
-		if (isUseTimeStamp()|| isError)
-		{
-			Util::TimeStamp time = Util::TimeStamp::Now();
-			print = time.getString() + " - " + print;
-		}
 
+		Util::TimeStamp time = Util::TimeStamp::Now();
+		print = std::format("{}{}: {}", time.getString(),label,print);
+		std::cout<<print<<"\n";
+		printFinished();
 		if (isWriteToFile())
 		{
-			std::ofstream file(m_fileName);
-			file << print << std::endl;
+			writeTask(std::move(print));
 		}
 		else if (isError)
 		{
@@ -112,7 +110,11 @@ namespace Log
 		//Trigger error manager with a specific error.
 		return *this;
 	}
-	void endl(Log& obj)
+	void Log::operator<<(void (*func)(Log&))
+	{
+		func(*this);
+	}
+	void Log::endl(Log& obj)
 	{
 		obj.end();
 	}

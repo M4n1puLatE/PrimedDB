@@ -25,7 +25,7 @@ namespace Log
 		Fatal
 	};
 	class Log;
-	static void endl(Log& obj);
+
 	class Log
 	{
 		using string = std::string;
@@ -34,25 +34,25 @@ namespace Log
 		std::stringstream m_messageStream;
 		LogType m_logType = LogType::None;
 		string m_fileName;
-		bool m_useTimeStamp = false;
 
 		const std::string& getFileName() const;
 		const std::string& getMessage()const;
 		std::string getLabel() const;
+		void writeTask(string&& message);
+		void printFinished();
 	public:
-		static const char* GetLogTypeName(LogType logType);
+		static string GetLogTypeName(LogType logType);
 		bool isTerminated();
-		bool isUseTimeStamp() const;
 		bool isWriteToFile() const;
 
 		Log& Log::ToFile(string& fileName);
-        Log& Log::useTimeStamp();
 		friend void endl(Log&);
 		void end();
 		void clear();
 		bool empty();
 		Log& trigger(const string& error);
 
+		
 
 		Log& add(const std::string& text);
 		Log& addNumber(size_t number);
@@ -73,7 +73,8 @@ namespace Log
 			return *this;
 		}
 
-		void operator<<(void (*func)(Log*));
+		void operator<<(void (*func)(Log&)); 
+		static void endl(Log& obj);
 	};
 }
 
