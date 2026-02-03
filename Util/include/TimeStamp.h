@@ -52,7 +52,7 @@ namespace Util {
         TimeStamp(const TimeStamp& obj);
         TimeStamp(TimeStamp&& obj) noexcept;
         TimeStamp(long long);
-        const std::string& getString();
+        const std::string& get();
 
         long long getTimestamp() const;
         void reset(const TimePoint& now);
@@ -77,8 +77,10 @@ namespace Util {
         DYNAMICCON(Concept_TimeTypes)
             void minus(T timeTypes)
         {
-            write_lock lock(m_mutex);
-            m_timestamp -= timeTypes;
+            {
+                write_lock lock(m_mutex);
+                m_timestamp -= timeTypes;
+            }
             reset(m_timestamp);
         }
         static TimeStamp Now();

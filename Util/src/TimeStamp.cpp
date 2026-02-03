@@ -119,7 +119,7 @@ namespace Util
     {
         reset(m_timestamp);
     }
-    const std::string& TimeStamp::getString()
+    const std::string& TimeStamp::get()
     {
         if (m_literal.empty())
         {
@@ -132,7 +132,7 @@ namespace Util
     long long TimeStamp::getTimestamp() const
     {
         read_lock lock(m_mutex);
-        return std::chrono::duration_cast<std::chrono::seconds>(
+        return std::chrono::duration_cast<std::chrono::milliseconds>(
             m_timestamp.time_since_epoch()
         ).count();
     }
@@ -159,7 +159,7 @@ namespace Util
     }
     bool TimeStamp::compare(const TimeStamp& obj) const
     {
-        return distance(obj) == 0;
+        return distance(obj) == 0 || distance(obj)<5;
     }
     bool TimeStamp::isEarlier(const TimeStamp& obj) const
     {
@@ -171,11 +171,11 @@ namespace Util
     }
     long long TimeStamp::distance(const TimeStamp& obj) const
     {
-        chrono::duration<long long> duration;
+        chrono::milliseconds duration;
         {
             read_lock lock(m_mutex);
-            auto interval = m_timestamp - obj.m_timestamp;
-            duration = duration_cast<chrono::seconds>(interval);
+            auto interval = m_timestamp.time_since_epoch() - obj.m_timestamp.time_since_epoch();
+             duration = duration_cast<chrono::milliseconds>(interval);
         }
         return duration.count();
     }
@@ -191,6 +191,6 @@ namespace Util
     }
     const std::string& TimeStamp::format()
     {
-        return getString();
+        return get();
     }
 }

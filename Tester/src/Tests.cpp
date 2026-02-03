@@ -6,4 +6,6 @@ int main()
 	utilTest.run();
 	ClassInfoTester classInfoTest;
     classInfoTest.run();
+    TimeStampTester timeStampTest;
+    timeStampTest.run();
 }

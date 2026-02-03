@@ -45,7 +45,7 @@ namespace Log
 		bool isTerminated();
 		bool isWriteToFile() const;
 
-		Log& Log::ToFile(string& fileName);
+		Log& toFile(string& fileName);
 		friend void endl(Log&);
 		void end();
 		void clear();

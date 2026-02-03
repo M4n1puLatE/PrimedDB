@@ -12,10 +12,8 @@ namespace Log
             return " [Fatal]";
         if (logType == LogType::Info)
             return " [Info]";
-        if (logType == LogType::Warn)
-            return " [Warn]";
-
-
+		if (logType == LogType::Warn)
+			return " [Warn]";
 		return "";
 	}
 	bool Log::isTerminated()
@@ -23,7 +21,7 @@ namespace Log
 		return m_messageStream.peek() == std::stringstream::traits_type::eof();
 	}
 
-	Log& Log::ToFile(string& fileName)
+	Log& Log::toFile(string& fileName)
 	{
 		m_fileName = std::move(fileName);
         return *this;
@@ -41,7 +39,7 @@ namespace Log
 	}
 	bool Log::empty()
 	{
-		return m_messageStream.peek() == m_messageStream.eof();
+		return m_messageStream.peek() == -1;
 	}
 	Log& Log::add(const std::string& text)
 	{
@@ -91,7 +89,7 @@ namespace Log
 		bool isError = m_logType >= LogType::Error;
 
 		Util::TimeStamp time = Util::TimeStamp::Now();
-		print = std::format("{}{}: {}", time.getString(),label,print);
+		print = std::format("{}{}: {}", time.get(),label,print);
 		std::cout<<print<<"\n";
 		printFinished();
 		if (isWriteToFile())
