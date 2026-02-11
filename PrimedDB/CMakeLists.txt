@@ -20,4 +20,5 @@ target_link_libraries(PrimedDB
     PRIVATE
         LogLib
         Util
+        ErrorHandler
 )

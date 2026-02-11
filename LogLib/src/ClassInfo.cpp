@@ -1,5 +1,6 @@
-#include <ClassInfor.h>
+#include <ClassInfo.h>
 #include <format>
+#include <iostream>
 #include <sstream>
 USE_STD;
 namespace Log
@@ -10,7 +11,7 @@ namespace Log
         //证明当前函数是类成员函数或者在命名空间中
         if (end != string::npos)
         {
-            auto substr = functionSig.substr(0, end);
+            auto substr = functionSig.substr(0, end-1);
             auto begin = substr.find_last_of(' ');
             return substr.substr(begin + 1);
         }
@@ -33,32 +34,36 @@ namespace Log
         auto end = functionSig.find_last_of(')');
         if (begin != string::npos && end != string::npos)
         {
-            return functionSig.substr(begin + 1, end - begin - 1);
+            return functionSig.substr(begin , end - begin+1);
         }
         return "";
     }
     string_view ClassInfo::GetReturnType(string_view functionSig)
     {
         auto end = functionSig.find_first_of(' ');
-        return functionSig.substr(0, end);
+        if (end != string::npos)
+            return functionSig.substr(0, end);
+        return "";
     }
-    ClassInfo::ClassInfo(string_view functionSig)
-        : ClassInfo(functionSig, "", 0)
-    {
-        
-    }
+    ClassInfo::ClassInfo()
+        :Raw(),ClassName(),FileDirectory(),FunctionName(),LineNumber(0),ParameterList(),ReturnType()
+    {}
     ClassInfo::ClassInfo(string_view functionSig, size_t lineNumber)
         : ClassInfo(functionSig, "", lineNumber)
     {
-        
     }
     ClassInfo::ClassInfo(string_view functionSig, string_view sourceFileDirectory, size_t lineNumber)
-        : ClassName(GetClassName(functionSig)),
+        : Raw(functionSig),
+    ClassName(GetClassName(functionSig)),
           FileDirectory(sourceFileDirectory),
           FunctionName(GetFunctionName(functionSig)),
           LineNumber(lineNumber),
           ParameterList(GetParameterList(functionSig)),
           ReturnType(GetReturnType(functionSig))
+    {
+    }
+    ClassInfo::ClassInfo(const ClassInfo& object)
+        :Raw(object.Raw),ClassName(object.ClassName),FileDirectory(object.FileDirectory),FunctionName(object.FunctionName),LineNumber(object.LineNumber),ParameterList(object.ParameterList),ReturnType(object.ReturnType)
     {
         
     }

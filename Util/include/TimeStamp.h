@@ -36,15 +36,15 @@ namespace Util {
         TimePoint m_timestamp;
         mutable shared_mutex m_mutex;
 
-        void setTime(TimePoint& time);
+        void setTime(const TimePoint& time);
         void convertToString(const TimePoint& time);
         void initializeString();
-        static std::string toYear(std::string& date);
-        static std::string toMonth(std::string& date);
-        static std::string toDay(std::string& date);
-        static std::string toHour(std::string& time);
-        static std::string toMinute(std::string& time);
-        static std::string toSecond(std::string& time);
+        static std::string toYear(const std::string& date);
+        static std::string toMonth(const std::string& date);
+        static std::string toDay(const std::string& date);
+        static std::string toHour(const std::string& time);
+        static std::string toMinute(const std::string& time);
+        static std::string toSecond(const std::string& time);
 
     public:
         TimeStamp();
@@ -52,10 +52,11 @@ namespace Util {
         TimeStamp(const TimeStamp& obj);
         TimeStamp(TimeStamp&& obj) noexcept;
         TimeStamp(long long);
-        const std::string& getString();
-        std::string&& moveString();
+        const std::string& get();
+
         long long getTimestamp() const;
-        void reset(TimePoint& now);
+        void reset(const TimePoint& now);
+        void reset(TimeStamp&);
         void clear();
         bool isEmpty() const;
         bool compare(const TimeStamp& obj) const;
@@ -76,13 +77,16 @@ namespace Util {
         DYNAMICCON(Concept_TimeTypes)
             void minus(T timeTypes)
         {
-            write_lock lock(m_mutex);
-            m_timestamp -= timeTypes;
+            {
+                write_lock lock(m_mutex);
+                m_timestamp -= timeTypes;
+            }
             reset(m_timestamp);
         }
         static TimeStamp Now();
         operator std::string() const;
         static TimePoint SystemTime();
+        const std::string& format();
         TimeStamp& operator=(TimeStamp&&);
         ~TimeStamp() = default;
     };

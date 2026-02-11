@@ -12,5 +12,5 @@ namespace Util
 	using mutex = std::mutex;
 	using read_lock = std::shared_lock<shared_mutex>;
 	using write_lock = std::unique_lock<shared_mutex>;
-	using unique_lock = std::lock_guard<std::mutex>;
+	using unique_lock = std::unique_lock<mutex>;
 }

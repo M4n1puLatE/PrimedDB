@@ -4,10 +4,14 @@ namespace Util
 {
 	void Manager::service(const std::function<void()>& customService,const std::function<bool()>& condition)
 	{
-		m_conditionLock = std::unique_lock<std::mutex>(m_conditionMutex);
+		unique_lock conditionLock = unique_lock(m_conditionMutex);
 		while (true)
 		{
-			m_threadNotifier.wait(m_conditionLock,condition);
+			m_threadNotifier.wait(conditionLock, [this,condition]()
+				{
+					return condition() || m_terminate;
+				}
+			);
 			if (m_terminate)
 				break;
 			customService();
@@ -26,8 +30,21 @@ namespace Util
 	{
 		return m_terminate;
 	}
+	void Manager::terminate()
+	{
+		m_terminate = true;
+		notify();
+		join();
+	}
+
+	void Manager::join()
+	{
+		if (m_service.joinable())
+			m_service.join();
+	}
+
 	Manager::~Manager()
 	{
-		m_service.join();
+		terminate();
 	}
 }

@@ -18,6 +18,6 @@ namespace Tester
 		bool testInterpretString()const;
 
 	public:
-		UtilTester();
+		UtilTester()=default;
 	};
 }
