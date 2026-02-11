@@ -24,8 +24,10 @@ namespace Log
         static string_view GetParameterList(string_view functionSig);
         static string_view GetReturnType(string_view functionSig);
 	public:
+		ClassInfo();
 		ClassInfo(string_view functionSig, size_t lineNumber= 0);
 		ClassInfo(string_view functionSig,string_view sourceFileDirectory, size_t lineNumber=0);
+		ClassInfo(const ClassInfo&);
 		const string Raw;
 		const string ClassName;
 		const string FileDirectory;

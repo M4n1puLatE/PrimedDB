@@ -1,17 +1,13 @@
 #pragma once
 #include <TimeStamp.h>
 #include <string>
-#include <iostream>
 #include <sstream>
-#include <format>
 #include <future>
-#include <queue>
-#include <shared_mutex>
 
 namespace Log
 {
 	template <typename T>
-	concept FormatType = requires(T instance)
+	concept FormatType = requires(const T& instance)
 	{
 		instance.format();
 	};
@@ -24,7 +20,6 @@ namespace Log
 		Error,
 		Fatal
 	};
-	class Log;
 
 	class Log
 	{
@@ -36,20 +31,22 @@ namespace Log
 		string m_fileName;
 
 		const std::string& getFileName() const;
-		const std::string& getMessage()const;
+		std::string getMessage()const;
 		std::string getLabel() const;
-		void writeTask(string&& message);
-		void printFinished();
+		void writeTask(string& message) const;
+		static void printMessage(const string& message);
+		void initialize();
 	public:
 		static string GetLogTypeName(LogType logType);
 		bool isTerminated();
 		bool isWriteToFile() const;
+		Log& type(LogType logType);
 
-		Log& toFile(string& fileName);
+		Log& toFile(string&& fileName);
 		friend void endl(Log&);
 		void end();
 		void clear();
-		bool empty();
+		bool isEmpty();
 		Log& trigger(const string& error);
 
 		
@@ -63,6 +60,8 @@ namespace Log
 			m_messageStream <<instance.format();
 			return *this;
 		}
+		Log& operator[](LogType logType);
+		Log& operator()(string&& fileName);
 		Log& operator<<(const string& text);
         Log& operator<<(size_t number);
         Log& operator<<(double number);
@@ -76,5 +75,6 @@ namespace Log
 		void operator<<(void (*func)(Log&)); 
 		static void endl(Log& obj);
 	};
+	static Log log;
 }
 

@@ -15,7 +15,7 @@ project(PrimedDB LANGUAGES CXX)
 
 # add_subdirectory(Command)
 # add_subdirectory(Compiler)
-# add_subdirectory(ErrorHandler)
+add_subdirectory(ErrorHandler)
 
 # add_subdirectory(Network)
 # add_subdirectory(StorageUnit)

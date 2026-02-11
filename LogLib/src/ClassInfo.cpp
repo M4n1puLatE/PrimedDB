@@ -45,6 +45,9 @@ namespace Log
             return functionSig.substr(0, end);
         return "";
     }
+    ClassInfo::ClassInfo()
+        :Raw(),ClassName(),FileDirectory(),FunctionName(),LineNumber(0),ParameterList(),ReturnType()
+    {}
     ClassInfo::ClassInfo(string_view functionSig, size_t lineNumber)
         : ClassInfo(functionSig, "", lineNumber)
     {
@@ -58,6 +61,11 @@ namespace Log
           ParameterList(GetParameterList(functionSig)),
           ReturnType(GetReturnType(functionSig))
     {
+    }
+    ClassInfo::ClassInfo(const ClassInfo& object)
+        :Raw(object.Raw),ClassName(object.ClassName),FileDirectory(object.FileDirectory),FunctionName(object.FunctionName),LineNumber(object.LineNumber),ParameterList(object.ParameterList),ReturnType(object.ReturnType)
+    {
+        
     }
     string ClassInfo::classInfo()const
     {

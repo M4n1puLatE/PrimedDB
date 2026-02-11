@@ -12,6 +12,7 @@ namespace Tester
 {
 #define TEST_FUNCTION(function) [this](){return function();}
 #define THIS_IS_A_TEST(Self) friend class Tester<Self>
+#define A_TEST friend class Tester
 	using std::cout;
 	using std::endl;
 	//用于进行单元测试
