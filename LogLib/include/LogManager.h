@@ -13,7 +13,7 @@ namespace Log
 		std::queue<std::pair<std::string, std::string>> m_writeQueue;
 		std::atomic_uint8_t m_printCount;
 		std::shared_mutex m_queueMutex;
-
+		std::mutex m_printProtect;
 		void clear();
 		LogManager();
 		void writeTask();

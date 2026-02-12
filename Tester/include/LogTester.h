@@ -5,7 +5,7 @@ namespace Tester
 {
 	class LogTester : public Tester<LogTester>
 	{ 
-		THIS_IS_A_TEST(LogTester);
+		A_TEST;
 		void init();
 		bool testAdd();
 		bool testAddNumber();

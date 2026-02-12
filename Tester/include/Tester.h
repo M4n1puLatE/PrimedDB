@@ -179,7 +179,9 @@ namespace Tester
 		void printClassName()
 		{
 			string className = Tester::className(this);
-			printWithFrontRed(std::format(">>> {} <<<", className.substr(className.find_last_of("::") + 1)));
+			auto pos = className.find_last_of("::") + 1;
+			auto len = className.size() - pos-1;
+			printWithFrontRed(std::format(">>> {} <<<", className.substr(pos,len)));
 		}
 		static void printTestResult(size_t success, size_t total)
 		{

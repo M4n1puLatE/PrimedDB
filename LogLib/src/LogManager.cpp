@@ -16,9 +16,10 @@ namespace Log
 		{
 			std::cout << "\n";
 		}
+		++m_printCount;
 	}
 	LogManager::LogManager()
-		:Manager(std::bind(&LogManager::writeTask,this), std::bind(&LogManager::condition,this))
+		:Manager(std::bind(&LogManager::writeTask,this), std::bind(&LogManager::condition,this)),m_printCount(0)
 	{}
 	void LogManager::writeTask()
 	{
@@ -38,6 +39,7 @@ namespace Log
 	}
 	void LogManager::print(const std::string& message)
 	{
+		Util::unique_lock lock(m_printProtect);
         std::cout << message;
 		clear();
 	}
