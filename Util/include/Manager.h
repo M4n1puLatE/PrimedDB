@@ -9,8 +9,9 @@ namespace Util
 		mutex m_conditionMutex;
 		std::condition_variable m_threadNotifier;
 		std::atomic_bool m_terminate;	
-	protected:
 		void service(const std::function<void()>& customService, const std::function<bool()>& condition);
+	protected:
+
 		void notify();
 		void terminate();
 		void join();

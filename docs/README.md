@@ -57,5 +57,7 @@
 	- [单元测试类-Tester](CN/doc/Tester/Tester.md)
 - ### [Util包](CN/doc/Util/UtilPack.md)
 	- [Timer](CN/doc/Util/Timer.md)
+	- [TimerPlus](CN/doc/Util/TimerPlus.md)
+	- [Manager](CN/doc/Util/TimerPlus.md)
 - ### LogLib
 	- [信息打印类-Log](CN/doc/ClassLog.md)
