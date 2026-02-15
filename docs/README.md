@@ -25,6 +25,8 @@
 - 期末考试及毕业答辩：2025年12月-1月10日
 - **跨平台版本重构**开始时间：2025年1月13日
 	- 计划同时提供Windows和Linux端，并对旧实现中存在的问题进行重构
+
+
 ### 项目优势
 - 且所有数据**入库即加密**，设计出的哈希函数可以基于一个密码值进行放大，从而实现数据入库自加密。
 - 因为**解密函数仅为一个除法运算**，所以解密效率极高。
@@ -43,10 +45,17 @@
 
 ---
 ## 文档目录
+### 文档更新
+- [更新记录](updates.md)
+
 ### 文档说明
-- [代码规范与约定](CN/explain/Rules.md)
+- [代码规范与文档格式](CN/explain/Rules.md)
 - [理论基础](CN/doc/theorems.md)
 
 ### 功能文档
-- [单元测试类-Tester](CN/doc/Tester.md)
-- [信息打印类-Log](CN/doc/ClassLog.md)
+- ### [Tester包](CN/doc/Tester/TesterPack.md)
+	- [单元测试类-Tester](CN/doc/Tester/Tester.md)
+- ### [Util包](CN/doc/Util/UtilPack.md)
+	- [Timer](CN/doc/Util/Timer.md)
+- ### LogLib
+	- [信息打印类-Log](CN/doc/ClassLog.md)

@@ -10,12 +10,8 @@ namespace Log
 		if (m_printCount > 20)
 		{
 			m_printCount = 0;
-			std::cout << std::endl;
 		}
-		else
-		{
-			std::cout << "\n";
-		}
+		printf("\n");
 		++m_printCount;
 	}
 	LogManager::LogManager()
@@ -40,7 +36,7 @@ namespace Log
 	void LogManager::print(const std::string& message)
 	{
 		Util::unique_lock lock(m_printProtect);
-        std::cout << message;
+		printf(message.c_str());
 		clear();
 	}
 	void LogManager::write(const std::string& fileDir, std::string&& message)

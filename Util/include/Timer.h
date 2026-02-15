@@ -6,14 +6,12 @@ namespace Util {
 	using hours = std::chrono::hours;
 	using milliseconds = std::chrono::milliseconds;
 	using nanoseconds = std::chrono::nanoseconds;
+
 	template<class TimeType>
 	class Timer
 	{
 		TimeType m_begin;
-		static auto now()
-		{
-			return std::chrono::duration_cast<TimeType>(std::chrono::system_clock::now().time_since_epoch());
-		}
+		
 	public:
 		Timer()
 			:m_begin(0)
@@ -21,13 +19,23 @@ namespace Util {
 		Timer(TimeType begin)
 			:m_begin(begin)
 		{}
+		Timer(const Timer& copy)
+			:m_begin(copy.m_begin)
+		{
+			
+		}
+		Timer(Timer&& move) noexcept
+			:m_begin(std::move(move.m_begin))
+		{
+			move.reset();
+		}
 		bool isStarted() const
 		{
 			return m_begin != TimeType(0);
 		}
 		void start()
 		{
-			m_begin = now();
+			m_begin = Now();
 		}
 		void reset()
 		{
@@ -35,9 +43,13 @@ namespace Util {
 		}
 		TimeType end()
 		{
-			auto interval = now() - m_begin;
-			reset();
-			return interval;
+			if (!isEmpty())
+			{
+				auto interval = Now() - m_begin;
+				reset();
+				return interval;
+			}
+			return m_begin;
 		}
 		bool isEmpty()const
 		{
@@ -47,9 +59,18 @@ namespace Util {
 		{
 			return m_begin;
 		}
-		static TimeType Get()
+		Timer& operator=(const Timer& copy)
 		{
-			return now();
+			m_begin = copy.m_begin;
 		}
+		Timer& operator=(Timer&& move)
+		{
+			m_begin = std::move(move.m_begin);
+		}
+		static auto Now()
+		{
+			return std::chrono::duration_cast<TimeType>(std::chrono::system_clock::now().time_since_epoch());
+		}
+
 	};
 }

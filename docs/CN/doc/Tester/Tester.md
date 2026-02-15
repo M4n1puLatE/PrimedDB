@@ -1,5 +1,7 @@
-# Tester/class Tester
+# Tester(Class)
 >Tester 是PrimedDB中用于**执行单元测试的基类**。
+
+所属命名空间：`Tester`
 
 - Tester被配置在另外的`Tester`项目中，由`Tester.exe`运行。所以与其他类没有耦合关系，也不影响PrimedDB本身的任何功能(由`PrimedDB.exe`运行)。
 - **Tester 不是线程安全的！** 因为Tester设计的目的是在未发行正式版本前执行单元测试。
@@ -19,7 +21,7 @@
 ```cpp
 class NewTester:public Tester<NewTester>
 {
-A_TEST
+A_TEST;
 private:
 	void UtilTester::init()
 	{
@@ -83,7 +85,7 @@ namespace Tester
 		std::queue <test_pair> m_tests;
 		Util::Timer<Util::milliseconds> m_timer;
 		Util::Timer<Util::nanoseconds> m_preciseTimer;
-		bool m_useTimer,m_usePrecise;
+		bool m_useTimer, m_usePrecise;
 	public:
 		size_t size()const;
 		
@@ -103,65 +105,70 @@ namespace Tester
 ---
 
 ## 类型别名
-- **test_function**: 表示一个可调用对象（测试运行函数）。
+1. **test_function**: 表示一个可调用对象（测试运行函数）。
 	- 实际类型为`std::function<bool()>`
-- **test_pair**: 表示一个测试，由测试名称和测试运行函数组成。
+2. **test_pair**: 表示一个测试，由测试名称和测试运行函数组成。
 	- 实际类型为`std::pair<string, test_function>`
-- **string**: 简化`std::string`
+3. **string**: 简化`std::string`
 
 ---
 ## 成员变量
-- **m_tests**: `std::queue <test_pair>`
+1. **m_tests**: `std::queue <test_pair>`
 	- 测试列表，包含所有子类添加的测试
-- [Timer类型说明](Timer.md)
-- **m_timer**: `Timer<Util::milliseconds>`
+
+2. **m_timer**: `Timer<Util::milliseconds>`
 	- 普通计时器，输出毫秒时间。
-- **m_preciseTimer**: `Timer<Util::nanoseconds>`
+	- [Timer类型说明](Tim- [Timer类型说明](Util/Timer.md)er.md)
+3. **m_preciseTimer**: `Timer<Util::nanoseconds>`
 	- 高精度计时器，输出纳秒时间。
-- **m_useTimer**: `bool`
+4. **m_useTimer**: `bool`
 	- 启用普通计时器，默认为`false`
-- **m_usePrecise**: `bool`
+5. **m_usePrecise**: `bool`
 	- 启用高精度计时器，默认为`false`
 
 ---
-## 对外接口
- - **size() const**: `size_t`
+## 构造函数
+1. 默认构造函数
+	- 使用CRTP模式调用子类实现的`init()`函数
+---
+## 接口
+### public
+ 1. **size() const**: `size_t`
 	 - 返回**未执行**的测试的数量
-
-- **isTimerEnable() const**: `bool`
+2. **isTimerEnable() const**: `bool`
 	- 返回普通计时器是否开启
-- **isPreciseEnable() const**: `bool`
+3. **isPreciseEnable() const**: `bool`
 	- 返回高精度计时器是否开启
-- **run()**
+4. **run()**
 	- 执行所有的测试
 
 ---
-## 类内接口
-- **printVector(const std::vector\<T>& vec)**: `static`, `void`, `template<Printable T>`
+### protected
+1. `template<Printable T>` **printVector(const std::vector\<T>& vec)**: `static`, `void`
 	- 用于打印vector中的数据，当容器中是可打印的类型（重载了`ostream::operator<<`）的类型。
-![printVector的输出](pic/Pasted%20image%2020260201194936.png)
-- **collectionEqual(const T& c1,const T& c2)**: `static`, `bool`, `template <std::ranges::range T>`
+![printVector的输出](../Util/pic/Pasted%20image%2020260201194936.png)
+2. `template <std::ranges::range T>` **collectionEqual(const T& c1,const T& c2)**: `static`, `bool`
 	- 用于比较两个容器中的内容是否相等。限制类型必须存在`begin(),end()`
 	- 且两个容器必须可以使用`algorithm.h`中的`equal`进行比较
-- **className(T\* instance)**: `static`, `const char*`, `template <std::derived_from<Tester> T>`
+3. `template <std::derived_from<Tester> T>` **className(T instance)**: `static`, `const char*`
 	- 用以获取子类的函数名称
 	- 在运行测试时会通过这个函数获取并打印出当前测试所属的类名称
-- **enableTimer()**
+4. **enableTimer()**
 	- 启用普通计时器
 	- 如果此时高精度计时器已经被启动，将会被关闭。
-- **enablePrecise()**
+5. **enablePrecise()**
 	- 启动高精度计时器
 	- 如果此时普通计时器已经被启动，将会被关闭。
-- **disableTimer()**
+6. **disableTimer()**
 	- 关闭普通计时器
-- **disablePrecise()**
+7. **disablePrecise()**
 	- 关闭高精度计时器
-- **add(const string& name, test_function test)**
+8. **add(const string& name, test_function test)**
 	- 添加新的测试到测试队列中。
 	- 需要给定**名称**和**可调用对象**
 
 # 运行输出
-![](pic/Pasted%20image%2020260212125600.png)
+![测试结果](../Util/pic/Pasted%20image%2020260212125600.png)
 - 白底部分为当前测试类名称。
 - 黄色带序号部分为当前测试项目名称（在add时可自定义）。
 - 白字部分为测试内部自行输出的内容。

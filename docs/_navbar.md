@@ -5,4 +5,4 @@
 	* [理论基础](/rules/theorems.md)
 * 功能文档
 	* [Log](CN/doc/ClassLog.md)
-	* [单元测试类-Tester](CN/doc/Tester.md)
+	* [单元测试类-Tester](CN/doc/Tester/Tester.md)
