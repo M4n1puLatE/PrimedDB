@@ -72,4 +72,4 @@ using shared_mutex = std::shared_mutex;
 	- 当函数返回值类型为`void`时，`void`将会被省略
 	- 成员变量的`const`修饰将会被写在参数列表之后并加粗
 - 当函数为模板函数时，模板要求将会写在函数名称前并使用空格隔断。
-- 
+- 文档中类名称后的为类的类型，如泛型（generic）以及单例类（Singleton）等

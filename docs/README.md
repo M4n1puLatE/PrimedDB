@@ -53,11 +53,13 @@
 - [理论基础](CN/doc/theorems.md)
 
 ### 功能文档
-- ### [Tester包](CN/doc/Tester/TesterPack.md)
-	- [单元测试类-Tester](CN/doc/Tester/Tester.md)
-- ### [Util包](CN/doc/Util/UtilPack.md)
-	- [Timer](CN/doc/Util/Timer.md)
-	- [TimerPlus](CN/doc/Util/TimerPlus.md)
-	- [Manager](CN/doc/Util/TimerPlus.md)
-- ### LogLib
-	- [信息打印类-Log](CN/doc/ClassLog.md)
+- ### [Tester空间](CN/doc/Tester/TesterPack.md)
+	- [Tester](CN/doc/Tester/Tester.md)：单元测试类型
+- ### [Util空间](CN/doc/Util/UtilPack.md)
+	- [Timer](CN/doc/Util/Timer.md)：计时器类型
+	- [TimerPlus](CN/doc/Util/TimerPlus.md)：带有暂停的计时器类型
+	- [Manager](CN/doc/Util/TimerPlus.md)：管理者类型基类，提供一个可执行线程
+- ### [LogLib空间](CN/doc/LogLib/LogLib.md)
+	- [Log](CN/doc/LogLib/Log.md)：日志输出类型
+	- [LogType](CN/doc/LogLib/LogType.md)：日志类型
+	- [LogManager](CN/doc/LogLib/LogManager.md)：日志管理者类型

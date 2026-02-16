@@ -1,1 +1,2 @@
-# Singleton
+# Singleton (Generic)
+>

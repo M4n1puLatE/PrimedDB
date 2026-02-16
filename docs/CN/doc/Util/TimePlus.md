@@ -1,4 +1,4 @@
-# TimePlus
+# TimePlus (Generic)
 > TimerPlus是Timer的子类，增加了暂停和恢复功能，其他Timer拥有的功能详见[Timer文档](Timer.md)。
 > 实现原理是增加暂停的$x$时间到开始时间上，以顺延开始时间。
 
