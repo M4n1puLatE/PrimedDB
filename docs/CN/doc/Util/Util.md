@@ -20,7 +20,6 @@ using substring = std::vector<string>;
 ```cpp
 	class Util
 	{
-
 	public:
 		static indexes IndexSplitString(const string& str, char delim);
 		static substring SplitString(const string& str, char delim);

@@ -8,6 +8,8 @@
 # 使用方法
 - 使用`pause()`暂停当前计时器，并使用`resume()`恢复当前计时器。
 - `isPaused()`可以用以查看当前计时器有没有暂停。
+
+
 # 类声明与接口说明
 ```cpp
 template<class TimeType>
