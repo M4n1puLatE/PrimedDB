@@ -58,7 +58,7 @@ namespace Util
 
 	std::vector<Manager::service> Manager::sm_serviceQueue;
 	
-	std::queue<size_t> Manager::sm_executeQueue;
+	std::deque<size_t> Manager::sm_executeQueue;
 	shared_mutex Manager::sm_queueMutex;
 
 	void Manager::manageService()
@@ -87,7 +87,7 @@ namespace Util
 				{
 					write_lock queueLock(sm_queueMutex);
 					index = sm_executeQueue.front();
-					sm_executeQueue.pop();
+					sm_executeQueue.pop_front();
 				}
 				sm_serviceQueue[index]();
 				sm_conditionFlag = false;
@@ -108,10 +108,20 @@ namespace Util
 		if (!sm_terminate)
 		{
 			write_lock queueLock(sm_queueMutex);
-			sm_executeQueue.emplace(id);
+			sm_executeQueue.emplace_back(id);
 		}
 
 	}
+
+	void Manager::urgentTask(size_t id)
+	{
+		if (!sm_terminate)
+		{
+			write_lock queueLock(sm_queueMutex);
+            sm_executeQueue.emplace_front(id);
+		}
+	}
+
 	bool Manager::isEmpty()
 	{
 		read_lock lock(sm_queueMutex);

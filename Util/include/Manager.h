@@ -36,7 +36,7 @@ namespace Util
 
 
 		static std::vector<service> sm_serviceQueue;
-		static std::queue<size_t> sm_executeQueue;
+		static std::deque<size_t> sm_executeQueue;
 		static shared_mutex sm_queueMutex;
 
 	private:
@@ -51,6 +51,7 @@ namespace Util
 		static void newTask(size_t id);
 		static bool isEmpty();
 		static bool isServiceEmpty();
+		static void urgentTask(size_t id);
 	protected:
 		Manager(std::function<void()>&& customService, std::function<bool()>&& condition);
 		void notify() const;

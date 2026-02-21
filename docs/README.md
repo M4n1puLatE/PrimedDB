@@ -56,9 +56,14 @@
 - ### [Tester空间](CN/doc/Tester/TesterPack.md)
 	- [Tester](CN/doc/Tester/Tester.md)：单元测试类型
 - ### [Util空间](CN/doc/Util/UtilPack.md)
-	- [Timer](CN/doc/Util/Timer.md)：计时器类型
-	- [TimerPlus](CN/doc/Util/TimerPlus.md)：带有暂停的计时器类型
-	- [Manager](CN/doc/Util/TimerPlus.md)：管理者类型基类，提供一个可执行线程
+	- [DepreciatedManager](DepreciatedManager.md)：~~管理者类型基类~~(已弃用)
+	- [Manager](Manager.md)：基于上下文切换的管理者类型基类
+	- [TimeStamp](TimeStamp.md)：时间戳类型
+	- [Timer](Timer.md)：计时器
+	- [TimerPlus](TimerPlus.md)：带有暂停功能的计时器
+	- [Singleton](Singleton.md)：单例类基类
+	- [SFO](SFO.md)：系统级文件操作类型
+	- [Util](Util.md)：通用工具函数
 - ### [LogLib空间](CN/doc/LogLib/LogLib.md)
 	- [Log](CN/doc/LogLib/Log.md)：日志输出类型
 	- [LogType](CN/doc/LogLib/LogType.md)：日志类型
