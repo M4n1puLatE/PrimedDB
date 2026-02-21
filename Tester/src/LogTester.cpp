@@ -1,5 +1,5 @@
 #include "LogTester.h"
-
+#include 
 #include "Log.h"
 
 namespace Tester
@@ -82,17 +82,20 @@ namespace Tester
 	}
 	bool LogTester::testWrite()
 	{
-		Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(1).toFile("test.txt").end();
-		Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(2).toFile("test.txt").end();
-		Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(3).toFile("test.txt").end();
-		Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(4).toFile("test.txt").end();
-		Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(5).toFile("test.txt").end();
+		for (int n = 0;n<1000;++n)
+		{
+			Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(1).toFile("test").end();
+			Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(2).toFile("test").end();
+			Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(3).toFile("test").end();
+			Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(4).toFile("test").end();
+			Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(5).toFile("test").end();
+		}
+
 		return true;
 	}
 	bool LogTester::justPrint()
 	{
-		Util::TimeStamp timeStamp;
-		std::cout << timeStamp.format()<<Log::Log::GetLogTypeName(Log::LogType::Info)<<"Hello "<<"Info "<<2<<endl;
+		
 		return true;
 	}
 	bool LogTester::testEmpty()

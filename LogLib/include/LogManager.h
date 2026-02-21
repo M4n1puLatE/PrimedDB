@@ -10,13 +10,14 @@ namespace Log
 	class LogManager final:public Util::Singleton<LogManager>,public Util::Manager
 	{ 
 		THIS_IS_SINGLETON;
+		const uint8_t SUBMIT_COUNT = 255;
 		std::queue<std::pair<std::string, std::string>> m_writeQueue;
 		std::atomic_uint8_t m_printCount;
 		std::shared_mutex m_queueMutex;
 		std::mutex m_printProtect;
 		void clear();
 		LogManager();
-		void writeTask();
+		void task();
 		bool condition() const; 
 
 	public:

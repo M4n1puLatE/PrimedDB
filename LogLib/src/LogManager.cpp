@@ -7,7 +7,7 @@ namespace Log
 {
 	void LogManager::clear()
 	{
-		if (m_printCount > 20)
+		if (m_printCount > SUBMIT_COUNT)
 		{
 			m_printCount = 0;
 		}
@@ -15,9 +15,9 @@ namespace Log
 		++m_printCount;
 	}
 	LogManager::LogManager()
-		:Manager(std::bind(&LogManager::writeTask,this), std::bind(&LogManager::condition,this)),m_printCount(0)
+		:Manager(std::bind(&LogManager::task,this), std::bind(&LogManager::condition,this)),m_printCount(0)
 	{}
-	void LogManager::writeTask()
+	void LogManager::task()
 	{
 		std::pair<std::string, std::string> pair;
 		{
@@ -43,13 +43,15 @@ namespace Log
 	{
 		Util::write_lock lock(m_queueMutex);
 		m_writeQueue.emplace(fileDir, std::move(message));
-		notify();
+		if (m_printCount == SUBMIT_COUNT)
+			notify();
 	}
 	void LogManager::write(std::string&& fileDir, std::string&& message)
 	{
 		Util::write_lock lock(m_queueMutex);
 		m_writeQueue.emplace(std::forward<std::string>(fileDir), std::forward<std::string>(message));
-		notify();
+		if (m_printCount == SUBMIT_COUNT)
+			notify();
 	}
 	size_t LogManager::size()
 	{

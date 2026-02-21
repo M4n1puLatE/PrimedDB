@@ -35,9 +35,9 @@ namespace Util
 		static std::atomic_bool sm_conditionFlag;
 
 
-		static std::vector<service> sm_serviceQueue;
+		static std::vector<service> sm_serviceArray;
 		static std::deque<size_t> sm_executeQueue;
-		static shared_mutex sm_queueMutex;
+		static shared_mutex sm_containerMutex;
 
 	private:
 		static void manageService();
@@ -56,6 +56,7 @@ namespace Util
 		Manager(std::function<void()>&& customService, std::function<bool()>&& condition);
 		void notify() const;
 		void submit() const;
+		void notifyNow() const;
 		 
 	public:
 		static bool isTerminate();

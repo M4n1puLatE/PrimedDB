@@ -56,10 +56,10 @@ namespace Util
 	std::atomic_bool Manager::sm_conditionFlag = false;
 
 
-	std::vector<Manager::service> Manager::sm_serviceQueue;
+	std::vector<Manager::service> Manager::sm_serviceArray;
 	
 	std::deque<size_t> Manager::sm_executeQueue;
-	shared_mutex Manager::sm_queueMutex;
+	shared_mutex Manager::sm_containerMutex;
 
 	void Manager::manageService()
 	{
@@ -76,21 +76,20 @@ namespace Util
 			{
 				break;
 			}
-			bool stop = false;
+			bool run = false;
 			{
-				read_lock lock(sm_queueMutex);
-				stop = !sm_executeQueue.empty();
+				read_lock lock(sm_containerMutex);
+				run = !sm_executeQueue.empty();
 			}
-			while(stop)
+			while(run)
 			{
-
 				{
-					write_lock queueLock(sm_queueMutex);
+					write_lock queueLock(sm_containerMutex);
 					index = sm_executeQueue.front();
 					sm_executeQueue.pop_front();
+					sm_conditionFlag = run = !sm_executeQueue.empty();
 				}
-				sm_serviceQueue[index]();
-				sm_conditionFlag = false;
+				sm_serviceArray[index]();
 			}
 		}
 	}
@@ -98,8 +97,8 @@ namespace Util
 	{
 		if (!sm_terminate)
 		{
-			write_lock queueLock(sm_queueMutex);
-			sm_serviceQueue.emplace_back(std::move(serviceFunc));
+			write_lock queueLock(sm_containerMutex);
+			sm_serviceArray.emplace_back(std::move(serviceFunc));
 		}
 	}
 
@@ -107,7 +106,7 @@ namespace Util
 	{
 		if (!sm_terminate)
 		{
-			write_lock queueLock(sm_queueMutex);
+			write_lock queueLock(sm_containerMutex);
 			sm_executeQueue.emplace_back(id);
 		}
 
@@ -117,31 +116,31 @@ namespace Util
 	{
 		if (!sm_terminate)
 		{
-			write_lock queueLock(sm_queueMutex);
+			write_lock queueLock(sm_containerMutex);
             sm_executeQueue.emplace_front(id);
 		}
 	}
 
 	bool Manager::isEmpty()
 	{
-		read_lock lock(sm_queueMutex);
+		read_lock lock(sm_containerMutex);
 		return sm_executeQueue.empty();
 	}
 	bool Manager::isServiceEmpty()
 	{
-		read_lock lock(sm_queueMutex);
-		return sm_serviceQueue.empty();
+		read_lock lock(sm_containerMutex);
+		return sm_serviceArray.empty();
 	}
 
 	size_t Manager::serviceSize()
 	{
-		read_lock queueLock(sm_queueMutex);
-		return sm_serviceQueue.size();
+		read_lock queueLock(sm_containerMutex);
+		return sm_serviceArray.size();
 	}
 
 	size_t Manager::taskSize()
 	{
-		read_lock queueLock(sm_queueMutex);
+		read_lock queueLock(sm_containerMutex);
         return sm_executeQueue.size();
 	}
 
@@ -154,9 +153,26 @@ namespace Util
 	{
 		if (!isTerminate())
 		{
-			sm_conditionFlag = m_condition();
+			bool condition = m_condition();
 			submit();
-			sm_threadNotifier.notify_one();
+			if (condition&&!sm_conditionFlag)//如果当前仍然处于执行期，则不额外进行通知
+			{
+				sm_conditionFlag = condition;
+				sm_threadNotifier.notify_one();
+			}
+		}
+	}
+	void Manager::notifyNow()const
+	{
+		if (!isTerminate())
+		{
+			bool condition = m_condition();
+			urgentTask(m_id);
+			if (condition && !sm_conditionFlag)
+			{
+				sm_conditionFlag = condition;
+				sm_threadNotifier.notify_one();
+			}
 		}
 	}
 	void Manager::submit()const

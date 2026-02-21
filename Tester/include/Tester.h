@@ -92,6 +92,7 @@ namespace Tester
 		std::queue <test_pair> m_tests;
 		Util::Timer<Util::milliseconds> m_timer;
 		Util::Timer<Util::nanoseconds> m_preciseTimer;
+		Util::Timer<Util::seconds> m_secondTimer;
 		bool m_useTimer,m_usePrecise;
 		static void printWithGreen(const string& message)
 		{
@@ -134,10 +135,12 @@ namespace Tester
 			{
 				printWithBlue(std::format("> [Time cost: {}]", m_timer.end()));
 			}
-			if (m_preciseTimer.isStarted())
+			else if (m_preciseTimer.isStarted())
 			{
 				printWithBlue(std::format("> [Time cost: {}]", m_preciseTimer.end()));
 			}
+			else if (m_secondTimer.isStarted())
+                printWithBlue(std::format("> [Time cost: {}]", m_secondTimer.end()));
 		}
 		static void testBegin(unsigned series,const string& name)
 		{
