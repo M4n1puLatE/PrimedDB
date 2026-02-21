@@ -1,67 +1,13 @@
 # Manager
->是实现PrimedDB中管理者类型的基类。其提供一个独立线程，当用户注册的`condition`成立且线程被`notify`时执行子类注册的`service`。
+> PrimedDB中用于创建会以独立线程形式长期驻留并提供系统服务（如错误处理，日志信息打印输出等）的管理者类型的基类。
 
 所属命名空间： `Util`
 
-# 使用方法
-继承`Manager`方法并在子类中实现`service`（`Manager`线程中运行的管理服务）和`condition`（线程启动条件）并传入构造函数进行构造（使用`bind`或`lambda`表达式）
+Manager的子类只需要对自己的成员保证线程安全。并最好在使用容器的情况下在注册的服务中加锁。
 
-
-# 类声明与接口
-```cpp
-class Manager
-{
-	std::thread m_service;
-	mutex m_conditionMutex;
-	std::condition_variable m_threadNotifier;
-	std::atomic_bool m_terminate;	
-protected:
-	void service(const std::function<void()>& customService, const std::function<bool()>& condition);
-	void notify();
-	void terminate();
-	void join();
-public:
-	Manager(const std::function<void()>& customService, const std::function<bool()>& condition);
-	bool isTerminate();
-
-	~Manager();
-};
-```
-
-## 成员变量
-1. **m_service**: `thread`
-	- 管理员类型的服务线程
-2. **m_conditionMutex**: `std::mutex`
-	- 服务线程中的条件变量锁。
-3. **m_threadNotifier**: `std::condition_variable`
-	- 服务线程中的条件变量
-4. **m_terminate**: `std::atomic_bool`
-	- 服务线程状态（true为结束，false为正在运行或等待）
-
----
-## 构造函数
-- **Manager(const std::function<void()>& customService, const std::function<bool()>& condition)**
-	- 注册服务和服务线程的唤醒条件。
-
-
----
-## 私有方法
-- **service(const std::function<void()>& customService, const std::function<bool()>& condition)**
----
-## 继承类内部接口
-- **notify()**
-	- 唤醒服务线程（如果条件成立的情况下）
-- **terminate()**
-	- 结束当前服务线程（在当前服务完成后）
-	- 如果当前服务未完成将会阻塞调用线程
-- **join()**
-	- 等待服务线程结束
-
----
-## 公有接口
-- **isTerminate()**: bool
-	- 检测服务线程是否结束
-
----
-## 析构行为
-- 调用`teminate()`函数结束当前线程。
+# 类型原理
+1. 在`Manager`类型中有一个`static`的管理线程。该线程由多个管理者服务共用，线程通过待执行任务队列在不同子类提交的任务间进行上下文切换。这种设计是为了确保线程的利用率最大化，不会存在部分管理类型没有任务执行但还需要占用一个线程，且在唤醒和沉睡时浪费CPU。
+2. `Manager`中会使用变长数组存储子类注册到基类的服务
+3. 在子类提交任务并唤醒管理线程后，管理线程会执行所有子类提交的任务，直到待执行任务队列为空。
+4. 待执行队列为子类注册新服务时获取的id，也即注册服务时变长数组`end`位置的下标。
+5. **服务**只能注册，**不能被撤销**，因为这些服务应当被设计为持续服务系统组件直到系统关闭的。

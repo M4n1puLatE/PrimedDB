@@ -15,5 +15,6 @@ int main()
 	LogTester logTest;
 	logTest.run();
 
+	Util::Manager::terminate();
 	//Log::log[Log::LogType::Warn].toFile("2月.txt") << "123" << Log::Log::endl;
 }
