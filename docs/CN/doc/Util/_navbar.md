@@ -1,8 +1,11 @@
 * [文档首页](/README.md)
-* [DepreciatedManager](DepreciatedManager.md)
-* [TimeStamp](TimeStamp.md)
-* [Timer](Timer.md)
-* [TimerPlus](TimerPlus.md)
-* [Singleton](Singleton.md)
-* [SFO](SFO.md)
-* [Util](Util.md)
+* 时间相关
+	* [TimeStamp](TimeStamp.md)
+	* [Timer](Timer.md)
+	* [TimerPlus](TimerPlus.md)
+* 设计模式
+	* [Singleton](Singleton.md)
+	* [Manager](Manager.md)
+* 通用操作
+	* [SFO](SFO.md)
+	* [Util](Util.md)
