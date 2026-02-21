@@ -1,5 +1,4 @@
 #include "LogTester.h"
-#include 
 #include "Log.h"
 
 namespace Tester
@@ -95,7 +94,20 @@ namespace Tester
 	}
 	bool LogTester::justPrint()
 	{
-		
+		for (int n = 0; n < 1000; ++n)
+		{
+			string message = "combine";
+			message += +"messages";
+			printf("%s\n", message.c_str());
+			message += +"messages";
+			printf("%s\n", message.c_str());
+			message += +"messages";
+			printf("%s\n", message.c_str());
+			message += +"messages";
+			printf("%s\n", message.c_str());
+			message += +"messages";
+			printf("%s\n", message.c_str());
+		}
 		return true;
 	}
 	bool LogTester::testEmpty()

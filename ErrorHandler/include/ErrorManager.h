@@ -11,5 +11,10 @@ namespace ErrorHandler
 		THIS_IS_SINGLETON;
 		std::queue<Error> m_errorQueue;
 		std::shared_mutex m_mutex;
+		std::atomic_uint32_t m_id;
+
+		ErrorManager();
+	public:
+		uint32_t getId();
 	};
 }

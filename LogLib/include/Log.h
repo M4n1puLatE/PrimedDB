@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <future>
+#include <deque>
 
 namespace Log
 {
@@ -26,7 +27,7 @@ namespace Log
 		using string = std::string;
 
 
-		std::stringstream m_messageStream;
+		std::deque<string> m_messageArray;
 		LogType m_logType = LogType::None;
 		string m_fileName;
 
@@ -35,10 +36,9 @@ namespace Log
 		std::string getLabel() const;
 		void writeTask(string& message) const;
 		static void printMessage(const string& message);
-		void initialize();
 	public:
 		static string GetLogTypeName(LogType logType);
-		bool isTerminated();
+		bool isTerminated() const;
 		bool isWriteToFile() const;
 		Log& type(LogType logType);
 
@@ -51,24 +51,26 @@ namespace Log
 
 		
 
-		Log& add(const std::string& text);
+		Log& add(std::string& text);
+		Log& add(std::string&& text);
 		Log& addNumber(size_t number);
 		Log& addDouble(double number);
 		template<FormatType T>
 		Log& addObject(const T& instance)
 		{
-			m_messageStream <<instance.format();
+			m_messageArray.emplace_back(std::move(instance.format()));
 			return *this;
 		}
 		Log& operator[](LogType logType);
 		Log& operator()(string&& fileName);
-		Log& operator<<(const string& text);
+		Log& operator<<(string& text);
+		Log& operator<<(string&& text);
         Log& operator<<(size_t number);
         Log& operator<<(double number);
 		template<FormatType T>
 		Log& operator<<(const T& instance)
 		{
-			m_messageStream << instance.format();
+			m_messageArray.emplace_back(std::move(instance.format()));
 			return *this;
 		}
 

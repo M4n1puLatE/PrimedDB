@@ -12,10 +12,8 @@ namespace ErrorHandler
 		std::atomic_bool m_handled;
 		char m_publisher[20];
 		std::string m_message;
-		std::promise<bool> m_toPublisher;
 
 	private:
-		void idGenerator();
 		void notify();
 	public:
 		Error(std::string_view publisher, std::string&& functionSig, const std::string& fileSig = "", long long lineNumber = 0);
@@ -25,6 +23,7 @@ namespace ErrorHandler
 		Error(Error&&) noexcept;
 		Error(const Error&);
 		Error& operator=(Error&& move) noexcept;
+		Error& operator=(const Error&) = delete;
 		std::string_view getPublisher();
 		bool isHandled();
 		long long getId();

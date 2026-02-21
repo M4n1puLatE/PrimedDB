@@ -20,9 +20,9 @@ namespace Log
 			return " [Warn]";
 		return "";
 	}
-	bool Log::isTerminated()
+	bool Log::isTerminated()const
 	{
-		return m_messageStream.peek() == std::stringstream::traits_type::eof();
+		return m_messageArray.empty();
 	}
 
 	Log& Log::toFile(string&& fileName)
@@ -37,34 +37,32 @@ namespace Log
 	}
 	void Log::clear()
 	{
-		m_messageStream.str("");
-		m_messageStream.clear();
+		m_messageArray.clear();
 		m_fileName.clear();
         m_logType = LogType::None;
 	}
 	bool Log::isEmpty()
 	{
-		return m_messageStream.peek() <=0;
+		return m_messageArray.empty();
 	}
 
-	void Log::initialize()
-	{
-		m_messageStream.str("");
-		m_messageStream.clear();
-	}
 
-	Log& Log::add(const std::string& text)
+	Log& Log::add(std::string& text)
 	{
 		if (!isEmpty())
 		{
-			m_messageStream << ' ';
-
+			m_messageArray.emplace_back(" ");
 		}
-		else
+		m_messageArray.emplace_back(text);
+		return *this;
+	}
+	Log& Log::add(std::string&& text)
+	{
+		if (!isEmpty())
 		{
-			initialize();
+			m_messageArray.emplace_back(" ");
 		}
-		m_messageStream << text;
+		m_messageArray.emplace_back(std::move(text));
 		return *this;
 	}
 	Log& Log::addNumber(size_t number)
@@ -75,9 +73,13 @@ namespace Log
 	{
 		return add(std::to_string(number));
 	}
-	Log& Log::operator<<(const string& text)
+	Log& Log::operator<<(string& text)
 	{
 		return add(text);
+	}
+	Log& Log::operator<<(string&& text)
+	{
+		return add(std::move(text));
 	}
 	Log& Log::operator<<(size_t number)
 	{
@@ -106,7 +108,13 @@ namespace Log
 	}
 	std::string Log::getMessage()const
 	{
-		return m_messageStream.str();
+		string message;
+		message.reserve(100);
+        for (auto& item : m_messageArray)
+        {
+            message += item;
+        }
+		return message;
 	}
 	//提交到LogManger统一处理打印。
 	void Log::writeTask(std::string& message) const
@@ -120,9 +128,8 @@ namespace Log
 	}
 	void Log::end()
 	{
-		std::string print = m_messageStream.str();
+		std::string print = getMessage();
 		auto label = getLabel();
-		bool isError = m_logType >= LogType::Error;
 
 		Util::TimeStamp time = Util::TimeStamp::Now();
 		print = std::format("{}{}: {}", time.get(),label,print);
@@ -130,11 +137,6 @@ namespace Log
 		if (isWriteToFile())
 		{
 			writeTask(print);
-		}
-		else if (isError)
-		{
-			std::ofstream file("Error.log");
-			file << print << std::endl;
 		}
 		clear();
 	}
