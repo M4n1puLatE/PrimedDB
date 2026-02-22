@@ -21,4 +21,15 @@ target_link_libraries(PrimedDB
         LogLib
         Util
         ErrorHandler
+        Command
+        PkgConfig::gmp
+        Boost::log
+        Boost::log_setup
+        Boost::system
+        Boost::thread
+        Boost::filesystem
+        Boost::date_time
+        Boost::chrono
+        Boost::atomic
+        Boost::regex
 )

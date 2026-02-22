@@ -87,7 +87,7 @@ namespace Util {
         operator std::string() const;
         static TimePoint SystemTime();
         const std::string& format();
-        TimeStamp& operator=(TimeStamp&&);
+        TimeStamp& operator=(TimeStamp&&)noexcept;
         ~TimeStamp() = default;
     };
 }

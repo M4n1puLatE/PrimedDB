@@ -41,7 +41,7 @@ namespace Log
 		m_fileName.clear();
         m_logType = LogType::None;
 	}
-	bool Log::isEmpty()
+	bool Log::isEmpty()const
 	{
 		return m_messageArray.empty();
 	}
@@ -108,16 +108,16 @@ namespace Log
 	}
 	std::string Log::getMessage()const
 	{
-		string message;
-		message.reserve(100);
-        for (auto& item : m_messageArray)
+		std::ostringstream message;
+		message.str("");
+        for (const auto& item : m_messageArray)
         {
-            message += item;
+            message << item;
         }
-		return message;
+		return message.str();
 	}
 	//提交到LogManger统一处理打印。
-	void Log::writeTask(std::string& message) const
+	void Log::writeTask(std::string&& message) const
 	{
 		LogManager::Get().write(m_fileName, std::move(message));
 	}
@@ -133,10 +133,10 @@ namespace Log
 
 		Util::TimeStamp time = Util::TimeStamp::Now();
 		print = std::format("{}{}: {}", time.get(),label,print);
-		printMessage(print);
+		LogManager::Get().print(print);
 		if (isWriteToFile())
 		{
-			writeTask(print);
+			writeTask(std::move(print));
 		}
 		clear();
 	}

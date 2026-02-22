@@ -12,7 +12,7 @@ namespace Util
     }
     TimeStamp TimeStamp::Now()
     {
-        return SystemTime();
+        return { SystemTime() };
     }
     void TimeStamp::setTime(const TimePoint& time)
     {
@@ -102,7 +102,7 @@ namespace Util
     TimeStamp::TimeStamp(TimePoint now)
         : m_timestamp(now)
     {
-        reset(m_timestamp);
+        convertToString(now);
     }
     TimeStamp::TimeStamp(const TimeStamp& obj)
         :m_timestamp(obj.m_timestamp), m_literal(obj.m_literal)
@@ -183,7 +183,7 @@ namespace Util
     {
         return m_literal;
     }
-    TimeStamp& TimeStamp::operator=(TimeStamp&& move)
+    TimeStamp& TimeStamp::operator=(TimeStamp&& move)noexcept
     {
         m_literal = std::move(move.m_literal);
         m_timestamp = move.m_timestamp;

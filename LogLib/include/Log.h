@@ -34,7 +34,7 @@ namespace Log
 		const std::string& getFileName() const;
 		std::string getMessage()const;
 		std::string getLabel() const;
-		void writeTask(string& message) const;
+		void writeTask(string&& message) const;
 		static void printMessage(const string& message);
 	public:
 		static string GetLogTypeName(LogType logType);
@@ -46,7 +46,7 @@ namespace Log
 		friend void endl(Log&);
 		void end();
 		void clear();
-		bool isEmpty();
+		bool isEmpty()const;
 		Log& trigger(const string& error);
 
 		

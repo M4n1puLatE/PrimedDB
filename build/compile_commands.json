@@ -1,0 +1,98 @@
+[
+{
+  "directory": "D:/Code/Project/PrimedDB/build/ErrorHandler",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\ErrorHandler.dir\\src\\ErrorManager.cpp.obj /FdCMakeFiles\\ErrorHandler.dir\\ErrorHandler.pdb /FS -c D:\\Code\\Project\\PrimedDB\\ErrorHandler\\src\\ErrorManager.cpp",
+  "file": "D:/Code/Project/PrimedDB/ErrorHandler/src/ErrorManager.cpp",
+  "output": "ErrorHandler/CMakeFiles/ErrorHandler.dir/src/ErrorManager.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/ErrorHandler",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\ErrorHandler.dir\\src\\Exception.cpp.obj /FdCMakeFiles\\ErrorHandler.dir\\ErrorHandler.pdb /FS -c D:\\Code\\Project\\PrimedDB\\ErrorHandler\\src\\Exception.cpp",
+  "file": "D:/Code/Project/PrimedDB/ErrorHandler/src/Exception.cpp",
+  "output": "ErrorHandler/CMakeFiles/ErrorHandler.dir/src/Exception.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Util",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Util\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Util.dir\\src\\Manager.cpp.obj /FdCMakeFiles\\Util.dir\\Util.pdb /FS -c D:\\Code\\Project\\PrimedDB\\Util\\src\\Manager.cpp",
+  "file": "D:/Code/Project/PrimedDB/Util/src/Manager.cpp",
+  "output": "Util/CMakeFiles/Util.dir/src/Manager.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Util",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Util\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Util.dir\\src\\TimeStamp.cpp.obj /FdCMakeFiles\\Util.dir\\Util.pdb /FS -c D:\\Code\\Project\\PrimedDB\\Util\\src\\TimeStamp.cpp",
+  "file": "D:/Code/Project/PrimedDB/Util/src/TimeStamp.cpp",
+  "output": "Util/CMakeFiles/Util.dir/src/TimeStamp.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Util",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Util\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Util.dir\\src\\Util.cpp.obj /FdCMakeFiles\\Util.dir\\Util.pdb /FS -c D:\\Code\\Project\\PrimedDB\\Util\\src\\Util.cpp",
+  "file": "D:/Code/Project/PrimedDB/Util/src/Util.cpp",
+  "output": "Util/CMakeFiles/Util.dir/src/Util.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/LogLib",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\LogLib.dir\\src\\ClassInfo.cpp.obj /FdCMakeFiles\\LogLib.dir\\LogLib.pdb /FS -c D:\\Code\\Project\\PrimedDB\\LogLib\\src\\ClassInfo.cpp",
+  "file": "D:/Code/Project/PrimedDB/LogLib/src/ClassInfo.cpp",
+  "output": "LogLib/CMakeFiles/LogLib.dir/src/ClassInfo.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/LogLib",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\LogLib.dir\\src\\Log.cpp.obj /FdCMakeFiles\\LogLib.dir\\LogLib.pdb /FS -c D:\\Code\\Project\\PrimedDB\\LogLib\\src\\Log.cpp",
+  "file": "D:/Code/Project/PrimedDB/LogLib/src/Log.cpp",
+  "output": "LogLib/CMakeFiles/LogLib.dir/src/Log.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/LogLib",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\LogLib.dir\\src\\LogManager.cpp.obj /FdCMakeFiles\\LogLib.dir\\LogLib.pdb /FS -c D:\\Code\\Project\\PrimedDB\\LogLib\\src\\LogManager.cpp",
+  "file": "D:/Code/Project/PrimedDB/LogLib/src/LogManager.cpp",
+  "output": "LogLib/CMakeFiles/LogLib.dir/src/LogManager.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/LogLib",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\LogLib.dir\\src\\main.cpp.obj /FdCMakeFiles\\LogLib.dir\\LogLib.pdb /FS -c D:\\Code\\Project\\PrimedDB\\LogLib\\src\\main.cpp",
+  "file": "D:/Code/Project/PrimedDB/LogLib/src/main.cpp",
+  "output": "LogLib/CMakeFiles/LogLib.dir/src/main.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Tester",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Tester\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Tester.dir\\src\\ClassInfoTester.cpp.obj /FdCMakeFiles\\Tester.dir\\ /FS -c D:\\Code\\Project\\PrimedDB\\Tester\\src\\ClassInfoTester.cpp",
+  "file": "D:/Code/Project/PrimedDB/Tester/src/ClassInfoTester.cpp",
+  "output": "Tester/CMakeFiles/Tester.dir/src/ClassInfoTester.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Tester",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Tester\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Tester.dir\\src\\LogTester.cpp.obj /FdCMakeFiles\\Tester.dir\\ /FS -c D:\\Code\\Project\\PrimedDB\\Tester\\src\\LogTester.cpp",
+  "file": "D:/Code/Project/PrimedDB/Tester/src/LogTester.cpp",
+  "output": "Tester/CMakeFiles/Tester.dir/src/LogTester.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Tester",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Tester\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Tester.dir\\src\\ManagerTester.cpp.obj /FdCMakeFiles\\Tester.dir\\ /FS -c D:\\Code\\Project\\PrimedDB\\Tester\\src\\ManagerTester.cpp",
+  "file": "D:/Code/Project/PrimedDB/Tester/src/ManagerTester.cpp",
+  "output": "Tester/CMakeFiles/Tester.dir/src/ManagerTester.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Tester",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Tester\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Tester.dir\\src\\Tests.cpp.obj /FdCMakeFiles\\Tester.dir\\ /FS -c D:\\Code\\Project\\PrimedDB\\Tester\\src\\Tests.cpp",
+  "file": "D:/Code/Project/PrimedDB/Tester/src/Tests.cpp",
+  "output": "Tester/CMakeFiles/Tester.dir/src/Tests.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Tester",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Tester\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Tester.dir\\src\\TimeStampTester.cpp.obj /FdCMakeFiles\\Tester.dir\\ /FS -c D:\\Code\\Project\\PrimedDB\\Tester\\src\\TimeStampTester.cpp",
+  "file": "D:/Code/Project/PrimedDB/Tester/src/TimeStampTester.cpp",
+  "output": "Tester/CMakeFiles/Tester.dir/src/TimeStampTester.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/Tester",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\Tester\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -ZI /FoCMakeFiles\\Tester.dir\\src\\UtilTester.cpp.obj /FdCMakeFiles\\Tester.dir\\ /FS -c D:\\Code\\Project\\PrimedDB\\Tester\\src\\UtilTester.cpp",
+  "file": "D:/Code/Project/PrimedDB/Tester/src/UtilTester.cpp",
+  "output": "Tester/CMakeFiles/Tester.dir/src/UtilTester.cpp.obj"
+},
+{
+  "directory": "D:/Code/Project/PrimedDB/build/PrimedDB",
+  "command": "D:\\App\\vs2026\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx86\\x86\\cl.exe  /nologo /TP  -ID:\\Code\\Project\\PrimedDB\\PrimedDB -ID:\\Code\\Project\\PrimedDB\\include -ID:\\Code\\Project\\PrimedDB\\LogLib\\include -ID:\\Code\\Project\\PrimedDB\\Util\\include -ID:\\Code\\Project\\PrimedDB\\ErrorHandler\\include /DWIN32 /D_WINDOWS /GR /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi /FoCMakeFiles\\PrimedDB.dir\\PrimedDB.cpp.obj /FdCMakeFiles\\PrimedDB.dir\\ /FS -c D:\\Code\\Project\\PrimedDB\\PrimedDB\\PrimedDB.cpp",
+  "file": "D:/Code/Project/PrimedDB/PrimedDB/PrimedDB.cpp",
+  "output": "PrimedDB/CMakeFiles/PrimedDB.dir/PrimedDB.cpp.obj"
+}
+]

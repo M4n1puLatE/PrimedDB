@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
-
+project(PrimedDB LANGUAGES CXX)
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
@@ -9,14 +9,29 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake;${CMAKE_MODULE_PATH}")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+find_package(Boost REQUIRED CONFIG COMPONENTS 
+    system          # Often needed by other components
+    filesystem      # Often needed by other components  
+    thread          # Needed by Boost.Log
+    log             # The core logging library
+    log_setup       # For initialization settings
+    atomic          # Needed by Boost.Log
+    date_time       # Often needed by logging features
+    regex           # Sometimes needed by filters/patterns
+    chrono          # Needed by some timing features
+    serialization   # If using advanced features
+)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(gmp REQUIRED IMPORTED_TARGET gmp)
+find_package(cryptopp CONFIG REQUIRED)
 
 
-project(PrimedDB LANGUAGES CXX)
 
 
 
-# add_subdirectory(Command)
-# add_subdirectory(Compiler)
+
+add_subdirectory(Command)
+add_subdirectory(Compiler)
 add_subdirectory(ErrorHandler)
 
 # add_subdirectory(Network)

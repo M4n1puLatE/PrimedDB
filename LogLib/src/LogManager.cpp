@@ -49,7 +49,7 @@ namespace Log
 	void LogManager::write(std::string&& fileDir, std::string&& message)
 	{
 		Util::write_lock lock(m_queueMutex);
-		m_writeQueue.emplace(std::forward<std::string>(fileDir), std::forward<std::string>(message));
+		m_writeQueue.emplace(std::move(fileDir), std::move(message));
 		if (m_printCount == SUBMIT_COUNT)
 			notify();
 	}
