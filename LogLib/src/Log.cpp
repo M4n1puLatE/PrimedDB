@@ -132,7 +132,7 @@ namespace Log
 		auto label = getLabel();
 
 		Util::TimeStamp time = Util::TimeStamp::Now();
-		print = std::format("{}{}: {}", time.get(),label,print);
+		print = std::format("{}-{}: {}", time.get(),label,print);
 		LogManager::Get().print(print);
 		if (isWriteToFile())
 		{
@@ -148,7 +148,7 @@ namespace Log
 	}
 	Log& Log::operator()(std::string&& fileName)
 	{
-		return toFile(std::forward<string>(fileName));
+		return toFile(std::move(fileName));
 	}
 	void Log::operator<<(void (*func)(Log&))
 	{

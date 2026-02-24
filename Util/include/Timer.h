@@ -63,7 +63,7 @@ namespace Util {
 		{
 			m_begin = copy.m_begin;
 		}
-		Timer& operator=(Timer&& move)
+		Timer& operator=(Timer&& move)noexcept
 		{
 			m_begin = std::move(move.m_begin);
 		}

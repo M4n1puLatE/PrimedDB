@@ -54,7 +54,7 @@ namespace Log
     }
     ClassInfo::ClassInfo(string_view functionSig, string_view sourceFileDirectory, size_t lineNumber)
         : Raw(functionSig),
-    ClassName(GetClassName(functionSig)),
+        ClassName(GetClassName(functionSig)),
           FileDirectory(sourceFileDirectory),
           FunctionName(GetFunctionName(functionSig)),
           LineNumber(lineNumber),
@@ -69,27 +69,29 @@ namespace Log
     }
     string ClassInfo::classInfo()const
     {
-        stringstream ss;
-        ss << ReturnType << " " << ClassName << "::" << FunctionName << "(" << ParameterList << ")";
-        return ss.str();
+        return std::format("{} {}::{}({})", 
+                           ReturnType, 
+                           ClassName, 
+                           FunctionName, 
+                           ParameterList);
     }
     //只返回关键信息，包括函数返回值类型，函数名称
     string ClassInfo::functionInfo()const
     {
-        stringstream ss;
-        ss << ReturnType << " " << FunctionName << "(" << ParameterList << ")";
-        return ss.str();
+        return std::format("{} {}({})", 
+                           ReturnType, 
+                           FunctionName, 
+                           ParameterList);
     }
     //返回全部信息，包括函数返回值类型，类名称，函数名称，参数列表
     string ClassInfo::complete()const
     {
-        stringstream ss;
-        ss << ReturnType << " " 
-        << ClassName << "::" 
-        << FunctionName << "(" 
-        << ParameterList << ")"
-        << " in "<<FileDirectory
-        << " at line " << LineNumber;
-        return ss.str();
+        return std::format("{} {}::{}({}) in {} at line {}",
+                           ReturnType, 
+                           ClassName, 
+                           FunctionName, 
+                           ParameterList,
+                           FileDirectory,
+                           LineNumber);
     }
 }

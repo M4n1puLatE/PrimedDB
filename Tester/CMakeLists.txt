@@ -26,6 +26,7 @@ target_link_libraries(${PROJECT_NAME}
         LogLib
         ErrorHandler
         Command
+        Compiler
         PkgConfig::gmp
         Boost::log
         Boost::log_setup

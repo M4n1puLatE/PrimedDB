@@ -2,7 +2,7 @@
 
 namespace Command
 {
-	enum class Operator:char
+	enum class ManageKeyword:char
 	{
 		Who,
 		Level,

@@ -22,6 +22,7 @@ target_link_libraries(PrimedDB
         Util
         ErrorHandler
         Command
+        Compiler
         PkgConfig::gmp
         Boost::log
         Boost::log_setup

@@ -113,6 +113,8 @@ namespace Tester
 			BOOST_LOG_TRIVIAL(warning) << "This is a warning message.";
 			BOOST_LOG_TRIVIAL(error) << "This is an error message.";
 			BOOST_LOG_TRIVIAL(fatal) << "This is a fatal message.";
+			BOOST_LOG_TRIVIAL(error) << "This is an error message.";
+			BOOST_LOG_TRIVIAL(fatal) << "This is a fatal message.";
 		}
 		return true;
 	}
