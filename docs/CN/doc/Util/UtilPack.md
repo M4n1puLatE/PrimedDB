@@ -1,5 +1,5 @@
 # Util 包
-> `Util`是PrimedDB中一些公用工具类型或通用基类类型（如单例类）
+> `Util`是PrimedDB中一些公用工具类型或通用基类类型（如单例类），其为整个PrimedDB项目提供共享的可重用代码。
 
 # 以下是Util中已有的类
 - [DepreciatedManager](DepreciatedManager.md)：~~管理者类型基类~~(已弃用)

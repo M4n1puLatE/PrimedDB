@@ -9,7 +9,7 @@
 继承`Manager`方法并在子类中实现`service`（`Manager`线程中运行的管理服务）和`condition`（线程启动条件）并传入构造函数进行构造（使用`bind`或`lambda`表达式）
 
 
-# 类声明与接口
+# 类和接口声明
 ```cpp
 class Manager
 {

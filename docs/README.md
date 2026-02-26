@@ -1,16 +1,9 @@
 # 更新信息
-- ## 时间：2026年2月12日
-> - 优化Tester类的文档，使得其与更新的实现相符
-> - 添加Log类和LogManager类的文档
-> - 添加ClassInfo类的文档
-> - 添加Singleton类的文档
-> - 添加ErrorManager类的文档
-> - 优化代码说明
-> - 添加Timer类的文档
-> - 添加TimeStamp类的文档
-> - 添加关于Error类的说明
-> - 添加关于ErrorManager的说明
-> - 添加关于系统级文件操作类——SFO(System level File Operations)类的说明
+- ## 2026年2月26日
+> - 添加理论基础部分
+> - 添加草案部分
+
+
 # PrimedDB技术文档
 ## 项目简介
 - 本项目为*廖润康*的毕业设计，题目为`《基于质数哈希键和质因数分解查询的关系型数据库》`（<a href="./thesis.pdf" target="_blank" download>下载论文英文原文</a>）。设计目的是为了将所有类型的**查询理论时间复杂度统一为**$O(1)$。
@@ -18,7 +11,7 @@
 ### 时间线
 - 项目开发**开始时间**：2025年8月
 - 项目**可行性验证**通过：2025年9月
-	- 基于暴力穷举和质数估算公式两种方式同时证明了将原数据映射到扩大后的键区域可以建立满射关系。
+	- 基于*暴力穷举*和*质数估算公式*两种方式同时证明了将原数据映射到扩大后的键区域可以建立满射关系。
 - **第一版**成品发布时间：2025年11月
 	- 第一版为demo版本，仅支持Windows平台
 	- 存在部分会导致数据库程序意外退出的Bug，所有Bug原因已知，并将在跨平台版本重构。
@@ -33,6 +26,7 @@
 - 在**查询时不需要进行解密即可运算**，质数哈希键仍然保留了原有数据的排序信息。
 - 区别于传统数据库需要对每个列建立位向量，再对其进行与运算筛选数据。PrimedDB可以直接**在记录层面创建单个位向量并实现多条件查找**。
 - 所有**查询操作都被转化为一个取模运算**，`0`即为给定条件的数据存在于当前记录，`1`则为当前记录不存在需要的数据。
+- 详见[理论基础](CN/doc/theorems).
 
 ### 项目劣势
 - 由于存储时直接存储哈希键形式，所以需要额外的存储空间
@@ -46,24 +40,26 @@
 ---
 ## 文档目录
 ### 文档更新
-- [更新记录](updates.md)
+- [更新记录](Updates.md)
 
-### 文档说明
+### 文档格式与基础理论
 - [代码规范与文档格式](CN/explain/Rules.md)
 - [理论基础](CN/doc/theorems.md)
+- [草案内容](CN/doc/draft.md)
+
 
 ### 功能文档
 - ### [Tester空间](CN/doc/Tester/TesterPack.md)
 	- [Tester](CN/doc/Tester/Tester.md)：单元测试类型
 - ### [Util空间](CN/doc/Util/UtilPack.md)
-	- [DepreciatedManager](DepreciatedManager.md)：~~管理者类型基类~~(已弃用)
-	- [Manager](Manager.md)：基于上下文切换的管理者类型基类
-	- [TimeStamp](TimeStamp.md)：时间戳类型
-	- [Timer](Timer.md)：计时器
-	- [TimerPlus](TimerPlus.md)：带有暂停功能的计时器
-	- [Singleton](Singleton.md)：单例类基类
-	- [SFO](SFO.md)：系统级文件操作类型
-	- [Util](Util.md)：通用工具函数
+	- [DepreciatedManager](CN/doc/Util/DepreciatedManager.md)：~~管理者类型基类~~(已弃用)
+	- [Manager](CN/doc/Util/Manager.md)：基于上下文切换的管理者类型基类
+	- [TimeStamp](CN/doc/Util/TimeStamp.md)：时间戳类型
+	- [Timer](CN/doc/Util/Timer.md)：计时器
+	- [TimerPlus](CN/doc/Util/TimerPlus.md)：带有暂停功能的计时器
+	- [Singleton](CN/doc/Util/Singleton.md)：单例类基类
+	- [SFO](CN/doc/Util/SFO.md)：系统级文件操作类型
+	- [Util](CN/doc/Util/Util.md)：通用工具函数
 - ### [LogLib空间](CN/doc/LogLib/LogLib.md)
 	- [Log](CN/doc/LogLib/Log.md)：日志输出类型
 	- [LogType](CN/doc/LogLib/LogType.md)：日志类型

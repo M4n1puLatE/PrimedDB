@@ -1,5 +1,5 @@
 # Tester(Class)
->Tester 是PrimedDB中用于**执行单元测试的基类**。
+>Tester 是PrimedDB中用于**执行单元测试的基类**。子类（实际测试）通过向基类测试列表注册测试。所有注册的测试在外部调用`run()`接口时统一执行。
 
 所属命名空间：`Tester`
 
