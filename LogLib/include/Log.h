@@ -31,13 +31,15 @@ namespace Log
 		LogType m_logType = LogType::None;
 		string m_fileName;
 
-		const std::string& getFileName() const;
+
 		std::string getMessage()const;
-		std::string getLabel() const;
 		void writeTask(string&& message) const;
 		static void printMessage(const string& message);
 	public:
 		static string GetLogTypeName(LogType logType);
+		const std::string& getFileName() const;
+		std::string getLabel() const;
+
 		bool isTerminated() const;
 		bool isWriteToFile() const;
 		Log& type(LogType logType);

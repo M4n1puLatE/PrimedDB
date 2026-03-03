@@ -5,17 +5,8 @@
 #include <functional>
 namespace Log
 {
-	void LogManager::clear()
-	{
-		if (m_printCount > SUBMIT_COUNT)
-		{
-			m_printCount = 0;
-		}
-		printf("\n");
-		++m_printCount;
-	}
 	LogManager::LogManager()
-		:Manager(std::bind(&LogManager::task,this), std::bind(&LogManager::condition,this)),m_printCount(0)
+		:Manager(std::bind(&LogManager::task,this), std::bind(&LogManager::condition,this))
 	{}
 	void LogManager::task()
 	{
@@ -24,10 +15,15 @@ namespace Log
 			Util::write_lock lock(m_queueMutex);
 			pair = std::move(m_writeQueue.front());
             m_writeQueue.pop();
+			printf("%s\n", pair.second.c_str());
 		}
-		//使用系统级文件操作
-		std::fstream file(pair.first, std::ios::app);
-		file << pair.second << std::endl;
+		if (!pair.first.empty())
+		{
+			//使用系统级文件操作
+			std::fstream file(pair.first, std::ios::app);
+			file << pair.second << std::endl;
+		}
+
 	}
 	bool LogManager::condition()const
 	{
@@ -35,23 +31,21 @@ namespace Log
 	}
 	void LogManager::print(const std::string& message)
 	{
-		Util::unique_lock lock(m_printProtect);
-		printf(message.c_str());
-		clear();
+		Util::write_lock lock(m_queueMutex);
+		m_writeQueue.emplace("", message);
+		notify();
 	}
 	void LogManager::write(const std::string& fileDir, std::string&& message)
 	{
 		Util::write_lock lock(m_queueMutex);
 		m_writeQueue.emplace(fileDir, std::move(message));
-		if (m_printCount == SUBMIT_COUNT)
-			notify();
+		notify();
 	}
 	void LogManager::write(std::string&& fileDir, std::string&& message)
 	{
 		Util::write_lock lock(m_queueMutex);
 		m_writeQueue.emplace(std::move(fileDir), std::move(message));
-		if (m_printCount == SUBMIT_COUNT)
-			notify();
+		notify();
 	}
 	size_t LogManager::size()
 	{

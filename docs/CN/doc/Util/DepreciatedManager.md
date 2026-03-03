@@ -42,13 +42,13 @@ public:
 
 ---
 ## 构造函数
-- **Manager(const std::function<void()>& customService, const std::function<bool()>& condition)**
+- **Manager(`const std::function<void()>&` customService, `const std::function<bool()>&` condition)**
 	- 注册服务和服务线程的唤醒条件。
 
 
 ---
 ## 私有方法
-- **service(const std::function<void()>& customService, const std::function<bool()>& condition)**
+- **service(`const std::function<void()>&` customService, `const std::function<bool()>&` condition)**
 ---
 ## 继承类内部接口
 - **notify()**

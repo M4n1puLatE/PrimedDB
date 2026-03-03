@@ -56,7 +56,7 @@ public:
 1. 默认构造函数
 	- 默认关闭计时器，需要使用`start()`启动计时器。
 	- 使用`isEmpty()`时返回*true*。
-2. **Timer(TimeType begin)**
+2. **Timer(`TimeType` begin)**
 	- 自动使用传入的时间启动计时器。
 	- 可以使用`static`函数`Now()`获取当前时间。
 3. 拷贝构造函数

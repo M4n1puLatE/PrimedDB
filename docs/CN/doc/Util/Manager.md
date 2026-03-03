@@ -111,7 +111,7 @@ public:
 	- 返回当前有多少个未执行任务
 3. **serviceSize()**: `size_t`
 	- 返回当前有多少个已注册服务
-4. **add(service&& service)**
+4. **add(`service&&` service)**
 	- 注册一个新的服务到服务数组中
 5. **newTask(size_t id)**
 	- 创建一个新的待执行任务
@@ -119,7 +119,7 @@ public:
 	- 检测当前待执行队列是否为空
 7. **isServiceEmpty()**: `bool`
 	- 检测当前已注册服务数组是否为空
-8. **urgentTask(size_t id)**
+8. **urgentTask(`size_t` id)**
 	- 创建一个新的优先待执行任务，并优先执行
 ### public
 1. **isTerminate()**: `bool`
