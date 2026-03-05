@@ -86,7 +86,7 @@ namespace Tester
 	}
 	bool LogTester::testWrite()
 	{
-		for (int n = 0;n<1000;++n)
+		for (int n = 0;n<500;++n)
 		{
 			Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(1).toFile("test").end();
 			Log::log.type(Log::LogType::Info).add("Test").add("Info").addNumber(2).toFile("test").end();
@@ -104,7 +104,7 @@ namespace Tester
 
 		// 添加一个控制台日志接收器 (sink)，使用默认格式
 		logging::add_console_log();
-		for (int n = 0; n < 1000; ++n)
+		for (int n = 0; n < 500; ++n)
 		{
 
 

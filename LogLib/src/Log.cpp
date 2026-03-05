@@ -132,7 +132,7 @@ namespace Log
 		auto label = getLabel();
 
 		Util::TimeStamp time = Util::TimeStamp::Now();
-		print = std::format("{}-{}: {}", time.get(),label,print);
+		print = std::format("{} -{}: {}", time.get(),label,print);
 		LogManager::Get().print(print);
 		if (isWriteToFile())
 		{
