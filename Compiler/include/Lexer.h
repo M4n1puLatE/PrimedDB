@@ -12,6 +12,7 @@ namespace Compiler
 		Char,//Keyword/Identifier/Literal
 		Number,//NumberLiteral
 		String,//StringLiteral
+		Bracket,
 		Operator,
 	};
 
@@ -26,8 +27,10 @@ namespace Compiler
 		TokenType getTokenType(CharStates state, Index current ,std::string& token);
 		void generateError(CharStates init, size_t pos);
 	public:
+		Lexer();
 		Lexer(const std::string& statement);
 		Lexer(std::string&& statement);
+		Lexer(Lexer&& move)noexcept;
 		const TokenList& getTokens()const;
 		const StringList& getRawTokens()const;
 		bool isError()const;
@@ -35,6 +38,7 @@ namespace Compiler
         size_t rawTokenSize()const;
         long long getErrorPosition()const;
 		ErrorCode getErrorCode()const;
+		void reconstruct(const std::string& statement);
 		void setError(ErrorCode errorCode, long long errorPosition);
 	};
 }

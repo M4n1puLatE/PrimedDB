@@ -4,7 +4,7 @@ namespace Compiler
 	const std::set<char> Tokens::Operators = {
 		'=','%','<','>','&','^',
 		'*','+','-','/','.','$',
-		'|','!'
+		'|','!','?'
 	};
 	const std::set<std::string_view> Tokens::Keywords={
 		"select","from","insert","where","into",
@@ -28,7 +28,11 @@ namespace Compiler
 	const std::set<std::string_view> Tokens::BinOperators={
 		"=","%","<",">","&","^",
 		"*","+","-","/",".","$",
-		"|"
+		"|","+=","-=","*=","/=",
+		"%=","&=","|="
+	};
+	const std::set<char>Tokens::Brackets = {
+		'(',')','[',']','{','}'
 	};
 	bool TokenFunctions::IsChar(char c)
 	{
@@ -58,7 +62,10 @@ namespace Compiler
 	{
 		return c == ' ';
 	}
-
+	bool TokenFunctions::IsBracket(char c)
+	{
+		return Tokens::Brackets.contains(c);
+	}
 	bool TokenFunctions::IsKeyword(const std::string& c)
 	{
 		return Tokens::Keywords.contains(c);
@@ -89,7 +96,7 @@ namespace Compiler
 			c = toupper(c);
 		}
 	}
-	constexpr std::string_view TokenFunctions::GetError(ErrorCode errorCode)
+	std::string_view TokenFunctions::GetError(ErrorCode errorCode)
 	{
 		switch (errorCode)
 		{
@@ -103,6 +110,12 @@ namespace Compiler
 			return "InvalidOperator";
 		case ErrorCode::NotClosedStringLiteral:
 			return "NotClosedStringLiteral";
+		case ErrorCode::NotAValidStatement:
+			return "NotAValidStatement";
+		case ErrorCode::NotClosedBracket:
+			return "NotClosedBracket";
+		case ErrorCode::EmptyStatement:
+			return "EmptyStatement";
 		}
 		return "";
 	}

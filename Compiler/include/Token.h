@@ -75,7 +75,11 @@ namespace Compiler
 		InvalidOperator,
 		OperatorFormatError,
 		NotClosedStringLiteral,
+		NotAValidStatement,
+		NotClosedBracket,
+		EmptyStatement,
 	};
+	
 	using Element = std::pair<Index, OperatorType>;
 	using Expression = std::stack<Element>;
 	using TokenError = std::pair<ErrorCode, long long>;
@@ -87,6 +91,7 @@ namespace Compiler
 		static const std::set<std::string_view> LogicalOperators;
 		static const std::set<std::string_view> UniOperators;
         static const std::set<std::string_view> BinOperators;
+		static const std::set<char> Brackets;
 	};
 	class TokenFunctions
 	{
@@ -102,21 +107,22 @@ namespace Compiler
 			return static_cast<T>(t);
 		}
 		static std::string_view GetTokenType(TokenType type);
-		static bool IsChar(char t);
-		static bool IsUnderLine(char t);
-		static bool IsQuote(char t);
-		static bool IsOperator(char t);
-		static bool IsDigit(char t);
-		static bool IsTerminate(char t);
+		static bool IsChar(char c);
+		static bool IsUnderLine(char c);
+		static bool IsQuote(char c);
+		static bool IsOperator(char c);
+		static bool IsDigit(char c);
+		static bool IsTerminate(char c);
 		static bool IsSpace(char c);
+		static bool IsBracket(char c);
 
-        static bool IsKeyword(const std::string& t);
-		static bool IsUniOperator(const std::string& t);
-        static bool IsBinOperator(const std::string& t);
-		static bool IsLogicalOperator(const std::string& t);
+        static bool IsKeyword(const std::string& str);
+		static bool IsUniOperator(const std::string& str);
+        static bool IsBinOperator(const std::string& str);
+		static bool IsLogicalOperator(const std::string& str);
 		static void ToLower(std::string& str);
 		static void ToUpper(std::string& str);
-		constexpr static std::string_view GetError(ErrorCode errorCode);
+		static std::string_view GetError(ErrorCode errorCode);
 	};
 
 }

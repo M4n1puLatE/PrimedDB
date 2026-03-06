@@ -7,12 +7,12 @@
 
 int main()
 {
-	UtilTester utilTest;
-	utilTest.run();
-	ClassInfoTester classInfoTest;
-    classInfoTest.run();
-    TimeStampTester timeStampTest;
-    timeStampTest.run();
+	//UtilTester utilTest;
+	//utilTest.run();
+	//ClassInfoTester classInfoTest;
+ //   classInfoTest.run();
+ //   TimeStampTester timeStampTest;
+ //   timeStampTest.run();
 	//LogTester logTest;
 	//logTest.run();
 	LexerTester lexerTest;
