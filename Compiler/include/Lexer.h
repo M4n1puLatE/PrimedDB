@@ -34,6 +34,7 @@ namespace Compiler
 		const TokenList& getTokens()const;
 		const StringList& getRawTokens()const;
 		bool isError()const;
+		std::string&& moveAt(size_t index);
 		size_t tokenSize()const;
         size_t rawTokenSize()const;
         long long getErrorPosition()const;

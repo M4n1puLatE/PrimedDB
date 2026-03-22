@@ -12,7 +12,6 @@ namespace Util {
 	}
 	Util::substring Util::SplitString(const string& str, char delim)
 	{
-
 		substring result;
 		SplitString(result, str, delim);
 		return result;

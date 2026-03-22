@@ -1,288 +1,192 @@
-//#include <Parser.h>
-//#include <Exception.h>
-//#include <ranges>
-//#include <string>
-//#include <cctype>
-//
-//namespace Compiler
-//{
-//	class ParseFailureException : public ErrorHandler::Exception<"ParseFailure">
-//	{
-//	public:
-//		ParseFailureException(std::string& message, 
-//							  std::string_view funcSig, 
-//							  std::string_view fileDirectory = "", 
-//							  long long lineNumber = 0)
-//			:Exception(message, funcSig, fileDirectory, lineNumber)
-//		{}
-//		ParseFailureException(std::string&& message, 
-//							  std::string_view funcSig, 
-//							  std::string_view fileDirectory = "", 
-//							  long long lineNumber = 0)
-//			:Exception(std::move(message), funcSig, fileDirectory, lineNumber)
-//		{}
-//	};
-//	const std::set<char> Parser::Operators={
-//		'=','%','<','>','&','^',
-//		'*','+','-','/','.','$'
-//	};
-//
-//	const std::set<std::string_view> Parser::Keywords = {
-//		"select","from","insert","where",
-//		"into","join","table","create","delete",
-//		"update","set","values","alter","drop",
-//		"truncate","group","order","by","asc",
-//		"desc","count","sum","avg","max","min",
-//		"distinct","having","as","on","use","primary",
-//		"foreign","key","unique","auto_increment",
-//		"null","default","between","like","in","exists"
-//		,"case","when","then","else","end",
-//		"is","any","all","some","between","in","like"
-//		,"true","false", "date","time","user"
-//	};
-//	const std::set<std::string_view> Parser::LogicalOperators = {
-//		"and","or","not","nor"
-//	};
-//	static TokenType GetState(char c)
-//	{
-//		if (isalnum(c))
-//		{
-//			return TokenType::String;
-//		}
-//		else if (isdigit(c))
-//		{
-//			return TokenType::NumberLiteral;
-//		}
-//		else if (c == '(')
-//		{
-//			return TokenType::LeftBracket;
-//		}
-//		else if (c == ')')
-//		{
-//			return TokenType::RightBracket;
-//		}
-//		else if (c == ';')
-//		{
-//			return TokenType::Terminal;
-//		}
-//		else if (c == ',')
-//		{
-//			return TokenType::Comma;
-//		}
-//		else if (Parser::Operators.contains(c))
-//		{
-//			return TokenType::Operator;
-//		}
-//		else if (c == '\"')
-//		{
-//			return TokenType::StringLiteral;
-//		}
-//		else
-//			return TokenType::Error;
-//	}
-//	static bool isNumberLiteralState(TokenType state)
-//	{
-//		return state == TokenType::NumberLiteral;
-//	}
-//	static bool isStringLiteralState(TokenType state)
-//	{
-//		return state == TokenType::StringLiteral 
-//		|| isNumberLiteralState(state);
-//	}
-//	static bool PureNumberString(const std::string& str)
-//	{
-//		return std::ranges::all_of(str, isdigit);
-//	}
-//	static bool PureIdentifierString(const std::string& str)
-//	{
-//		return std::ranges::all_of(str, [](char c) {
-//			return isalnum(c) || c == '_';
-//		});
-//	}
-//	static bool PureOperatorString(const std::string& str)
-//	{
-//		return std::ranges::all_of(str, [](char c)
-//		{
-//			return Parser::Operators.contains(c);
-//		});
-//	}
-//	static bool isIdentifierState(TokenType state)
-//	{
-//		return state == TokenType::Identifier
-//		||isStringLiteralState(state);
-//	}
-//
-//	void Parser::Lower(std::string& str)
-//	{
-//		std::ranges::for_each(str, [](char& c)
-//		{
-//			c = std::tolower(c);
-//		});
-//	}
-//	void Parser::tokenize()
-//	{
-//		std::string token;
-//		TokenType initState,current;
-//		if (m_raw.empty())
-//		{
-//			m_error = std::make_pair(ParserErrors::NotAStatement, 0);
-//		}
-//        for (size_t i = 0,begin = 0; i < m_raw.size();)
-//		{ 
-//        	if (std::isalnum(m_raw[i]) 
-//				|| m_raw[i] == '_' 
-//				|| m_raw[i] == '\"'
-//				|| Operators.contains(m_raw[i])
-//				|| m_raw[i] == ';'
-//				|| m_raw[i] == ','
-//				|| m_raw[i] == '('
-//				|| m_raw[i] == ')')
-//			{
-//				begin = i;
-//				token = m_raw[i++];
-//				initState = GetState(m_raw[i]);
-//				if (initState == TokenType::Error)
-//				{
-//					m_error = std::make_pair(ParserErrors::InvalidCharacter, i);
-//					return;
-//				}
-//
-//				while (i < m_raw.size())
-//				{
-//					current = GetState(m_raw[i]);
-//					if (current == TokenType::Error)
-//					{
-//						m_error = std::make_pair(ParserErrors::InvalidCharacter, i);
-//						return;
-//					}
-//					if (current == initState
-//						||(initState == TokenType::Identifier && isIdentifierState(current))
-//						||(initState == TokenType::StringLiteral && isStringLiteralState(current))
-//						||(initState == TokenType::NumberLiteral && isNumberLiteralState(current))
-//                        ||(initState == TokenType::Operator && Operators.contains(token[0])))
-//						token += m_raw[i++];
-//					else
-//						break;
-//				}
-//				if (initState == TokenType::String)
-//				{
-//					if (Keywords.contains(token))
-//					{
-//						initState = TokenType::Keyword;
-//					}
-//					else
-//						initState = TokenType::Identifier;
-//				}
-//				if ((initState == TokenType::StringLiteral&&token.back() != '\'')
-//					|| (initState == TokenType::NumberLiteral && !PureNumberString(token)))
-//				{
-//					m_error = std::make_pair(ParserErrors::LiteralFormatError, i);
-//					return;
-//				}
-//				else if (initState == TokenType::Identifier&& !PureIdentifierString(token))
-//				{
-//					m_error = std::make_pair(ParserErrors::IdentifierFormatError, i);
-//					return;
-//				}
-//				else if (initState == TokenType::Operator
-//						 &&!(PureOperatorString(token)))
-//				{
-//					m_error = std::make_pair(ParserErrors::IncorrectOperator, i);
-//					return;
-//				}
-//				add(std::move(token));
-//				token.clear();
-//				m_tokenList.emplace_back(initState, begin);
-//			}
-//			m_error = std::make_pair(ParserErrors::InvalidCharacter, i);
-//			return;
-//		}
-//	}
-//	void Parser::operatorConvert(Token& token)
-//	{
-//		if (token.first == TokenType::Operator)
-//		{
-//			if (m_parsingList[token.second] == "="
-//				|| m_parsingList[token.second] == "+"
-//				|| m_parsingList[token.second] == "-"
-//				|| m_parsingList[token.second] == "*"
-//				|| m_parsingList[token.second] == "/"
-//				|| m_parsingList[token.second] == "=="
-//				|| m_parsingList[token.second] == "<="
-//				|| m_parsingList[token.second] == ">="
-//				|| m_parsingList[token.second] == ">"
-//				|| m_parsingList[token.second] == "<"
-//				|| m_parsingList[token.second] == "and")
-//			{
-//				token.first = TokenType::BinOperator;
-//			}
-//		}
-//	}
-//	void Parser::parse()
-//	{
-//		if (m_tokenList.size()<=3)
-//			m_error = std::make_pair(ParserErrors::NotAStatement, 0);
-//		for (size_t i = 0 ;i<m_tokenList.size();++i)
-//		{
-//			operatorConvert(m_tokenList[i]);
-//		}
-//	}
-//
-//	void Parser::add(std::string&& token)
-//	{
-//		m_parsingList.emplace_back(std::move(token));
-//	}
-//	Parser::Parser(std::string& raw)
-//		:m_raw(raw)
-//	{
-//		Lower(m_raw);
-//		tokenize();
-//	}
-//	Parser::Parser(std::string&& raw)
-//		:m_raw(std::move(raw))
-//	{
-//		Lower(m_raw);
-//		tokenize();
-//	}
-//	//Throw ParseFailure Exception;
-//	const std::string& Parser::get(size_t index)const
-//	{
-//		if (!m_parsingList.empty()&&index<m_parsingList.size())
-//			return m_parsingList[index];
-//		throw ParseFailureException("",
-//			THIS_FUNC,
-//			THIS_FILE,
-//			THIS_LINE);
-//	}
-//	long long Parser::errorPosition()const
-//	{
-//		
-//		if (m_error.first != ParserErrors::None)
-//		{
-//			return m_error.second;
-//		}
-//		else
-//			return -1;
-//	}
-//	
-//	const TokenList& Parser::getTokenList()const
-//	{
-//		return m_tokenList;
-//	}
-//	const ParsingList& Parser::getParsingList()const
-//	{
-//		return m_parsingList;
-//	}
-//	bool Parser::fail() const
-//	{
-//		return m_error.first == ParserErrors::None;
-//	}
-//	size_t Parser::tokenSize()const
-//	{
-//		return m_tokenList.size();
-//	}
-//	size_t Parser::parsingSize()const
-//	{
-//		return m_parsingList.size();
-//	}
-//}
+#include "Parser.h"
+namespace Compiler
+{
+    TokenType Parser::GetKeyword(const std::string& token)
+    {
+        if (token == "SELECT" || token == "select") return TokenType::Select;
+        else if (token == "FROM" || token == "from") return TokenType::From;
+        else if (token == "INSERT" || token == "insert") return TokenType::Insert;
+        else if (token == "WHERE" || token == "where") return TokenType::Where;
+        else if (token == "INTO" || token == "into") return TokenType::Into;
+        else if (token == "JOIN" || token == "join") return TokenType::Join;
+        else if (token == "TABLE" || token == "table") return TokenType::Table;
+        else if (token == "CREATE" || token == "create") return TokenType::Create;
+        else if (token == "DELETE" || token == "delete") return TokenType::Delete;
+        else if (token == "UPDATE" || token == "update") return TokenType::Update;
+        else if (token == "SET" || token == "set") return TokenType::Set;
+        else if (token == "VALUES" || token == "values") return TokenType::Values;
+        else if (token == "ALTER" || token == "alter") return TokenType::Alter;
+        else if (token == "DROP" || token == "drop") return TokenType::Drop;
+        else if (token == "TRUNCATE" || token == "truncate") return TokenType::Truncate;
+        else if (token == "GROUP" || token == "group") return TokenType::Group;
+        else if (token == "ORDER" || token == "order") return TokenType::Order;
+        else if (token == "BY" || token == "by") return TokenType::By;
+        else if (token == "ASC" || token == "asc") return TokenType::Asc;
+        else if (token == "DESC" || token == "desc") return TokenType::Desc;
+        else if (token == "COUNT" || token == "count") return TokenType::Count;
+        else if (token == "SUM" || token == "sum") return TokenType::Sum;
+        else if (token == "AVG" || token == "avg") return TokenType::Avg;
+        else if (token == "MAX" || token == "max") return TokenType::Max;
+        else if (token == "MIN" || token == "min") return TokenType::Min;
+        else if (token == "DISTINCT" || token == "distinct") return TokenType::Distinct;
+        else if (token == "HAVING" || token == "having") return TokenType::Having;
+        else if (token == "AS" || token == "as") return TokenType::As;
+        else if (token == "ON" || token == "on") return TokenType::On;
+        else if (token == "USE" || token == "use") return TokenType::Use;
+        else if (token == "PRIMARY" || token == "primary") return TokenType::Primary;
+        else if (token == "FOREIGN" || token == "foreign") return TokenType::Foreign;
+        else if (token == "KEY" || token == "key") return TokenType::Key;
+        else if (token == "UNIQUE" || token == "unique") return TokenType::Unique;
+        else if (token == "SERIES" || token == "series") return TokenType::Series;
+        else if (token == "NULL" || token == "null") return TokenType::Null;
+        else if (token == "DEFAULT" || token == "default") return TokenType::Default;
+        else if (token == "BETWEEN" || token == "between") return TokenType::Between;
+        else if (token == "LIKE" || token == "like") return TokenType::Like;
+        else if (token == "IN" || token == "in") return TokenType::In;
+        else if (token == "EXISTS" || token == "exists") return TokenType::Exists;
+        else if (token == "CASE" || token == "case") return TokenType::Case;
+        else if (token == "WHEN" || token == "when") return TokenType::When;
+        else if (token == "THEN" || token == "then") return TokenType::Then;
+        else if (token == "ELSE" || token == "else") return TokenType::Else;
+        else if (token == "END" || token == "end") return TokenType::End;
+        else if (token == "IS" || token == "is") return TokenType::Is;
+        else if (token == "ANY" || token == "any") return TokenType::Any;
+        else if (token == "ALL" || token == "all") return TokenType::All;
+        else if (token == "SOME" || token == "some") return TokenType::Some;
+        else if (token == "TRUE" || token == "true") return TokenType::True;
+        else if (token == "FALSE" || token == "false") return TokenType::False;
+        else if (token == "DATE" || token == "date") return TokenType::Date;
+        else if (token == "TIME" || token == "time") return TokenType::Time;
+        else if (token == "USER" || token == "user") return TokenType::User;
+        else if (token == "LRK"|| token == "lrk")return TokenType::Lrk;
+        else if (token == "BXY" || token == "bxy") return TokenType::Bxy;
+        return TokenType::None; // 没有匹配
+    }
+    TokenType Parser::GetBinOperator(const std::string& token)
+    {
+        if (token == "+")
+            return TokenType::Add;
+        else if (token == "-")
+            return TokenType::Sub;
+        else if (token == "*")
+            return TokenType::Mul;
+        else if (token == "/")
+            return TokenType::Div;
+        else if (token == "%")
+            return TokenType::Mod;
+        else if (token == "^")
+            return TokenType::Pow;
+        else if (token == ":=")
+            return TokenType::Assign;
+        else if (token == ".")
+            return TokenType::Dot;
+        else if (token == "&")
+            return TokenType::BitAnd;
+        else if (token == "|")
+            return TokenType::BitOr;
+        else if (token == "+=")
+            return TokenType::AddAssign;
+        else if (token == "-=")
+            return TokenType::SubAssign;
+        else if (token == "*=")
+            return TokenType::MulAssign;
+        else if (token == "/=")
+            return TokenType::DivAssign;
+        else if (token == "%=")
+            return TokenType::ModAssign;
+
+        return TokenType::None;
+    }
+    TokenType Parser::GetUniOperator(const std::string& token)
+    {
+        if (token == "++")
+            return TokenType::Pp;
+        else if (token == "--")
+            return TokenType::Mm;
+        else if (token == "!")
+            return TokenType::Emphasize;
+        else if (token == "?")
+            return TokenType::What;
+        return TokenType::None;
+    }
+    TokenType Parser::GetLogicalOperator(const std::string& token)
+    {
+        if (token == "AND" || token == "and")
+            return TokenType::And;
+        else if (token == "OR" || token == "or")
+            return TokenType::Or;
+        else if (token == "NOT" || token == "not")
+            return TokenType::Not;
+        else if (token == "XOR" || token == "xor")
+            return TokenType::Xor;
+        else if (token == "=")
+            return TokenType::Equal;
+        else if (token == "<")
+            return TokenType::Less;
+        else if (token == ">")
+            return TokenType::Greater;
+        else if (token == "<=")
+            return TokenType::LessEqual;
+        else if (token == ">=")
+            return TokenType::GreaterEqual;
+        else if (token == "!=")
+            return TokenType::NotEqual;
+
+
+        return TokenType::None;
+    }
+    const ParsingList& Parser::getList()const
+    {
+        return m_list;
+    }
+    const Lexer& Parser::getLexer()const
+    {
+        return m_lexer;
+    }
+    Parser::Parser(const std::string& statement)
+        : m_lexer(statement)
+    {
+        
+    }
+    Parser::Parser(std::string&& statement)
+        : m_lexer(std::move(statement))
+    {
+        
+    }
+    Parser::Parser(Lexer&& lexer)
+        : m_lexer(std::move(lexer))
+    {
+        
+    }
+    Parser::Parser(Parser&& move) noexcept
+        : m_lexer(std::move(move.m_lexer)), m_list(std::move(move.m_list))
+    {
+        
+    }
+    void Parser::parse()
+    {
+        auto& tokenList = m_lexer.getRawTokens();
+        auto& tokens = m_lexer.getTokens();
+        TokenType current;
+        bool isExpression = false;
+        for (auto& token : tokens)
+        { 
+            if (isExpression)
+            {
+                m_list.emplace_back(TokenType::Expression, "");
+            }
+            current = token.first;
+
+            if (token.first == TokenType::Keyword)
+                current = GetKeyword(tokenList[token.second]);
+            else if (token.first == TokenType::BinOperator)
+                current = GetBinOperator(tokenList[token.second]);
+            else if (token.first == TokenType::LogicalOperator)
+                current = GetLogicalOperator(tokenList[token.second]);
+            else if (token.first == TokenType::UniOperator)
+                current = GetUniOperator(tokenList[token.second]);
+   
+            m_list.emplace_back(current,m_lexer.moveAt(token.second));
+        }
+    }
+}

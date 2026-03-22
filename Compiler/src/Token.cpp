@@ -4,7 +4,7 @@ namespace Compiler
 	const std::set<char> Tokens::Operators = {
 		'=','%','<','>','&','^',
 		'*','+','-','/','.','$',
-		'|','!','?'
+		'|','!','?',':'
 	};
 	const std::set<std::string_view> Tokens::Keywords={
 		"select","from","insert","where","into",
@@ -13,20 +13,21 @@ namespace Compiler
 		"group","order","by","asc","desc","count",
 		"sum","avg","max","min","distinct","having",
 		"as","on","use","primary","foreign","key",
-		"unique","auto_increment","null","default",
+		"unique","series","null","default",
 		"between","like","in","exists","case",
 		"when","then","else","end","is","any",
 		"all","some","between","in","like","true",
-		"false", "date","time","user"
+		"false", "date","time","user","union","intersect",
+		"minus"
 	};
 	const std::set<std::string_view> Tokens::LogicalOperators={
-		"==",">","<",">=","<=","!=","==","and","or","not","nor"
+		"=",">","<",">=","<=","!=","and","or","not","nor"
 	};
 	const std::set<std::string_view> Tokens::UniOperators={
 		"++","--","!","?"
 	};
 	const std::set<std::string_view> Tokens::BinOperators={
-		"=","%","<",">","&","^",
+		":=","%","&","^",
 		"*","+","-","/",".","$",
 		"|","+=","-=","*=","/=",
 		"%=","&=","|="

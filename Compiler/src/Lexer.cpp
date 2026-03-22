@@ -235,6 +235,10 @@ namespace Compiler
 		return m_error.first != ErrorCode::None
 		|| m_rawTokens.empty();
 	}
+	std::string&& Lexer::moveAt(size_t index)
+	{
+		return std::move(m_rawTokens[index]);
+	}
 	size_t Lexer::tokenSize()const
 	{
 		return m_tokens.size();

@@ -8,6 +8,11 @@
 ## 项目简介
 - 本项目为*廖润康*的毕业设计，题目为`《基于质数哈希键和质因数分解查询的关系型数据库》`（<a href="./thesis.pdf" target="_blank" download>下载论文英文原文</a>）。设计目的是为了将所有类型的**查询理论时间复杂度统一为**$O(1)$。
 - 全新跨平台版本基于Cmake构建，从而适配不同的系统环境。
+
+### 项目地址
+- #### [**跨平台重构版本仓库**](https://github.com/M4n1puLatE/PrimedDB)
+- #### [旧版论文实现版本仓库](https://github.com/Jeffrey-Liao/PrimedDB)
+
 ### 时间线
 - 项目开发**开始时间**：2025年8月
 - 项目**可行性验证**通过：2025年9月
@@ -64,3 +69,5 @@
 	- [Log](CN/doc/LogLib/Log.md)：日志输出类型
 	- [LogType](CN/doc/LogLib/LogType.md)：日志类型
 	- [LogManager](CN/doc/LogLib/LogManager.md)：日志管理者类型
+- ### [Compiler空间](CN/doc/Compiler/CompilerPack.md)
+	- [Lexer](CN/doc/Compiler/CompilerPack.md)：词法分析器
