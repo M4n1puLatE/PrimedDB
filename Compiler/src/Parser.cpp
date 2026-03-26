@@ -143,6 +143,10 @@ namespace Compiler
     {
         return m_lexer;
     }
+    const TokenError& Parser::getError()const
+    {
+        return m_lexer.getError();
+    }
     Parser::Parser(const std::string& statement)
         : m_lexer(statement)
     {
@@ -163,12 +167,42 @@ namespace Compiler
     {
         
     }
+    bool operateBracketStack(std::stack<TokenType>& stack, TokenType current)
+    {
+        if (current == TokenType::LeftBracket
+            ||current == TokenType ::LeftCurlyBracket
+            ||current == TokenType::LeftParenthesis)
+        {
+            stack.push(current);
+        }
+        else if (current == TokenType::RightParenthesis)
+        {
+            auto s = stack.top();
+            if (s != TokenType::LeftParenthesis)
+                return false;
+            
+        }
+        else if (current == TokenType::RightBracket)
+        {
+            auto s = stack.top();
+            if (s != TokenType::LeftBracket)
+                return false;
+        }
+        else if (current == TokenType::RightCurlyBracket)
+        {
+            auto s = stack.top();
+            if (s != TokenType::LeftCurlyBracket)
+                return false;
+        }
+        return true;
+    }
     void Parser::parse()
     {
         auto& tokenList = m_lexer.getRawTokens();
         auto& tokens = m_lexer.getTokens();
         TokenType current;
         bool isExpression = false;
+        std::stack<TokenType> brackets;
         for (auto& token : tokens)
         { 
             if (isExpression)
@@ -176,6 +210,11 @@ namespace Compiler
                 m_list.emplace_back(TokenType::Expression, "");
             }
             current = token.first;
+            if (!operateBracketStack(brackets, current))
+            {
+                m_lexer.setError(ErrorCode::MissingLeftParenthesis, token.second);
+                break;
+            }
 
             if (token.first == TokenType::Keyword)
                 current = GetKeyword(tokenList[token.second]);
@@ -187,6 +226,10 @@ namespace Compiler
                 current = GetUniOperator(tokenList[token.second]);
    
             m_list.emplace_back(current,m_lexer.moveAt(token.second));
+        }
+        if (!brackets.empty())
+        {
+            m_lexer.setError(ErrorCode::NotClosedBracket, 0);
         }
     }
 }

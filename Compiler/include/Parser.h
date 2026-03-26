@@ -43,6 +43,6 @@ namespace Compiler
 		static TokenType GetLogicalOperator(const std::string& token);
 		const ParsingList& getList()const;
         const Lexer& getLexer()const;
-
+		const TokenError& getError()const;
 	};
 }

@@ -31,7 +31,12 @@ namespace Compiler
 		SemiColon,
 		LeftBracket,
 		RightBracket,
+		LeftParenthesis,
+        RightParenthesis,
+		LeftCurlyBracket,
+		RightCurlyBracket,
 		SubExpression,
+		SubQuery,
 
 		//keywords
 		Select, 
@@ -115,7 +120,6 @@ namespace Compiler
 		Minus,
 		IndexOf,
 		Statements,
-		SubQuery,
 		AddAssign,
         SubAssign,
         MulAssign,
@@ -149,6 +153,7 @@ namespace Compiler
 		NotClosedStringLiteral,
 		NotAValidStatement,
 		NotClosedBracket,
+		MissingLeftParenthesis,
 		EmptyStatement,
 	};
 	

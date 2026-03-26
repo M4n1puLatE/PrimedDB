@@ -31,7 +31,7 @@ namespace Tester
 			else
 			{
 				cout << Compiler::TokenFunctions::GetError(lexer.getErrorCode()) << " at " << lexer.getErrorPosition() << endl;
-				str.insert(lexer.getErrorPosition(), "<");
+				str.insert(lexer.getErrorPosition(), "%");
 				cout<< str << endl;
 			}
 

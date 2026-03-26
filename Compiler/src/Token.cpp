@@ -18,7 +18,7 @@ namespace Compiler
 		"when","then","else","end","is","any",
 		"all","some","between","in","like","true",
 		"false", "date","time","user","union","intersect",
-		"minus"
+		"minus","bxy","lrk"
 	};
 	const std::set<std::string_view> Tokens::LogicalOperators={
 		"=",">","<",">=","<=","!=","and","or","not","nor"

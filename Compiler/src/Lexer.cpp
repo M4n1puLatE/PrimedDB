@@ -4,22 +4,36 @@ namespace Compiler
 	void Lexer::reconstruct(const std::string& statement)
 	{
 		m_error = std::make_pair(ErrorCode::None, -1);
+		m_rawTokens.clear();
+        m_tokens.clear();
 		tokenize(statement);
 	}
 	CharStates Lexer::GetState(CharStates init, char c)
 	{
-		//当字符为';'/'\0'是表明语句达到结尾，为Terminate状态
-		//当字符为'\n'时表明语句并未结束。但对于字符字面量而言是非法的，所以表明为Terminate状态
-		//当字符为' '时表明当前Token已经结束，返回Terminate。但对于字符字面量，其判断截止条件为'\"',所以可以接受' '
-		if (c == ';' || c == '\0'
-			|| (TokenFunctions::IsSpace(c) && init != CharStates::String)
-			|| (c == '\n' && init == CharStates::String))
+		if (c == '\n'
+			//对于一个随意的空格，在没有任何词法成分的情况下会被忽略
+			|| (TokenFunctions::IsSpace(c) && init == CharStates::None))
+			return CharStates::Skip;
+		if (
+			//当字符为';'/'\0'是表明语句达到结尾，为Terminate状态
+			c == ';' || c == '\0'
+			//当字符为' '时表明当前Token已经结束，返回Terminate。但对于字符字面量，其判断截止条件为'\"',所以可以接受' '
+			|| (c == ' '&& init != CharStates::String)
+			//当字符为'\n'时表明语句并未结束。但对于字符字面量而言是非法的，所以表明为Terminate状态
+			|| (c == '\n' && init == CharStates::String)
+			)
 			return CharStates::Terminate;
+
+
 		if (TokenFunctions::IsBracket(c))
 			return CharStates::Bracket;
-		//当传入字符为'"'时表明开始了一个字符串字面或结束了一个字符串字面量，因此返回String
+		//当传入字符为'"'时表明开始了一个字符串字面或结束了一个字符串字面量
 		if (TokenFunctions::IsQuote(c))
+		{
+			//开始一个字面量
 			return CharStates::String;
+		}
+
 		//当传入字符为'a'-'z'/'A'-'Z'/'下划线'时表明当前是一个字符，返回Char
 		if (TokenFunctions::IsChar(c)
 			|| TokenFunctions::IsUnderLine(c)
@@ -31,9 +45,8 @@ namespace Compiler
 		//当传入字符包含于Tokens::Operators中时表明当前是一个操作符，返回Operator
 		if (TokenFunctions::IsOperator(c))
 			return CharStates::Operator;
-		//对于非字面量，'\n'是可以被接受的，不过会被跳过。
-		if (c == '\n')
-			return CharStates::Skip;
+		//对于非字面量，'\n'是可以被接受的，会被跳过。
+
 
 		return CharStates::Error;
 	}
@@ -50,7 +63,7 @@ namespace Compiler
 	}
 	bool Lexer::isContinue(CharStates init, char c, CharStates current)
 	{
-		if (init == current)
+		if (init == current&& current != CharStates::String)
 			return true;
 		else
 		{
@@ -103,22 +116,22 @@ namespace Compiler
 		}
 		else if (state == CharStates::String)
 		{
-			if (token.back() == '\"' && token.size() > 1)
-			{
-				return TokenType::StringLiteral;
-			}
-			else
-			{
-				setError(ErrorCode::NotClosedStringLiteral, static_cast<long long>(current));
-				return TokenType::Error;
-			}
+			return TokenType::StringLiteral;
 		}
 		else if (state == CharStates::Bracket)
 		{
-			if (token == "(" || token == "[" || token == "{")
-				return TokenType::LeftBracket;
+			if (token == "(")
+				return TokenType::LeftParenthesis;
+			else if (token == "[")
+                return TokenType::LeftBracket;
+            else if (token == "{")
+                return TokenType::LeftCurlyBracket;
+            else if (token == "]")
+                return TokenType::RightBracket;
+            else if (token == "}")
+                return TokenType::RightCurlyBracket;
 			else
-				return TokenType::RightBracket;
+				return TokenType::RightParenthesis;
 		}
 
 		return TokenType::Error;
@@ -133,12 +146,28 @@ namespace Compiler
 		CharStates init = CharStates::None, current = CharStates::None;
 		std::string token;
 		char character;
+		bool isQuoteClosed, requireSpace = false;
 		for (Index n = 0; n < statement.size();)
 		{
-			token = statement[n];
+
 			init = GetState(init, statement[n++]);
-			if (init == CharStates::Terminate)
+			if (init != CharStates::String)
+				token = statement[n-1];
+			isQuoteClosed = false;
+			if (init == CharStates::Skip)
+			{
+				requireSpace = false;
+				continue;
+			}
+
+			if (init == CharStates::Terminate || init == CharStates::Error)
 				break;
+			if (requireSpace)
+			{
+				setError(ErrorCode::IdentifierFormatError, static_cast<long long>(n - 1));
+				break;
+			}
+
 			while (init != CharStates::Bracket
 				   && init != CharStates::Error
 				   && current != CharStates::Error
@@ -146,7 +175,6 @@ namespace Compiler
 			{
 				character = statement[n];
 				current = GetState(init, character);
-
 				if (current == CharStates::Skip)
 				{
 					if (n < statement.size())
@@ -171,8 +199,22 @@ namespace Compiler
 					current = CharStates::Error;
 					break;
 				}
+				if (current == CharStates::String)
+				{
+					isQuoteClosed = true;
+					requireSpace = true;
+				}
+
 				if (!isContinue(init, character, current))
+				{
+					if (init == CharStates::String && !isQuoteClosed)
+					{
+						setError(ErrorCode::NotClosedStringLiteral, static_cast<long long>(n));
+					}
+					++n;
 					break;
+				}
+
 				token += character;
 				++n;
 				if (token == "\"\"")
@@ -197,10 +239,14 @@ namespace Compiler
 			token = "";
 
 		}
-		if (m_rawTokens.size() == 1)
-			setError(ErrorCode::NotAValidStatement, statement.size());
-		else if (m_rawTokens.empty())
-			setError(ErrorCode::EmptyStatement, statement.size());
+		if (!isError())
+		{
+			if (m_rawTokens.size() == 1)
+				setError(ErrorCode::NotAValidStatement, statement.size());
+			else if (m_rawTokens.empty())
+				setError(ErrorCode::EmptyStatement, statement.size());
+		}
+
 	}
 	Lexer::Lexer()
 		:m_error(ErrorCode::None, -1)
@@ -254,6 +300,10 @@ namespace Compiler
 	ErrorCode Lexer::getErrorCode()const
 	{
 		return m_error.first;
+	}
+	const TokenError& Lexer::getError() const
+	{
+		return m_error;
 	}
 	void Lexer::setError(ErrorCode errorCode, long long errorPosition)
 	{
