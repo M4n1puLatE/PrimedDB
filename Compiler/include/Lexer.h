@@ -15,6 +15,7 @@ namespace Compiler
 		Bracket,
 		Operator,
 	};
+	
 
 	class Lexer
 	{

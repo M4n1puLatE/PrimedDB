@@ -200,5 +200,9 @@ namespace Compiler
 		static void ToUpper(std::string& str);
 		static std::string_view GetError(ErrorCode errorCode);
 	};
+	enum class CharacterTypes
+	{
+		
+	};
 
 }
