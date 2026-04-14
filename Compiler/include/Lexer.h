@@ -1,12 +1,13 @@
 #pragma once
+#include <functional>
 #include <Token.h>
 
 namespace Compiler
 {
-	enum class CharStates:unsigned char
+	enum class CharacterTypes:char
 	{
+		Fail=-1,
 		None,
-		Error,
 		Skip,
 		Terminate,
 		Char,//Keyword/Identifier/Literal
@@ -15,7 +16,8 @@ namespace Compiler
 		Bracket,
 		Operator,
 	};
-	
+
+
 
 	class Lexer
 	{
@@ -25,13 +27,13 @@ namespace Compiler
 		//分词自动机
 		void tokenize(const std::string& statement);
 		//获取当前字符读取状态
-		static CharStates GetState(CharStates init,char c);
+		static CharacterTypes GetState(CharacterTypes init,char c);
 		//判断是否分词
-		static bool isContinue(CharStates init, char c,CharStates current);
+		static bool isContinue(CharacterTypes init, char c,CharacterTypes current);
 		//获取Token类型
-		TokenType getTokenType(CharStates state, Index current ,std::string& token);
+		TokenType getTokenType(CharacterTypes state, Index current ,std::string& token);
 		//生成Token规则错误
-		void generateError(CharStates init, size_t pos);
+		void generateError(CharacterTypes init, size_t pos);
 	public:
 		Lexer();
 		Lexer(const std::string& statement);

@@ -1,6 +1,74 @@
 #include "Lexer.h"
+
+#include "Automata.h"
+
 namespace Compiler
 {
+	class LexerRules
+	{
+		Automata<CharacterTypes,char> lexerAutomata;
+	public:
+		static CharacterTypes GetInit(char character)
+		{
+			if (TokenFunctions::IsChar(character) || character == '_')
+				return CharacterTypes::Char;
+			else if (TokenFunctions::IsOperator(character))
+				return CharacterTypes::Operator;
+			else if (TokenFunctions::SkipCharacter(character))
+				return CharacterTypes::Skip;
+			else if (TokenFunctions::IsQuote(character))
+				return CharacterTypes::String;
+			else if (TokenFunctions::IsDigit(character))
+				return CharacterTypes::Number;
+			else if (TokenFunctions::IsTerminate(character))
+				return CharacterTypes::Terminate;
+			else if (TokenFunctions::IsBracket(character))
+				return CharacterTypes::Bracket;
+
+			return CharacterTypes::Fail;
+		}
+		LexerRules()
+		{
+			lexerAutomata.bind(CharacterTypes::Char,
+							   [](char c)
+			{
+							   	if (TokenFunctions::IsChar(c) || c == '_')
+									return CharacterTypes::Char;
+								return CharacterTypes::Fail;
+			});
+			lexerAutomata.bind(CharacterTypes::Char,
+							   CharacterTypes::Char,
+							   [](char c)
+			{
+				
+			});
+
+
+            lexerAutomata.bind(CharacterTypes::Operator,
+							   CharacterTypes::Operator,
+							   [](char c)
+			{
+				return CharacterTypes::Operator;
+			});
+
+
+            lexerAutomata.bind(CharacterTypes::Number,
+							   CharacterTypes::Number,
+							   [](char c)
+			{
+				return CharacterTypes::Number;
+			});
+
+
+            lexerAutomata.bind(CharacterTypes::String,
+							   CharacterTypes::Char,
+							   [](char c)
+			{
+				return CharacterTypes::Char;
+			});
+		}
+		
+	};
 	void Lexer::reconstruct(const std::string& statement)
 	{
 		m_error = std::make_pair(ErrorCode::None, -1);
@@ -8,77 +76,77 @@ namespace Compiler
         m_tokens.clear();
 		tokenize(statement);
 	}
-	CharStates Lexer::GetState(CharStates init, char c)
+	CharacterTypes Lexer::GetState(CharacterTypes init, char c)
 	{
 		if (c == '\n'
 			//对于一个随意的空格，在没有任何词法成分的情况下会被忽略
-			|| (TokenFunctions::IsSpace(c) && init == CharStates::None))
-			return CharStates::Skip;
+			|| (TokenFunctions::IsSpace(c) && init == CharacterTypes::None))
+			return CharacterTypes::Skip;
 		if (
 			//当字符为';'/'\0'是表明语句达到结尾，为Terminate状态
 			c == ';' || c == '\0'
 			//当字符为' '时表明当前Token已经结束，返回Terminate。但对于字符字面量，其判断截止条件为'\"',所以可以接受' '
-			|| (c == ' '&& init != CharStates::String)
+			|| (c == ' '&& init != CharacterTypes::String)
 			//当字符为'\n'时表明语句并未结束。但对于字符字面量而言是非法的，所以表明为Terminate状态
-			|| (c == '\n' && init == CharStates::String)
+			|| (c == '\n' && init == CharacterTypes::String)
 			)
-			return CharStates::Terminate;
+			return CharacterTypes::Terminate;
 
 
 		if (TokenFunctions::IsBracket(c))
-			return CharStates::Bracket;
+			return CharacterTypes::Bracket;
 		//当传入字符为'"'时表明开始了一个字符串字面或结束了一个字符串字面量
 		if (TokenFunctions::IsQuote(c))
 		{
 			//开始一个字面量
-			return CharStates::String;
+			return CharacterTypes::String;
 		}
 
 		//当传入字符为'a'-'z'/'A'-'Z'/'下划线'时表明当前是一个字符，返回Char
 		if (TokenFunctions::IsChar(c)
 			|| TokenFunctions::IsUnderLine(c)
-			|| (init == CharStates::String && c == ' '))
-			return CharStates::Char;
+			|| (init == CharacterTypes::String && c == ' '))
+			return CharacterTypes::Char;
 		//当传入字符为'0'-'9'时表明当前是一个数字，返回Number
 		if (TokenFunctions::IsDigit(c))
-			return CharStates::Number;
+			return CharacterTypes::Number;
 		//当传入字符包含于Tokens::Operators中时表明当前是一个操作符，返回Operator
 		if (TokenFunctions::IsOperator(c))
-			return CharStates::Operator;
+			return CharacterTypes::Operator;
 		//对于非字面量，'\n'是可以被接受的，会被跳过。
 
 
-		return CharStates::Error;
+		return CharacterTypes::Fail;
 	}
-	void Lexer::generateError(CharStates init, size_t pos)
+	void Lexer::generateError(CharacterTypes init, size_t pos)
 	{
-		if (init == CharStates::String)
+		if (init == CharacterTypes::String)
 		{
 			setError(ErrorCode::NotClosedStringLiteral, pos);
 		}
-		if (init == CharStates::Operator)
+		if (init == CharacterTypes::Operator)
 		{
 			setError(ErrorCode::InvalidOperator, pos);
 		}
 	}
-	bool Lexer::isContinue(CharStates init, char c, CharStates current)
+	bool Lexer::isContinue(CharacterTypes init, char c, CharacterTypes current)
 	{
-		if (init == current&& current != CharStates::String)
+		if (init == current&& current != CharacterTypes::String)
 			return true;
 		else
 		{
 			if (c == '\n')
 				return false;
-			if (init == CharStates::String)
+			if (init == CharacterTypes::String)
 			{
 				if (c == '\"')
 					return false;
-				if (current == CharStates::Char)
+				if (current == CharacterTypes::Char)
 					return true;
 			}
-			if (init == CharStates::Char)
+			if (init == CharacterTypes::Char)
 			{
-				if (current == CharStates::Operator || current == CharStates::Bracket)
+				if (current == CharacterTypes::Operator || current == CharacterTypes::Bracket)
 				{
 					return false;
 				}
@@ -88,9 +156,9 @@ namespace Compiler
 			return false;
 		}
 	}
-	TokenType Lexer::getTokenType(CharStates state, Index current, std::string& token)
+	TokenType Lexer::getTokenType(CharacterTypes state, Index current, std::string& token)
 	{
-		if (state == CharStates::Char)
+		if (state == CharacterTypes::Char)
 		{
 			if (TokenFunctions::IsKeyword(token))
 				return TokenType::Keyword;
@@ -99,11 +167,11 @@ namespace Compiler
 			else
 				return TokenType::Identifier;
 		}
-		else if (state == CharStates::Number)
+		else if (state == CharacterTypes::Number)
 		{
 			return TokenType::NumberLiteral;
 		}
-		else if (state == CharStates::Operator)
+		else if (state == CharacterTypes::Operator)
 		{
 			if (TokenFunctions::IsBinOperator(token))
 				return TokenType::BinOperator;
@@ -114,11 +182,11 @@ namespace Compiler
 			else
 				return TokenType::Operator;
 		}
-		else if (state == CharStates::String)
+		else if (state == CharacterTypes::String)
 		{
 			return TokenType::StringLiteral;
 		}
-		else if (state == CharStates::Bracket)
+		else if (state == CharacterTypes::Bracket)
 		{
 			if (token == "(")
 				return TokenType::LeftParenthesis;
@@ -143,7 +211,7 @@ namespace Compiler
 			setError(ErrorCode::NotAValidStatement, 0);
 			return;
 		}
-		CharStates init = CharStates::None, current = CharStates::None;
+		CharacterTypes init = CharacterTypes::None, current = CharacterTypes::None;
 		std::string token;
 		char character;
 		bool isQuoteClosed, requireSpace = false;
@@ -151,16 +219,16 @@ namespace Compiler
 		{
 
 			init = GetState(init, statement[n++]);
-			if (init != CharStates::String)
+			if (init != CharacterTypes::String)
 				token = statement[n-1];
 			isQuoteClosed = false;
-			if (init == CharStates::Skip)
+			if (init == CharacterTypes::Skip)
 			{
 				requireSpace = false;
 				continue;
 			}
 
-			if (init == CharStates::Terminate || init == CharStates::Error)
+			if (init == CharacterTypes::Terminate || init == CharacterTypes::Fail)
 				break;
 			if (requireSpace)
 			{
@@ -168,38 +236,38 @@ namespace Compiler
 				break;
 			}
 
-			while (init != CharStates::Bracket
-				   && init != CharStates::Error
-				   && current != CharStates::Error
-				   && current != CharStates::Terminate)
+			while (init != CharacterTypes::Bracket
+				   && init != CharacterTypes::Fail
+				   && current != CharacterTypes::Fail
+				   && current != CharacterTypes::Terminate)
 			{
 				character = statement[n];
 				current = GetState(init, character);
-				if (current == CharStates::Skip)
+				if (current == CharacterTypes::Skip)
 				{
 					if (n < statement.size())
 						++n;
 					continue;
 				}
-				else if (current == CharStates::Terminate)
+				else if (current == CharacterTypes::Terminate)
 				{
 					if (n < statement.size() && character != ';')
 						++n;
 					break;
 				}
-				else if (current == CharStates::Error)
+				else if (current == CharacterTypes::Fail)
 				{
 					//设置字符格式错误
 					setError(ErrorCode::InvalidCharacter, static_cast<long long>(n));
 					break;
 				}
-				else if (init == CharStates::Number && current == CharStates::Char)
+				else if (init == CharacterTypes::Number && current == CharacterTypes::Char)
 				{
 					setError(ErrorCode::InvalidNumberFormat, n);
-					current = CharStates::Error;
+					current = CharacterTypes::Fail;
 					break;
 				}
-				if (current == CharStates::String)
+				if (current == CharacterTypes::String)
 				{
 					isQuoteClosed = true;
 					requireSpace = true;
@@ -207,7 +275,7 @@ namespace Compiler
 
 				if (!isContinue(init, character, current))
 				{
-					if (init == CharStates::String && !isQuoteClosed)
+					if (init == CharacterTypes::String && !isQuoteClosed)
 					{
 						setError(ErrorCode::NotClosedStringLiteral, static_cast<long long>(n));
 					}
@@ -220,7 +288,7 @@ namespace Compiler
 				if (token == "\"\"")
 					break;
 				//没有长度超过3的运算符
-				if (current == CharStates::Operator && token.size() > 2)
+				if (current == CharacterTypes::Operator && token.size() > 2)
 				{
 					//设置操作符格式错误
 					setError(ErrorCode::OperatorFormatError, static_cast<long long>(n));
@@ -228,14 +296,14 @@ namespace Compiler
 				}
 			}
 			//
-			if (init == CharStates::Error
-				|| current == CharStates::Error)
+			if (init == CharacterTypes::Fail
+				|| current == CharacterTypes::Fail)
 			{
 				return;
 			}
 			m_tokens.emplace_back(getTokenType(init, n, token), m_rawTokens.size());
 			m_rawTokens.emplace_back(token);
-			init = current = CharStates::None;
+			init = current = CharacterTypes::None;
 			token = "";
 
 		}

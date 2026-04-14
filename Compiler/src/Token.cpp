@@ -55,13 +55,17 @@ namespace Compiler
 	{
 		return isdigit(c);
 	}
+	bool TokenFunctions::SkipCharacter(char c)
+	{
+		return c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == ';' || c == '\0';
+	}
 	bool TokenFunctions::IsSpace(char c)
 	{
 		return c == ' ';
 	}
 	bool TokenFunctions::IsTerminate(char c)
 	{
-		return c == ' ';
+		return c == ';';
 	}
 	bool TokenFunctions::IsBracket(char c)
 	{

@@ -2,17 +2,16 @@
 #include <deque>
 #include <memory>
 #include <set>
-#include <stack>
 #include <string>
 #include <utility>
 #include <vector>
 
 namespace Compiler
 {
-	enum class TokenType:unsigned char
+	enum class TokenType:char
 	{
+		Error=-1,
 		None,
-		Error,
 		Terminate,
 		Keyword,
 		Identifier,
@@ -191,6 +190,7 @@ namespace Compiler
 		static bool IsTerminate(char c);
 		static bool IsSpace(char c);
 		static bool IsBracket(char c);
+        static bool SkipCharacter(char c);
 
         static bool IsKeyword(const std::string& str);
 		static bool IsUniOperator(const std::string& str);
@@ -199,10 +199,6 @@ namespace Compiler
 		static void ToLower(std::string& str);
 		static void ToUpper(std::string& str);
 		static std::string_view GetError(ErrorCode errorCode);
-	};
-	enum class CharacterTypes
-	{
-		
 	};
 
 }

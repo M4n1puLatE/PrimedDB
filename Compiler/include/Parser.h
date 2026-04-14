@@ -2,6 +2,7 @@
 #include <string>
 
 #include <Lexer.h>
+#include <stack>
 
 namespace Compiler
 {

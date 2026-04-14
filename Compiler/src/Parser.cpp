@@ -1,4 +1,5 @@
 #include "Parser.h"
+
 namespace Compiler
 {
     TokenType Parser::GetKeyword(const std::string& token)
