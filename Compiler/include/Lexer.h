@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>
-#include <Token.h>
+#include <TokenStates.h>
 
 namespace Compiler
 {

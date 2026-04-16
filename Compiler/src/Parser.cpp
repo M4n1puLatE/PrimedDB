@@ -170,29 +170,29 @@ namespace Compiler
     }
     bool operateBracketStack(std::stack<TokenType>& stack, TokenType current)
     {
-        if (current == TokenType::LeftBracket
-            ||current == TokenType ::LeftCurlyBracket
-            ||current == TokenType::LeftParenthesis)
+        if (current == TokenType::LeftSquare
+            ||current == TokenType ::LeftCurly
+            ||current == TokenType::LeftBracket)
         {
             stack.push(current);
-        }
-        else if (current == TokenType::RightParenthesis)
-        {
-            auto s = stack.top();
-            if (s != TokenType::LeftParenthesis)
-                return false;
-            
         }
         else if (current == TokenType::RightBracket)
         {
             auto s = stack.top();
             if (s != TokenType::LeftBracket)
                 return false;
+            
         }
-        else if (current == TokenType::RightCurlyBracket)
+        else if (current == TokenType::RightSquare)
         {
             auto s = stack.top();
-            if (s != TokenType::LeftCurlyBracket)
+            if (s != TokenType::LeftSquare)
+                return false;
+        }
+        else if (current == TokenType::RightCurly)
+        {
+            auto s = stack.top();
+            if (s != TokenType::LeftCurly)
                 return false;
         }
         return true;

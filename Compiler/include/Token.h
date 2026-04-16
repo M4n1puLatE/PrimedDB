@@ -5,12 +5,11 @@
 #include <string>
 #include <utility>
 #include <vector>
-
 namespace Compiler
 {
 	enum class TokenType:char
 	{
-		Error=-1,
+		Error = -1,
 		None,
 		Terminate,
 		Keyword,
@@ -20,7 +19,8 @@ namespace Compiler
 		BinOperator,
 		LogicalOperator,
 		StringLiteral,
-		NumberLiteral,
+		DoubleLiteral,
+		IntegerLiteral,
 		Expression,
 		Repeat,
 		BeginPattern,
@@ -28,71 +28,73 @@ namespace Compiler
 		Assign,
 		Comma,
 		SemiColon,
+		LeftSquare,
+		RightSquare,
 		LeftBracket,
 		RightBracket,
-		LeftParenthesis,
-        RightParenthesis,
-		LeftCurlyBracket,
-		RightCurlyBracket,
+		LeftCurly,
+		RightCurly,
 		SubExpression,
 		SubQuery,
 
 		//keywords
-		Select, 
-		From, 
-		Insert, 
-		Where, 
+		Select,
+		From,
+		Insert,
+		Where,
 		Into,
-		Join, 
-		Table, 
-		Create, 
-		Delete, 
+		Join,
+		Table,
+		Create,
+		Delete,
 		Update,
-		Set, 
-		Values, 
-		Alter, 
-		Drop, 
+		Set,
+		Values,
+		Alter,
+		Drop,
 		Truncate,
-		Group, 
-		Order, 
-		By, 
-		Asc, 
-		Desc, 
+		Group,
+		Order,
+		By,
+		Asc,
+		Desc,
 		Count,
-		Sum, 
-		Avg, 
-		Max, 
-		Min, 
-		Distinct, 
+		Sum,
+		Avg,
+		Max,
+		Min,
+		Distinct,
 		Having,
-		As, 
-		On, 
-		Use, 
-		Primary, 
-		Foreign, 
+		As,
+		On,
+		Use,
+		Primary,
+		Foreign,
 		Key,
 		Unique,
-		Series, 
-		Null, 
+		Series,
+		Null,
 		Default,
-		Between, 
-		Like, 
-		In, 
-		Exists, 
+		Between,
+		Like,
+		In,
+		Exists,
 		Case,
-		When, 
-		Then, 
-		Else, 
-		End, 
-		Is, 
+		When,
+		Then,
+		Else,
+		End,
+		Is,
 		Any,
-		All, 
-		Some, 
-		True, 
-		False, 
+		All,
+		Some,
+		True,
+		False,
 		Date,
-		Time, 
+		Time,
 		User,
+		Lrk,
+		Bxy,
 		//Operators
 		RValue,
 		Add,
@@ -106,7 +108,7 @@ namespace Compiler
 		Not,
 		Equal,
 		BitAnd,
-        BitOr,
+		BitOr,
 		NotEqual,
 		Greater,
 		Less,
@@ -120,20 +122,17 @@ namespace Compiler
 		IndexOf,
 		Statements,
 		AddAssign,
-        SubAssign,
-        MulAssign,
-        DivAssign,
-        ModAssign,
+		SubAssign,
+		MulAssign,
+		DivAssign,
+		ModAssign,
 		Pp,
 		Mm,
 		What,
 		Emphasize,
 		Xor,
-		Lrk,
-		Bxy,
-	};
 
-	
+	};
 	template<class T>
 	concept EnumType = std::is_enum_v<T>;
 	using StringList = std::vector<std::string>;
@@ -155,7 +154,6 @@ namespace Compiler
 		MissingLeftParenthesis,
 		EmptyStatement,
 	};
-	
 
 	using TokenError = std::pair<ErrorCode, long long>;
 	class Tokens
@@ -166,6 +164,7 @@ namespace Compiler
 		static const std::set<std::string_view> LogicalOperators;
 		static const std::set<std::string_view> UniOperators;
         static const std::set<std::string_view> BinOperators;
+		static const std::set<char> SkipWords;
 		static const std::set<char> Brackets;
 	};
 	class TokenFunctions
@@ -190,12 +189,12 @@ namespace Compiler
 		static bool IsTerminate(char c);
 		static bool IsSpace(char c);
 		static bool IsBracket(char c);
-        static bool SkipCharacter(char c);
+        static bool IsSkipCharacter(char c);
 
-        static bool IsKeyword(const std::string& str);
-		static bool IsUniOperator(const std::string& str);
-        static bool IsBinOperator(const std::string& str);
-		static bool IsLogicalOperator(const std::string& str);
+        static bool IsKeyword(std::string_view str);
+		static bool IsUniOperator(std::string_view str);
+        static bool IsBinOperator(std::string_view str);
+		static bool IsLogicalOperator(std::string_view str);
 		static void ToLower(std::string& str);
 		static void ToUpper(std::string& str);
 		static std::string_view GetError(ErrorCode errorCode);

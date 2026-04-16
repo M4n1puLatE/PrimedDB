@@ -6,6 +6,10 @@ namespace Compiler
 		'*','+','-','/','.','$',
 		'|','!','?',':'
 	};
+	const std::set<char> Tokens::SkipWords=
+	{
+		'\0','\n','\t', '\r'
+	};
 	const std::set<std::string_view> Tokens::Keywords={
 		"select","from","insert","where","into",
 		"join","table","create","delete","update",
@@ -16,12 +20,11 @@ namespace Compiler
 		"unique","series","null","default",
 		"between","like","in","exists","case",
 		"when","then","else","end","is","any",
-		"all","some","between","in","like","true",
-		"false", "date","time","user","union","intersect",
-		"minus","bxy","lrk"
+		"all","some","like","true","between",
+		"false", "date","time","user","bxy","lrk"
 	};
 	const std::set<std::string_view> Tokens::LogicalOperators={
-		"=",">","<",">=","<=","!=","and","or","not","nor"
+		"=",">","<",">=","<=","!=","and","or","not","xor"
 	};
 	const std::set<std::string_view> Tokens::UniOperators={
 		"++","--","!","?"
@@ -30,7 +33,8 @@ namespace Compiler
 		":=","%","&","^",
 		"*","+","-","/",".","$",
 		"|","+=","-=","*=","/=",
-		"%=","&=","|="
+		"%=","&=","|=","union","intersect",
+		"minus"
 	};
 	const std::set<char>Tokens::Brackets = {
 		'(',')','[',']','{','}'
@@ -55,9 +59,9 @@ namespace Compiler
 	{
 		return isdigit(c);
 	}
-	bool TokenFunctions::SkipCharacter(char c)
+	bool TokenFunctions::IsSkipCharacter(char c)
 	{
-		return c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == ';' || c == '\0';
+		return c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\0';
 	}
 	bool TokenFunctions::IsSpace(char c)
 	{
@@ -71,19 +75,19 @@ namespace Compiler
 	{
 		return Tokens::Brackets.contains(c);
 	}
-	bool TokenFunctions::IsKeyword(const std::string& c)
+	bool TokenFunctions::IsKeyword(std::string_view c)
 	{
 		return Tokens::Keywords.contains(c);
 	}
-	bool TokenFunctions::IsUniOperator(const std::string& s)
+	bool TokenFunctions::IsUniOperator(std::string_view s)
 	{
 		return Tokens::UniOperators.contains(s);
 	}
-	bool TokenFunctions::IsBinOperator(const std::string& s)
+	bool TokenFunctions::IsBinOperator(std::string_view s)
 	{
 		return Tokens::BinOperators.contains(s);
 	}
-	bool TokenFunctions::IsLogicalOperator(const std::string& s)
+	bool TokenFunctions::IsLogicalOperator(std::string_view s)
 	{
 		return Tokens::LogicalOperators.contains(s);
 	}
@@ -164,10 +168,10 @@ namespace Compiler
 			return "EndPattern";
 		case TokenType::Expression:
 			return "Expression";
-		case TokenType::LeftBracket:
-			return "LeftBracket";
-		case TokenType::RightBracket:
-			return "RightBracket";
+		case TokenType::LeftSquare:
+			return "LeftSquare";
+		case TokenType::RightSquare:
+			return "RightSquare";
 		case TokenType::SubExpression:
 			return "SubExpression";
 		default:
