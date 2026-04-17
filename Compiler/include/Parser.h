@@ -29,9 +29,7 @@ namespace Compiler
 	using ParsingList = std::vector<ParsedToken>;
 	class Parser
 	{
-		Lexer m_lexer;
-		ParsingList m_list;
-
+		TokenList m_tokens;
 		void parse();
 	public:
 		Parser(const std::string& statement);

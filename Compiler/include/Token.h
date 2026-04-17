@@ -138,8 +138,18 @@ namespace Compiler
 	using StringList = std::vector<std::string>;
 	//Token类型，Token位置
 	using Index = size_t;
-	using Token = std::pair<TokenType, Index>;
-	using TokenList = std::vector<Token>;
+	class Token
+	{
+	protected:
+		Token() = default;
+	public:
+		~Token() = default;
+		virtual TokenType type() const = 0;
+		virtual bool valid(std::string_view)const;
+		bool equals(const Token& token) const;
+		bool operator==(const Token& token) const;
+	};
+	using TokenList = std::vector<std::unique_ptr<Token>>;
 	enum class ErrorCode:unsigned char
 	{
 		None,
@@ -151,6 +161,7 @@ namespace Compiler
 		NotClosedStringLiteral,
 		NotAValidStatement,
 		NotClosedBracket,
+		NotRecognizableToken,
 		MissingLeftParenthesis,
 		EmptyStatement,
 	};

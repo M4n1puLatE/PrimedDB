@@ -14,11 +14,11 @@ namespace Compiler::States
 		Finish,
 	};
 	template <class ItemType,class IdentifyType>
-	class State
+	class State:public std::enable_shared_from_this<State<ItemType,IdentifyType>>
 	{
 	public:
 		virtual std::shared_ptr<State> accept(ItemType ch,
-											  std::string_view history) const = 0;
+		                                      std::string& history) = 0;
 		virtual IdentifyType name() const = 0;
 		template <class T>
 		requires std::is_base_of_v<State, T>
@@ -42,7 +42,7 @@ namespace Compiler::States
 	public:
 		Reject() = default;
 		std::shared_ptr<State> accept(char ch,
-		                              std::string_view history) const final;
+		                              std::string& history) final;
 		std::string_view name() const final;
 	};
 	class Complete: public State<char, std::string_view>
@@ -50,7 +50,7 @@ namespace Compiler::States
 	public:
 		Complete() = default;
 		std::shared_ptr<State> accept(char ch,
-		                              std::string_view history) const final;
+		                              std::string& history) final;
         std::string_view name() const final;
 	};
 	class Error: public State<char, std::string_view>
@@ -58,7 +58,7 @@ namespace Compiler::States
 	public:
 		Error() = default;
 		std::shared_ptr<State> accept(char ch,
-		                              std::string_view history) const final;
+		                              std::string& history) final;
 		std::string_view name() const override;
 	};
 	class Accept:public State<char, std::string_view>
@@ -66,7 +66,7 @@ namespace Compiler::States
 	public:
 		Accept() = default;
 		std::shared_ptr<State> accept(char ch,
-		                              std::string_view history) const final;
+		                              std::string& history) final;
 		std::string_view name() const final;
 	};
 }

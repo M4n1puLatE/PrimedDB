@@ -16,15 +16,16 @@ namespace Tester
 		{
 			if (str == "finish")
 				break;
+			cout << str << "\n";
 			Compiler::Lexer lexer(str);
 			if (!lexer.isError())
 			{
-				printVector(lexer.getRawTokens());
+
 				auto& tokens = lexer.getTokens();
 				cout << '[';
 				for (auto& t : tokens)
 				{
-					cout << Compiler::TokenFunctions::GetTokenType(t.first) << ",";
+					cout << Compiler::TokenFunctions::GetTokenType(t->type()) << ",";
 				}
 				cout << ']' << endl;
 			}

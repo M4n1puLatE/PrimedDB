@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include <vector>
 #include <string>
 namespace Util
@@ -38,6 +39,19 @@ namespace Util
 		// indexes:分隔符位置列表(需要与str配对)
 		// position:子串索引
 		static std::string InterpretString(const string& str,const indexes& , size_t);
+		template<typename T>
+		static auto iterate(std::list<T> ls,size_t pos)
+		{
+			if (pos >= ls.size())
+				return ls.end();
+			else
+			{
+				auto it = ls.begin();
+                for (size_t i = 0; i < pos; i++)
+					++it;
+				return it;
+			}
+		}
 	};
 	static const auto FalseFunction = []() {return false; };
 }

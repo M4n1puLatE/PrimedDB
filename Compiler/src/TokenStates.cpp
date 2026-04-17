@@ -1,29 +1,13 @@
 #include <TokenStates.h>
 namespace Compiler::States {
-///////////////////////////////////////////////////////////////
-///
-///							Token
-///
-///////////////////////////////////////////////////////////////
-	bool Token::valid(std::string_view)const
-	{
-		return true;
-	}
-	bool Token::equals(const Token& token) const
-	{
-		return type() == token.type();
-	}
-	bool Token::operator==(const Token& token) const
-	{
-		return equals(token);
-	}
+
 
 	///////////////////////////////////////////////////////////////
 	///
 	///						InvalidToken
 	///
 	///////////////////////////////////////////////////////////////
-	TokenType InvalidToken::type() const override
+	TokenType InvalidToken::type() const 
 	{
 		return TokenType::Error;
 	}
@@ -56,7 +40,7 @@ namespace Compiler::States {
 	{
 		
 	}
-	TokenType IdentifierToken::type() const override
+	TokenType IdentifierToken::type() const 
 	{
 		return TokenType::Identifier;
 	}
@@ -100,7 +84,7 @@ namespace Compiler::States {
 	IntegerToken::IntegerToken(IntegerToken&& move)noexcept
         :m_integer(move.m_integer)
 	{}
-	TokenType IntegerToken::type() const override
+	TokenType IntegerToken::type() const 
 	{
 		return TokenType::IntegerLiteral;
 	}
@@ -123,7 +107,7 @@ namespace Compiler::States {
 	{
 		
 	}
-	TokenType DoubleToken::type() const override
+	TokenType DoubleToken::type() const 
 	{
 		return TokenType::DoubleLiteral;
 	}
@@ -213,7 +197,7 @@ namespace Compiler::States {
 	{
 		return m_type != TokenType::Error&&TokenFunctions::IsKeyword(token);
 	}
-	TokenType KeywordToken::type() const override
+	TokenType KeywordToken::type() const 
 	{
 		return m_type;
 	}
@@ -233,7 +217,7 @@ namespace Compiler::States {
 	{
 		
 	}
-	TokenType StringLiteralToken::type() const override
+	TokenType StringLiteralToken::type() const 
 	{
 		return TokenType::StringLiteral;
 	}
@@ -258,109 +242,113 @@ namespace Compiler::States {
 		{
 			if (operatorl == ":=")
                 m_type = TokenType::Assign;
-			if (operatorl == "%")
+			else if (operatorl == "%")
 				m_type = TokenType::Mod;
-			if (operatorl == "+")
+			else if (operatorl == "+")
 				m_type = TokenType::Add;
-			if (operatorl == "-")
+			else if (operatorl == "-")
 				m_type = TokenType::Sub;
-			if (operatorl == "*")
+			else if (operatorl == "*")
 				m_type = TokenType::Mul;
-			if (operatorl == "/")
+			else if (operatorl == "/")
 				m_type = TokenType::Div;
-			if (operatorl == "**")
-				m_type = TokenType::Pow;
-			if (operatorl == "&&")
+			else if (operatorl == "&&")
 				m_type = TokenType::And;
-			if (operatorl == "||")
+			else if (operatorl == "||")
 				m_type = TokenType::Or;
-			if (operatorl == "!")
+			else if (operatorl == "!")
 				m_type = TokenType::Not;
-			if (operatorl == "==")
+			else if (operatorl == "==")
 				m_type = TokenType::Equal;
-			if (operatorl == "&")
+			else if (operatorl == "&")
 				m_type = TokenType::BitAnd;
-			if (operatorl == "|")
+			else if (operatorl == "|")
 				m_type = TokenType::BitOr;
-			if (operatorl == "!=")
+			else if (operatorl == "!=")
 				m_type = TokenType::NotEqual;
-			if (operatorl == ">")
+			else if (operatorl == ">")
 				m_type = TokenType::Greater;
-			if (operatorl == "<")
+			else if (operatorl == "<")
 				m_type = TokenType::Less;
-			if (operatorl == ">=")
+			else if (operatorl == ">=")
 				m_type = TokenType::GreaterEqual;
-			if (operatorl == "<=")
+			else if (operatorl == "<=")
 				m_type = TokenType::LessEqual;
-			if (operatorl == ".")
+			else if (operatorl == ".")
 				m_type = TokenType::Dot;
-			if (operatorl == "?")
+			else if (operatorl == "?")
 				m_type = TokenType::Condition;
-			if (operatorl == "union")
+			else if (operatorl == "union")
 				m_type = TokenType::Union;
-			if (operatorl == "intersect")
+			else if (operatorl == "intersect")
 				m_type = TokenType::Intersect;
-			if (operatorl == "minus")
+			else if (operatorl == "minus")
 				m_type = TokenType::Minus;
-			if (operatorl == "+=")
+			else if (operatorl == "+=")
 				m_type = TokenType::AddAssign;
-			if (operatorl == "-=")
+			else if (operatorl == "-=")
 				m_type = TokenType::SubAssign;
-			if (operatorl == "*=")
+			else if (operatorl == "*=")
 				m_type = TokenType::MulAssign;
-			if (operatorl == "/=")
+			else if (operatorl == "/=")
 				m_type = TokenType::DivAssign;
-			if (operatorl == "%=")
+			else if (operatorl == "%=")
 				m_type = TokenType::ModAssign;
-			if (operatorl == "++")
+			else if (operatorl == "++")
 				m_type = TokenType::Pp;
-			if (operatorl == "--")
+			else if (operatorl == "--")
 				m_type = TokenType::Mm;
-			if (operatorl == "^")
+			else if (operatorl == "^")
                 m_type = TokenType::Pow;
-			
+			else
+				m_type = TokenType::Error;
 		}
 		else if (TokenFunctions::IsUniOperator(operatorl))
 		{
 			if (operatorl == "++")
                 m_type = TokenType::Pp;
-            if (operatorl == "--")
+			else if (operatorl == "--")
                 m_type = TokenType::Mm;
-            if (operatorl == "!")
+			else if (operatorl == "!")
                 m_type = TokenType::Emphasize;
-            if (operatorl == "?")
+			else if (operatorl == "?")
                 m_type = TokenType::What;
+			else
+				m_type = TokenType::Error;
 		}
 		else if (TokenFunctions::IsLogicalOperator(operatorl))
 		{
 			if (operatorl=="=")
                 m_type = TokenType::Equal;
-            if (operatorl=="<")
+			else if (operatorl=="<")
                 m_type = TokenType::Less;
-            if (operatorl==">")
+			else if (operatorl==">")
                 m_type = TokenType::Greater;
-            if (operatorl=="<=")
+			else if (operatorl=="<=")
                 m_type = TokenType::LessEqual;
-            if (operatorl==">=")
+			else if (operatorl==">=")
                 m_type = TokenType::GreaterEqual;
-            if (operatorl=="!=")
+			else if (operatorl=="!=")
                 m_type = TokenType::NotEqual;
-			if (operatorl == "and")
+			else if (operatorl == "and")
                 m_type = TokenType::And;
-            if (operatorl == "or")
+			else if (operatorl == "or")
                 m_type = TokenType::Or;
-            if (operatorl == "not")
+			else if (operatorl == "not")
                 m_type = TokenType::Not;
-            if (operatorl == "xor")
+			else if (operatorl == "xor")
                 m_type = TokenType::Xor;
+			else
+				m_type = TokenType::Error;
 		}
-		m_type = TokenType::Error;
+		else
+			m_type = TokenType::Error;
 	}
 	OperatorToken::OperatorToken(std::string_view operatorl) noexcept
 	{
 		categorize(operatorl);
 	}
-	bool OperatorToken::valid(std::string_view operatorl)const override
+	bool OperatorToken::valid(std::string_view operatorl)const 
 	{
 		return m_type != TokenType::Error && 
 			(TokenFunctions::IsBinOperator(operatorl)
@@ -391,16 +379,29 @@ namespace Compiler::States {
 	{
 		categorize(bracket);
 	}
-	bool BracketToken::valid(std::string_view token)const override
+	bool BracketToken::valid(std::string_view token)const 
 	{
 		return !token.empty()&&TokenFunctions::IsBracket(token[0]);
 	}
-	TokenType BracketToken::type() const override
+	TokenType BracketToken::type() const 
 	{
 		return m_type;
 	}
 	void BracketToken::close()
 	{
 		m_isOpen = false;
+	}
+
+	const std::list<std::unique_ptr<Token>>& ExpressionToken::getAll() const
+	{
+		return m_tokens;
+	}
+	void ExpressionToken::add(std::unique_ptr<Token>&& token)
+	{
+		m_tokens.emplace_back(std::move(token));
+	}
+	TokenType ExpressionToken::type() const 
+	{
+		return TokenType::Expression;
 	}
 }

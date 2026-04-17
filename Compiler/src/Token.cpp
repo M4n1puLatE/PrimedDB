@@ -1,6 +1,24 @@
 #include <Token.h>
 namespace Compiler
 {
+	///////////////////////////////////////////////////////////////
+///
+///							Token
+///
+///////////////////////////////////////////////////////////////
+
+	bool Token::valid(std::string_view)const
+	{
+		return true;
+	}
+	bool Token::equals(const Token& token) const
+	{
+		return type() == token.type();
+	}
+	bool Token::operator==(const Token& token) const
+	{
+		return equals(token);
+	}
 	const std::set<char> Tokens::Operators = {
 		'=','%','<','>','&','^',
 		'*','+','-','/','.','$',
@@ -30,7 +48,7 @@ namespace Compiler
 		"++","--","!","?"
 	};
 	const std::set<std::string_view> Tokens::BinOperators={
-		":=","%","&","^",
+		":=","%","&","^",":",
 		"*","+","-","/",".","$",
 		"|","+=","-=","*=","/=",
 		"%=","&=","|=","union","intersect",
@@ -125,6 +143,8 @@ namespace Compiler
 			return "NotClosedBracket";
 		case ErrorCode::EmptyStatement:
 			return "EmptyStatement";
+			case ErrorCode::NotRecognizableToken:
+			return "NotRecognizableToken";
 		}
 		return "";
 	}
@@ -154,8 +174,10 @@ namespace Compiler
 			return "LogicalOperator";
 		case TokenType::StringLiteral:
 			return "StringLiteral";
-		case TokenType::NumberLiteral:
-			return "NumberLiteral";
+		case TokenType::IntegerLiteral:
+			return "IntegerLiteral";
+		case TokenType::DoubleLiteral:
+			return "DoubleLiteral";
 		case TokenType::Comma:
 			return "Comma";
 		case TokenType::Repeat:

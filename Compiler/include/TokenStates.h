@@ -1,21 +1,11 @@
 #pragma once
+#include <list>
 #include <stdexcept>
 
 #include "State.h"
 #include "Token.h"
 namespace Compiler::States
 {
-	class Token
-	{
-	protected:
-		Token()=default;
-	public:
-		~Token() = default;
-		virtual TokenType type() const = 0;
-		virtual bool valid(std::string_view)const;
-		bool equals(const Token& token) const;
-		bool operator==(const Token& token) const;
-	};
 	class InvalidToken : public Token
 	{
 		std::string m_error;
@@ -104,7 +94,16 @@ namespace Compiler::States
 		TokenType type() const override;
 		void close();
 	};
-
+	class ExpressionToken : public Token
+	{
+		std::list<std::unique_ptr<Token>> m_tokens;
+	public:
+		ExpressionToken()=default;
+		ExpressionToken(ExpressionToken&& token)=default;
+		void add(std::unique_ptr<Token>&& token);
+		const  std::list<std::unique_ptr<Token>>& getAll() const;
+		TokenType type() const override;
+	};
 	class ClassifyToken
 	{
 	public:
