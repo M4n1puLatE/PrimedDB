@@ -1,6 +1,6 @@
 #include "LexerTester.h"
 
-#include "Lexer.h"
+#include "Parser.h"
 namespace Tester
 {
 	void LexerTester::init()
@@ -11,13 +11,14 @@ namespace Tester
 
 	bool LexerTester::CompilerTest()
 	{
-		string str;
+		string str,p;
 		while (std::getline(std::cin,str))
 		{
+			p = str;
 			if (str == "finish")
 				break;
-			cout << str << "\n";
-			Compiler::Lexer lexer(str);
+			Compiler::Parser lexer(std::move(str));
+			str.clear();
 			if (!lexer.isError())
 			{
 
@@ -32,8 +33,8 @@ namespace Tester
 			else
 			{
 				cout << Compiler::TokenFunctions::GetError(lexer.getErrorCode()) << " at " << lexer.getErrorPosition() << endl;
-				str.insert(lexer.getErrorPosition(), "%");
-				cout<< str << endl;
+				p.insert(lexer.getErrorPosition(), "%");
+				cout<< p << endl;
 			}
 
 		}

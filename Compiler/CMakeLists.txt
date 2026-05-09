@@ -1,6 +1,6 @@
 project(Compiler)
 file(GLOB_RECURSE srcs CONFIGURE_DEPENDS src/*.cpp include/*.h)
-add_library(${PROJECT_NAME} STATIC ${srcs} "src/Lexer.cpp")
+add_library(${PROJECT_NAME} STATIC ${srcs} "src/Parser.cpp")
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC

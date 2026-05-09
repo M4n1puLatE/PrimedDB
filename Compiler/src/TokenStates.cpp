@@ -60,22 +60,15 @@ namespace Compiler::States {
 ///////////////////////////////////////////////////////////////
 	std::unique_ptr<Token> NumberToken::classify(const std::string& token)
 	{
-		try
+		if (token.find('.') != std::string::npos)
+		{
+			double value = std::stod(token);
+			return std::make_unique<DoubleToken>(value);
+		}
+		else
 		{
 			int value = std::stoi(token);
 			return std::make_unique<IntegerToken>(value);
-		}
-		catch (const std::invalid_argument& e)
-		{
-			try
-			{
-				double value = std::stod(token);
-				return std::make_unique<DoubleToken>(value);
-			}
-			catch (const std::invalid_argument& e)
-			{
-				return nullptr;
-			}
 		}
 	}
 	IntegerToken::IntegerToken(long long data)noexcept
@@ -183,6 +176,15 @@ namespace Compiler::States {
         else if (keyword == "date") return TokenType::Date;
         else if (keyword == "time") return TokenType::Time;
         else if (keyword == "user") return TokenType::User;
+		else if (keyword == "commit") return TokenType::Commit;
+		else if (keyword == "rollback") return TokenType::Rollback;
+        else if (keyword == "undo") return TokenType::Undo;
+		else if (keyword == "redo") return TokenType::Redo;
+        else if (keyword == "transaction") return TokenType::Transaction;
+		else if (keyword == "lrk") return TokenType::Lrk;
+		else if (keyword == "bxy") return TokenType::Bxy;
+		else if (keyword == "grant") return TokenType::Grant; 
+
         else return TokenType::Error; // 如果没有匹配，可能是普通标识符
     }
 	void KeywordToken::categorize(std::string_view keyword)
@@ -276,6 +278,8 @@ namespace Compiler::States {
 				m_type = TokenType::LessEqual;
 			else if (operatorl == ".")
 				m_type = TokenType::Dot;
+			else if (operatorl == ",")
+				m_type = TokenType::Comma;
 			else if (operatorl == "?")
 				m_type = TokenType::Condition;
 			else if (operatorl == "union")

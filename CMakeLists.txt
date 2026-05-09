@@ -35,7 +35,7 @@ add_subdirectory(Compiler)
 add_subdirectory(ErrorHandler)
 
 # add_subdirectory(Network)
-# add_subdirectory(StorageUnit)
+add_subdirectory(StorageUnit)
 # add_subdirectory(Transaction)
 add_subdirectory(Util)
 add_subdirectory(LogLib)

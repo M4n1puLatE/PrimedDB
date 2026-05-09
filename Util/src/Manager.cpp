@@ -109,7 +109,6 @@ namespace Util
 			write_lock queueLock(sm_containerMutex);
 			sm_executeQueue.emplace_back(id);
 		}
-
 	}
 
 	void Manager::urgentTask(size_t id)

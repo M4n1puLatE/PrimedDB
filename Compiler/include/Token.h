@@ -7,7 +7,7 @@
 #include <vector>
 namespace Compiler
 {
-	enum class TokenType:char
+	enum class TokenType:short
 	{
 		Error = -1,
 		None,
@@ -38,6 +38,10 @@ namespace Compiler
 		SubQuery,
 
 		//keywords
+		Undo,
+		Redo,
+		Rollback,
+		Commit,
 		Select,
 		From,
 		Insert,
@@ -95,6 +99,14 @@ namespace Compiler
 		User,
 		Lrk,
 		Bxy,
+		Transaction,
+		Grant,
+		Level, 
+		Administrator,
+		Manager,
+		Visitor,
+		Super, 
+		Restrict,
 		//Operators
 		RValue,
 		Add,

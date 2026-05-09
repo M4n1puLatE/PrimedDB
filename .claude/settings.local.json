@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find out:*)",
+      "Bash(cmake --build out/build/x64-debug)"
+    ]
+  }
+}
