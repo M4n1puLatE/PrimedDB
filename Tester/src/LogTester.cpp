@@ -1,10 +1,10 @@
 #include "LogTester.h"
 #include "Log.h"
-#include <boost/log/trivial.hpp>
-#include <boost/log/core.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/utility/setup/console.hpp> // 用于控制台输出
-#include <boost/log/utility/setup/common_attributes.hpp> // 用于添加时间戳等属性
+//#include <boost/log/trivial.hpp>
+//#include <boost/log/core.hpp>
+//#include <boost/log/expressions.hpp>
+//#include <boost/log/utility/setup/console.hpp> // 用于控制台输出
+//#include <boost/log/utility/setup/common_attributes.hpp> // 用于添加时间戳等属性
 
 namespace Tester
 {
@@ -99,23 +99,23 @@ namespace Tester
 	}
 	bool LogTester::justPrint()
 	{
-		namespace logging = boost::log;
-		logging::add_common_attributes();
+		//namespace logging = boost::log;
+		//logging::add_common_attributes();
 
-		// 添加一个控制台日志接收器 (sink)，使用默认格式
-		logging::add_console_log();
-		for (int n = 0; n < 500; ++n)
-		{
+		//// 添加一个控制台日志接收器 (sink)，使用默认格式
+		//logging::add_console_log();
+		//for (int n = 0; n < 500; ++n)
+		//{
 
 
-			// --- 记录日志 ---
-			// 使用内置的严重性级别
-			BOOST_LOG_TRIVIAL(warning) << "This is a warning message.";
-			BOOST_LOG_TRIVIAL(error) << "This is an error message.";
-			BOOST_LOG_TRIVIAL(fatal) << "This is a fatal message.";
-			BOOST_LOG_TRIVIAL(error) << "This is an error message.";
-			BOOST_LOG_TRIVIAL(fatal) << "This is a fatal message.";
-		}
+		//	// --- 记录日志 ---
+		//	// 使用内置的严重性级别
+		//	BOOST_LOG_TRIVIAL(warning) << "This is a warning message.";
+		//	BOOST_LOG_TRIVIAL(error) << "This is an error message.";
+		//	BOOST_LOG_TRIVIAL(fatal) << "This is a fatal message.";
+		//	BOOST_LOG_TRIVIAL(error) << "This is an error message.";
+		//	BOOST_LOG_TRIVIAL(fatal) << "This is a fatal message.";
+		//}
 		return true;
 	}
 	bool LogTester::testEmpty()

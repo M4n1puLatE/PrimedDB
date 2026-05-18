@@ -2,7 +2,6 @@
 #include <future>
 #include <thread>
 #include <condition_variable>
-#include <functional>
 #include <atomic>
 #include <shared_mutex>
 
