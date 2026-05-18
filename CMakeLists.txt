@@ -9,22 +9,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake;${CMAKE_MODULE_PATH}")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-find_package(Boost REQUIRED CONFIG COMPONENTS 
-    system          # Often needed by other components
-    filesystem      # Often needed by other components  
-    thread          # Needed by Boost.Log
-    log             # The core logging library
-    log_setup       # For initialization settings
-    atomic          # Needed by Boost.Log
-    date_time       # Often needed by logging features
-    regex           # Sometimes needed by filters/patterns
-    chrono          # Needed by some timing features
-    serialization   # If using advanced features
-)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(gmp REQUIRED IMPORTED_TARGET gmp)
-find_package(cryptopp CONFIG REQUIRED)
 
+find_package(cryptopp CONFIG REQUIRED)
+find_package(Boost REQUIRED)
 
 
 
